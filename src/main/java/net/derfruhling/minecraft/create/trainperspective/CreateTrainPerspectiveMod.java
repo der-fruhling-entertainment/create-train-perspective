@@ -59,14 +59,10 @@ public class CreateTrainPerspectiveMod {
                 event.getEntityBeingMounted() instanceof CarriageContraptionEntity
         ) {
             if(event.isMounting()) {
-                LOGGER.info("PLAYER MOUNT {} -> {}", event.getEntityMounting(), event.getEntityBeingMounted());
                 states.put(event.getEntityMounting().getUUID(), new RotationState((CarriageContraptionEntity) event.getEntityBeingMounted()));
             } else {
-                LOGGER.info("PLAYER DISMOUNT {} -> {}", event.getEntityMounting(), event.getEntityBeingMounted());
                 states.remove(event.getEntityMounting().getUUID());
             }
-        } else {
-            LOGGER.info("Mount {} -> {}", event.getEntityMounting(), event.getEntityBeingMounted());
         }
     }
 
