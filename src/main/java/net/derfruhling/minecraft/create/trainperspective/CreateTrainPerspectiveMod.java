@@ -1,8 +1,13 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityMountEvent;
@@ -26,11 +31,14 @@ public class CreateTrainPerspectiveMod {
     public CreateTrainPerspectiveMod() {
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+
+        MinecraftForge.EVENT_BUS.addListener(this::onEntityMount);
+        MinecraftForge.EVENT_BUS.addListener(this::onTickPlayer);
     }
 
     private static class RotationState {
-        private final CarriageContraptionEntity entity;
-        private float lastYaw, lastPitch;
+        public final CarriageContraptionEntity entity;
+        private float lastYaw;
 
         public RotationState(CarriageContraptionEntity entity) {
             this.entity = entity;
@@ -42,51 +50,34 @@ public class CreateTrainPerspectiveMod {
             lastYaw = entity.yaw;
             return rotation;
         }
-
-        public float getPitchDelta() {
-            var rotation = entity.pitch - lastPitch;
-            lastPitch = entity.pitch;
-            return rotation;
-        }
     }
 
     private final HashMap<UUID, RotationState> states = new HashMap<>();
 
-    @SubscribeEvent
     public void onEntityMount(final EntityMountEvent event) {
         if(
-                event.getEntityMounting() instanceof LocalPlayer &&
-                event.getEntityBeingMounted() instanceof CarriageContraptionEntity
+                event.getEntityMounting() instanceof AbstractClientPlayer &&
+                        event.getEntityBeingMounted() instanceof CarriageContraptionEntity
         ) {
+            var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((AbstractClientPlayer) event.getEntityMounting());
             if(event.isMounting()) {
-                states.put(event.getEntityMounting().getUUID(), new RotationState((CarriageContraptionEntity) event.getEntityBeingMounted()));
+                var state = new RotationState((CarriageContraptionEntity) event.getEntityBeingMounted());
+                states.put(event.getEntityMounting().getUUID(), state);
+                persp.enable(state.entity.pitch);
             } else {
                 states.remove(event.getEntityMounting().getUUID());
+                persp.disable();
             }
         }
     }
 
-    @SubscribeEvent
     public void onTickPlayer(final TickEvent.PlayerTickEvent event) {
         if(event.side != LogicalSide.CLIENT) return;
-        if(states.containsKey(event.player.getUUID()) && event.player.isLocalPlayer()) {
+        if(states.containsKey(event.player.getUUID()) && event.player.isLocalPlayer() && event.player instanceof AbstractClientPlayer) {
             var state = states.get(event.player.getUUID());
-            // TODO vertical rotation disabled for now
-            //      its broken
-            /*var xRot = event.player.getXRot();*/
-            var yRot = event.player.getYRot();
-
-            /*while(xRot < 0.0f) xRot += 360.0f;*/
-            while(yRot < 0.0f) yRot += 360.0f;
-
-            /*var xDelta = state.getPitchDelta();*/
-            var yDelta = state.getYawDelta();
-
-            /*if(xDelta != 0.0f) {
-                LOGGER.info("{}", yRot);
-                event.player.setXRot((xRot - xDelta) % 360.0f);
-            }*/
-            if(yDelta != 0.0f) event.player.setYRot(yRot + yDelta);
+            var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((AbstractClientPlayer) event.player);
+            persp.setLean(state.entity.pitch);
+            event.player.setYRot(event.player.getYRot() + state.getYawDelta());
         }
     }
 }
