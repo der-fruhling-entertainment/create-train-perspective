@@ -5,6 +5,7 @@ import com.mojang.math.Axis;
 import net.derfruhling.minecraft.create.trainperspective.PlayerPerspectiveBehavior;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.util.Mth;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,11 +18,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Implements({@Interface(iface = PlayerPerspectiveBehavior.class, prefix = "ctp$")})
 public class PlayerRendererMixin {
     @Unique private boolean ctp$perspectiveActive = false;
-    @Unique private float ctp$lean = 0.0f;
+    @Unique private float ctp$lean = 0.0f, ctp$yaw = 0.0f;
 
-    public void ctp$enable(float initialLean) {
+    public void ctp$enable(float initialLean, float initialYaw) {
         ctp$perspectiveActive = true;
         ctp$lean = initialLean;
+        ctp$yaw = initialYaw;
     }
 
     public void ctp$disable() {
@@ -31,6 +33,10 @@ public class PlayerRendererMixin {
 
     public void ctp$setLean(float lean) {
         ctp$lean = lean;
+    }
+
+    public void ctp$setYaw(float yaw) {
+        ctp$yaw = yaw;
     }
 
     @Inject(
@@ -43,7 +49,8 @@ public class PlayerRendererMixin {
     )
     protected void setupRotations(AbstractClientPlayer p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float p_117806_, CallbackInfo ci) {
         if(ctp$perspectiveActive) {
-            p_117803_.rotateAround(Axis.ZP.rotationDegrees(ctp$lean), 0, 1.3f, 0);
+            p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean), 0, 1.3f, 0);
+            p_117803_.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -ctp$lean), 0, 1.3f, 0);
         }
     }
 }

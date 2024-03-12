@@ -63,7 +63,7 @@ public class CreateTrainPerspectiveMod {
             if(event.isMounting()) {
                 var state = new RotationState((CarriageContraptionEntity) event.getEntityBeingMounted());
                 states.put(event.getEntityMounting().getUUID(), state);
-                persp.enable(state.entity.pitch);
+                persp.enable(state.entity.pitch, state.entity.yaw);
             } else {
                 states.remove(event.getEntityMounting().getUUID());
                 persp.disable();
@@ -77,6 +77,7 @@ public class CreateTrainPerspectiveMod {
             var state = states.get(event.player.getUUID());
             var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((AbstractClientPlayer) event.player);
             persp.setLean(state.entity.pitch);
+            persp.setYaw(state.entity.yaw);
             event.player.setYRot(event.player.getYRot() + state.getYawDelta());
         }
     }
