@@ -3,9 +3,7 @@
   "minVersion": "0.8",
   "package": "net.derfruhling.minecraft.create.trainperspective.mixin",
   "compatibilityLevel": "JAVA_8",
-  "refmap": "create-train-perspective.refmap.json",
-  "mixins": [
-  ],
+  "refmap": "create_train_perspective.refmap.json",
   "client": [
     "PlayerRendererMixin"
   ],
