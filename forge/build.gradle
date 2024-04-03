@@ -97,7 +97,7 @@ modrinth {
     versionType = modrinth_version_type
     uploadFile = remapJar
     gameVersions = [minecraft_version]
-    loaders = ["forge"]
+    loaders = ["forge", "neoforge"]
     changelog = rootProject.file("changelog.md").getText()
 
     dependencies {

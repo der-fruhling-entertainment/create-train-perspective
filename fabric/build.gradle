@@ -84,7 +84,7 @@ modrinth {
     versionType = modrinth_version_type
     uploadFile = remapJar
     gameVersions = [minecraft_version]
-    loaders = ["fabric"]
+    loaders = ["fabric", "quilt"]
     changelog = rootProject.file("changelog.md").getText()
 
     dependencies {
