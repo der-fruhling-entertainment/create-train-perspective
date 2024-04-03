@@ -15,7 +15,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    environment: Modrinth
+    environment:
+      name: Modrinth
+      url: https://modrinth.com/mod/create-train-perspective
     permissions:
       contents: read
       packages: write
