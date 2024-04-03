@@ -93,6 +93,7 @@ publishing {
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "create-train-perspective"
+    versionName = "Create: Train Perspective v${mod_version} (Forge/NeoForge)"
     versionNumber = "${mod_version}+forge"
     versionType = modrinth_version_type
     uploadFile = remapJar

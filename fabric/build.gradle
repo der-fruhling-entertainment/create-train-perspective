@@ -80,6 +80,7 @@ publishing {
 modrinth {
     token = System.getenv("MODRINTH_TOKEN")
     projectId = "create-train-perspective"
+    versionName = "Create: Train Perspective v${mod_version} (Fabric/Quilt)"
     versionNumber = "${mod_version}+fabric"
     versionType = modrinth_version_type
     uploadFile = remapJar
