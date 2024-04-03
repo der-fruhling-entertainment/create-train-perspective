@@ -71,3 +71,9 @@ Moves your camera (and body!) with the Create Mod train you're riding to increas
    versionRange="[0.5.1,)"
    ordering="NONE"
    side="BOTH"
+[[dependencies."${mod_id}"]]
+   modId="architectury"
+   mandatory=true
+   versionRange="[9.0.8,)"
+   ordering="NONE"
+   side="BOTH"
