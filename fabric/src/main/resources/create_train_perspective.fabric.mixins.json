@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.derfruhling.minecraft.create.trainperspective.fabric.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "EntityMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
