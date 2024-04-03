@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "id": "create_train_perspective",
+  "version": "0.2.0",
+  "icon": "create_train_perspective.png",
+  "authors": [
+    "der_frühling"
+  ],
+  "entrypoints": {
+    "client": [
+      "net.derfruhling.minecraft.create.trainperspective.fabric.ModFabricEntrypoint"
+    ]
+  },
+  "mixins": [
+    "create_train_perspective.mixins.json",
+    "create_train_perspective.fabric.mixins.json"
+  ]
+}
