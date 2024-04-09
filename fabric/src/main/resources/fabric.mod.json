@@ -1,7 +1,19 @@
 {
   "schemaVersion": 1,
-  "id": "create_train_perspective",
-  "version": "0.2.0",
+  "id": "${mod_id}",
+  "name": "Create: Train Perspective",
+  "description": "Moves your camera (and body!) with the Create Mod train you're riding to increase immersion!",
+  "version": "${version}",
+  "contact": {
+    "homepage": "https://github.com/der-fruhling/create-train-perspective",
+    "issues": "https://github.com/der-fruhling/create-train-perspective/issues",
+    "sources": "https://github.com/der-fruhling/create-train-perspective"
+  },
+  "license": "MIT",
+  "environment": "client",
+  "suggests": {
+    "railways": "*"
+  },
   "icon": "create_train_perspective.png",
   "authors": [
     "der_frühling"
