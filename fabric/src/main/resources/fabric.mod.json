@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "create_train_perspective",
+  "id": "${mod_id}",
   "name": "Create: Train Perspective",
   "description": "Moves your camera (and body!) with the Create Mod train you're riding to increase immersion!",
   "version": "${version}",
