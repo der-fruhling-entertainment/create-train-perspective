@@ -84,6 +84,7 @@ modrinth {
     changelog = rootProject.file("changelog.md").getText()
 
     dependencies {
+        required.project 'fabric-api'
         required.project 'create-fabric'
         required.project 'architectury-api'
     }
