@@ -17,7 +17,11 @@
   ],
   "depends": {
     "architectury": "*",
-    "create": ">=0.5.1",
+    "create": [
+      "0.5.1-d-build.1161+mc1.20.1",
+      "0.5.1-f-build.1335+mc1.20.1",
+      "0.5.1-f-build.1417+mc1.20.1"
+    ],
     "minecraft": "1.20.1"
   }
 }
