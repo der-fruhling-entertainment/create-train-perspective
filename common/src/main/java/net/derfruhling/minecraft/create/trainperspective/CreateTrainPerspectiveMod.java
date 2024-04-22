@@ -106,6 +106,7 @@ public class CreateTrainPerspectiveMod {
         persp.setLean(state.entity.pitch);
         persp.setYaw(state.entity.yaw);
         player.setYRot(player.getYRot() + state.getYawDelta());
+        player.setYBodyRot(player.getYRot());
     }
 
     public void onTickPlayer(final Player player) {
