@@ -7,4 +7,9 @@ public interface PlayerPerspectiveBehavior {
     void setYaw(float yaw);
     float getLean();
     float getYaw();
+
+    default void diminish() {
+        setLean(getLean() * 0.97f);
+        setYaw(getYaw() * 0.97f);
+    }
 }

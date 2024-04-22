@@ -30,7 +30,7 @@ public class CreateTrainPerspectiveMod {
     private static class RotationState {
         public final CarriageContraptionEntity entity;
         private float lastYaw;
-        public boolean standingState, isMounted;
+        public boolean standingState, isMounted, shouldTickState = true;
 
         public RotationState(CarriageContraptionEntity entity, boolean standingState, boolean isMounted) {
             this.entity = entity;
@@ -82,18 +82,16 @@ public class CreateTrainPerspectiveMod {
             if(entity instanceof LocalPlayer player) {
                 if(player.getVehicle() != null) continue;
 
-                if(ticks.getValue() >= 2) {
+                var state = states.get(player.getUUID());
+                if (state == null) {
                     var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-                    states.remove(player.getUUID());
-                    persp.disable();
-                } else if(states.containsKey(player.getUUID())) {
-                    var state = states.get(player.getUUID());
-                    if(state.standingState && !state.isMounted) tickState(player);
-                } else {
-                    var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-                    var state = new RotationState(contraption, true, false);
+                    state = new RotationState(contraption, true, false);
                     states.put(player.getUUID(), state);
                     persp.enable(state.entity.pitch, state.entity.yaw);
+                } else if(ticks.getValue() >= 2) {
+                    state.shouldTickState = false;
+                } else if(!state.shouldTickState) {
+                    state.shouldTickState = true;
                 }
             }
         }
@@ -109,8 +107,21 @@ public class CreateTrainPerspectiveMod {
     }
 
     public void onTickPlayer(final Player player) {
-        if(player instanceof LocalPlayer localPlayer && states.containsKey(player.getUUID()) && states.get(player.getUUID()).isMounted) {
-            tickState(localPlayer);
+        if(player instanceof LocalPlayer localPlayer && states.containsKey(player.getUUID())) {
+            var state = states.get(player.getUUID());
+
+            if(state.shouldTickState) {
+                tickState(localPlayer);
+            } else {
+                var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+                persp.diminish();
+            }
+
+            if(localPlayer.onGround() && state.standingState) {
+                var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+                states.remove(player.getUUID());
+                persp.disable();
+            }
         }
     }
 }
