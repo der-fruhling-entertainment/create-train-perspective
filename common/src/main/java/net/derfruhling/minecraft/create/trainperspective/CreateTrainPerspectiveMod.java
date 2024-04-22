@@ -24,17 +24,20 @@ public class CreateTrainPerspectiveMod {
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public CreateTrainPerspectiveMod() {
-        TickEvent.PLAYER_POST.register(this::tickPlayer);
+        TickEvent.PLAYER_POST.register(this::onTickPlayer);
         INSTANCE = this;
     }
 
     private static class RotationState {
         public final CarriageContraptionEntity entity;
         private float lastYaw;
+        public boolean standingState, isMounted;
 
-        public RotationState(CarriageContraptionEntity entity) {
+        public RotationState(CarriageContraptionEntity entity, boolean standingState, boolean isMounted) {
             this.entity = entity;
             lastYaw = entity.yaw;
+            this.standingState = standingState;
+            this.isMounted = isMounted;
         }
 
         public float getYawDelta() {
@@ -53,12 +56,22 @@ public class CreateTrainPerspectiveMod {
         ) {
             var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             if(isMounting) {
-                var state = new RotationState(contraption);
-                states.put(entityMounting.getUUID(), state);
-                persp.enable(state.entity.pitch, state.entity.yaw);
+                if(!states.containsKey(entityMounting.getUUID())) {
+                    var state = new RotationState(contraption, false, true);
+                    states.put(entityMounting.getUUID(), state);
+                    persp.enable(state.entity.pitch, state.entity.yaw);
+                } else {
+                    states.get(entityMounting.getUUID()).isMounted = true;
+                }
             } else {
-                states.remove(entityMounting.getUUID());
-                persp.disable();
+                if(states.containsKey(entityMounting.getUUID())) {
+                    if(states.get(entityMounting.getUUID()).standingState) {
+                        states.get(entityMounting.getUUID()).isMounted = false;
+                    } else {
+                        states.remove(entityMounting.getUUID());
+                        persp.disable();
+                    }
+                }
             }
         }
     }
@@ -67,14 +80,19 @@ public class CreateTrainPerspectiveMod {
         for(Map.Entry<Entity, MutableInt> entry : contraption.collidingEntities.entrySet()) {
             var entity = entry.getKey();
             var ticks = entry.getValue();
-            if(entity instanceof Player player) {
+            if(entity instanceof LocalPlayer player) {
+                if(player.getVehicle() != null) continue;
+
                 if(ticks.getValue() >= 2) {
                     var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
                     states.remove(player.getUUID());
                     persp.disable();
+                } else if(states.containsKey(player.getUUID())) {
+                    var state = states.get(player.getUUID());
+                    if(state.standingState && !state.isMounted) tickState(player);
                 } else {
                     var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-                    var state = new RotationState(contraption);
+                    var state = new RotationState(contraption, true, false);
                     states.put(player.getUUID(), state);
                     persp.enable(state.entity.pitch, state.entity.yaw);
                 }
@@ -82,14 +100,17 @@ public class CreateTrainPerspectiveMod {
         }
     }
 
-    public void tickPlayer(final Player player) {
-        if (!(player instanceof AbstractClientPlayer)) return;
-        if(states.containsKey(player.getUUID())) {
-            var state = states.get(player.getUUID());
-            var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((AbstractClientPlayer) player);
-            persp.setLean(state.entity.pitch);
-            persp.setYaw(state.entity.yaw);
-            player.setYRot(player.getYRot() + state.getYawDelta());
+    private void tickState(LocalPlayer player) {
+        var state = states.get(player.getUUID());
+        var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((LocalPlayer) player);
+        persp.setLean(state.entity.pitch);
+        persp.setYaw(state.entity.yaw);
+        player.setYRot(player.getYRot() + state.getYawDelta());
+    }
+
+    public void onTickPlayer(final Player player) {
+        if(player instanceof LocalPlayer localPlayer && states.containsKey(player.getUUID()) && states.get(player.getUUID()).isMounted) {
+            tickState(localPlayer);
         }
     }
 }
