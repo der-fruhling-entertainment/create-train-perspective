@@ -50,8 +50,8 @@ public abstract class CameraMixin {
         if(entity instanceof LocalPlayer player) {
             var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             ctp$setRotation3D(y,
-                    x + persp.getLean() * Mth.cos(y * Mth.DEG_TO_RAD),
-                    360.0f - (persp.getLean() * Mth.sin(y * Mth.DEG_TO_RAD)));
+                    x - persp.getLean() * Mth.sin((persp.getYaw() - y) * Mth.DEG_TO_RAD),
+                    persp.getLean() * Mth.cos((persp.getYaw() - y) * Mth.DEG_TO_RAD));
         } else setRotation(y, x);
     }
 }

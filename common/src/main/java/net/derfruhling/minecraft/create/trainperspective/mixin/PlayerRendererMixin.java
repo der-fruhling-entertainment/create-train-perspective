@@ -43,6 +43,10 @@ public class PlayerRendererMixin {
         return ctp$lean;
     }
 
+    public float ctp$getYaw() {
+        return ctp$yaw;
+    }
+
     @Inject(
             method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V",
             at = @At(

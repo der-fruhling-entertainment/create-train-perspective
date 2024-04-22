@@ -6,4 +6,5 @@ public interface PlayerPerspectiveBehavior {
     void setLean(float lean);
     void setYaw(float yaw);
     float getLean();
+    float getYaw();
 }
