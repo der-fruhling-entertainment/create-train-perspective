@@ -4,7 +4,6 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -102,7 +101,7 @@ public class CreateTrainPerspectiveMod {
 
     private void tickState(LocalPlayer player) {
         var state = states.get(player.getUUID());
-        var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((LocalPlayer) player);
+        var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
         persp.setLean(state.entity.pitch);
         persp.setYaw(state.entity.yaw);
         player.setYRot(player.getYRot() + state.getYawDelta());

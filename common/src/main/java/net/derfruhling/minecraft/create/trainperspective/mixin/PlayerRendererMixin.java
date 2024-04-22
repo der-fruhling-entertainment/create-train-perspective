@@ -6,6 +6,8 @@ import net.derfruhling.minecraft.create.trainperspective.PlayerPerspectiveBehavi
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
+import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -50,15 +52,19 @@ public class PlayerRendererMixin {
     @Inject(
             method = "setupRotations(Lnet/minecraft/client/player/AbstractClientPlayer;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V",
             at = @At(
-                    value = "INVOKE",
-                    shift = At.Shift.BEFORE,
-                    target = "Lnet/minecraft/client/renderer/entity/LivingEntityRenderer;setupRotations(Lnet/minecraft/world/entity/LivingEntity;Lcom/mojang/blaze3d/vertex/PoseStack;FFF)V"
+                    value = "HEAD"
             )
     )
     protected void setupRotations(AbstractClientPlayer p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float p_117806_, CallbackInfo ci) {
         if(ctp$perspectiveActive) {
-            p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean), 0, 1.3f, 0);
-            p_117803_.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -ctp$lean), 0, 1.3f, 0);
+            float height = 0;
+
+            if(p_117802_.getVehicle() != null) {
+                height = 1.4f;
+            }
+
+            p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean), 0, height, 0);
+            p_117803_.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -ctp$lean), 0, height, 0);
         }
     }
 }
