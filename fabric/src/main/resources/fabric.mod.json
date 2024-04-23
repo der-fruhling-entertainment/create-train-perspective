@@ -3,7 +3,7 @@
   "id": "${mod_id}",
   "name": "Create: Train Perspective",
   "description": "Moves your camera (and body!) with the Create Mod train you're riding to increase immersion!",
-  "version": "${version}",
+  "version": "${version}+fabric",
   "contact": {
     "homepage": "https://github.com/der-fruhling/create-train-perspective",
     "issues": "https://github.com/der-fruhling/create-train-perspective/issues",
