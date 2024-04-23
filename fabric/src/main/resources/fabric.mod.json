@@ -5,9 +5,9 @@
   "description": "Moves your camera (and body!) with the Create Mod train you're riding to increase immersion!",
   "version": "${version}+fabric",
   "contact": {
-    "homepage": "https://github.com/der-fruhling/create-train-perspective",
-    "issues": "https://github.com/der-fruhling/create-train-perspective/issues",
-    "sources": "https://github.com/der-fruhling/create-train-perspective"
+    "homepage": "https://github.com/der-fruhling-entertainment/create-train-perspective",
+    "issues": "https://github.com/der-fruhling-entertainment/create-train-perspective/issues",
+    "sources": "https://github.com/der-fruhling-entertainment/create-train-perspective"
   },
   "license": "MIT",
   "environment": "client",
