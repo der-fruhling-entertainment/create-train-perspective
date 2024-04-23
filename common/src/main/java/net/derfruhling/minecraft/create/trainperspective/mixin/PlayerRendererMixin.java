@@ -2,12 +2,10 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
-import net.derfruhling.minecraft.create.trainperspective.PlayerPerspectiveBehavior;
+import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
-import net.minecraft.world.phys.Vec3;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerRenderer.class)
-@Implements({@Interface(iface = PlayerPerspectiveBehavior.class, prefix = "ctp$")})
+@Implements({@Interface(iface = Perspective.class, prefix = "ctp$")})
 public class PlayerRendererMixin {
     @Unique private boolean ctp$perspectiveActive = false;
     @Unique private float ctp$lean = 0.0f, ctp$yaw = 0.0f;

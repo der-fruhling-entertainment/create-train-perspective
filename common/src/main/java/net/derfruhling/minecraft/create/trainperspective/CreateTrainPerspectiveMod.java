@@ -53,7 +53,7 @@ public class CreateTrainPerspectiveMod {
                 entityMounting instanceof LocalPlayer player &&
                 entityBeingMounted instanceof CarriageContraptionEntity contraption
         ) {
-            var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             if(isMounting) {
                 if(!states.containsKey(entityMounting.getUUID())) {
                     var state = new RotationState(contraption, false, true);
@@ -84,7 +84,7 @@ public class CreateTrainPerspectiveMod {
 
                 var state = states.get(player.getUUID());
                 if (state == null) {
-                    var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+                    var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
                     state = new RotationState(contraption, true, false);
                     states.put(player.getUUID(), state);
                     persp.enable(state.entity.pitch, state.entity.yaw);
@@ -99,7 +99,7 @@ public class CreateTrainPerspectiveMod {
 
     private void tickState(LocalPlayer player) {
         var state = states.get(player.getUUID());
-        var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
         persp.setLean(state.entity.pitch);
         persp.setYaw(state.entity.yaw);
         player.setYRot(player.getYRot() + state.getYawDelta());
@@ -113,12 +113,12 @@ public class CreateTrainPerspectiveMod {
             if(state.shouldTickState) {
                 tickState(localPlayer);
             } else {
-                var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+                var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
                 persp.diminish();
             }
 
             if(localPlayer.onGround() && state.standingState) {
-                var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+                var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
                 states.remove(player.getUUID());
                 persp.disable();
             }

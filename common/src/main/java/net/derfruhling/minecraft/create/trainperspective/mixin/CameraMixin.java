@@ -1,7 +1,7 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import net.derfruhling.minecraft.create.trainperspective.Camera3D;
-import net.derfruhling.minecraft.create.trainperspective.PlayerPerspectiveBehavior;
+import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -11,7 +11,6 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Camera.class)
@@ -48,7 +47,7 @@ public abstract class CameraMixin {
     @Redirect(method = "setup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setRotation(FF)V"))
     public void modifyRotationsPrimary(Camera instance, float y, float x) {
         if(entity instanceof LocalPlayer player) {
-            var persp = (PlayerPerspectiveBehavior) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             ctp$setRotation3D(y,
                     x - persp.getLean() * Mth.sin((persp.getYaw() - y) * Mth.DEG_TO_RAD),
                     persp.getLean() * Mth.cos((persp.getYaw() - y) * Mth.DEG_TO_RAD));

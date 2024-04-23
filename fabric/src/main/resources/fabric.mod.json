@@ -24,8 +24,7 @@
     ]
   },
   "mixins": [
-    "create_train_perspective.mixins.json",
-    "create_train_perspective.fabric.mixins.json"
+    "create_train_perspective.mixins.json"
   ],
   "depends": {
     "architectury": "*",

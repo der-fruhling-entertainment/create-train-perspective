@@ -1,6 +1,6 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
-public interface PlayerPerspectiveBehavior {
+public interface Perspective {
     void enable(float initialLean, float initialYaw);
     void disable();
     void setLean(float lean);
