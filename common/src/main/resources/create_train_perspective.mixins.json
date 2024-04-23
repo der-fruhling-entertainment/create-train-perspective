@@ -4,7 +4,11 @@
   "package": "net.derfruhling.minecraft.create.trainperspective.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "PlayerRendererMixin"
+    "CameraMixin",
+    "ContraptionColliderMixin",
+    "GameRendererMixin",
+    "PlayerRendererMixin",
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
