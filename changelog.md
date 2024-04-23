@@ -1,10 +1,10 @@
-- Player camera now leans while their train is on a slope.
+- Player camera now leans while their train is on a slope. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/11)
   - Also, camera now rolls when facing sideways on a slope.
   - (hopefully this feature doesn't break other mods)
-- Player legs are now locked forward while seated on a train.
-- Players standing on a train will now be affected the same way as players sitting.
+- Player legs are now locked forward while seated on a train. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/13)
+- Players standing on a train will now be affected the same way as players sitting. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/14)
   - This does not fix the Create mod issue where standing players may be ejected from the train if it is traveling at high speeds.
-- Players riding taller trains now lean correctly.
+- Players riding taller trains now lean correctly. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/16)
 
 Known issues:
 - The mod's leaning is a bit jittery. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/22)
