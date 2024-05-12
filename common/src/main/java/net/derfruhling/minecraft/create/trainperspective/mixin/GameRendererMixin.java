@@ -16,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class GameRendererMixin {
     @Shadow @Final private Camera mainCamera;
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V", ordinal = 3, shift = At.Shift.AFTER))
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V", ordinal = 2, shift = At.Shift.BEFORE))
     public void applyZRotation(float f, long l, PoseStack poseStack, CallbackInfo ci) {
         poseStack.mulPose(Axis.ZP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getZRot()));
     }

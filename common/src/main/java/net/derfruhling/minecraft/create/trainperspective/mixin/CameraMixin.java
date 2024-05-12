@@ -1,5 +1,6 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.derfruhling.minecraft.create.trainperspective.Camera3D;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.minecraft.client.Camera;
@@ -7,50 +8,38 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Camera.class)
-@Implements({@Interface(iface = Camera3D.class, prefix = "ctp$")})
+@Implements({@Interface(iface = Camera3D.class, prefix = "c3d$")})
 public abstract class CameraMixin {
     @Shadow private Entity entity;
-    @Shadow private float xRot;
-    @Shadow private float yRot;
     @Unique private float ctp$zRot;
-
-    @Shadow @Final private Quaternionf rotation;
-    @Shadow @Final private Vector3f forwards;
-    @Shadow @Final private Vector3f up;
-    @Shadow @Final private Vector3f left;
 
     @Shadow protected abstract void setRotation(float f, float g);
 
-    @Unique
-    public void ctp$setRotation3D(float y, float x, float z) {
-        this.xRot = x;
-        this.yRot = y;
-        this.ctp$zRot = z;
-        this.rotation.rotationYXZ(-y * 0.017453292F, x * 0.017453292F, z * 0.017453292F);
-        this.forwards.set(0.0F, 0.0F, 1.0F).rotate(this.rotation);
-        this.up.set(0.0F, 1.0F, 0.0F).rotate(this.rotation);
-        this.left.set(1.0F, 0.0F, 0.0F).rotate(this.rotation);
+    @ModifyArg(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;"), index = 2)
+    private float modifyRoll(float original) {
+        return original + ctp$zRot;
     }
 
     @Unique
-    public float ctp$getZRot() {
+    public float c3d$getZRot() {
         return this.ctp$zRot;
     }
 
     @Redirect(method = "setup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setRotation(FF)V"))
-    public void modifyRotationsPrimary(Camera instance, float y, float x) {
-        if(entity instanceof LocalPlayer player) {
+    public void modifyRotationsPrimary(Camera instance, float y, float x, @Local(argsOnly = true, ordinal = 1) boolean isThirdPerson) {
+        if(entity instanceof LocalPlayer player && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-            ctp$setRotation3D(y,
-                    x - persp.getLean() * Mth.sin((persp.getYaw() - y) * Mth.DEG_TO_RAD),
-                    persp.getLean() * Mth.cos((persp.getYaw() - y) * Mth.DEG_TO_RAD));
-        } else setRotation(y, x);
+            ctp$zRot = persp.getLean() * Mth.cos((persp.getYaw() - y) * Mth.DEG_TO_RAD);
+            setRotation(y, x - persp.getLean() * Mth.sin((persp.getYaw() - y) * Mth.DEG_TO_RAD));
+        } else {
+            ctp$zRot = 0;
+            setRotation(y, x);
+        }
     }
 }
