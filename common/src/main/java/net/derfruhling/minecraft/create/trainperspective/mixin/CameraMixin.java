@@ -1,5 +1,6 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import net.derfruhling.minecraft.create.trainperspective.Camera3D;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.minecraft.client.Camera;
@@ -31,8 +32,8 @@ public abstract class CameraMixin {
     }
 
     @Redirect(method = "setup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setRotation(FF)V"))
-    public void modifyRotationsPrimary(Camera instance, float y, float x) {
-        if(entity instanceof LocalPlayer player) {
+    public void modifyRotationsPrimary(Camera instance, float y, float x, @Local(argsOnly = true, ordinal = 1) boolean isThirdPerson) {
+        if(entity instanceof LocalPlayer player && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             ctp$zRot = persp.getLean() * Mth.cos((persp.getYaw() - y) * Mth.DEG_TO_RAD);
             setRotation(y, x - persp.getLean() * Mth.sin((persp.getYaw() - y) * Mth.DEG_TO_RAD));
