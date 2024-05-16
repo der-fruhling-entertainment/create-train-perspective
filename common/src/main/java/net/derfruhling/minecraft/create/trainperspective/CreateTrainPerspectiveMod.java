@@ -115,12 +115,11 @@ public class CreateTrainPerspectiveMod {
             } else {
                 var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
                 persp.diminish();
-            }
 
-            if(localPlayer.onGround() && state.standingState) {
-                var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-                states.remove(player.getUUID());
-                persp.disable();
+                if(persp.diminished()) {
+                    states.remove(player.getUUID());
+                    persp.disable();
+                }
             }
         }
     }

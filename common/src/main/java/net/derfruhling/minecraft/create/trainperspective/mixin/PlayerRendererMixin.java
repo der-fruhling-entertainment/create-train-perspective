@@ -28,12 +28,16 @@ public class PlayerRendererMixin {
         ctp$perspectiveActive = true;
         ctp$lean = initialLean;
         ctp$yaw = initialYaw;
+        ctp$oldLean = initialLean;
+        ctp$oldYaw = initialYaw;
     }
 
     public void ctp$disable() {
         ctp$perspectiveActive = false;
         ctp$lean = 0.0f;
         ctp$yaw = 0.0f;
+        ctp$oldLean = 0.0f;
+        ctp$oldYaw = 0.0f;
     }
 
     public boolean ctp$isEnabled() {
