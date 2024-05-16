@@ -2,6 +2,7 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.derfruhling.minecraft.create.trainperspective.Camera3D;
+import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -39,7 +40,10 @@ public abstract class CameraMixin {
         if(entity instanceof LocalPlayer player && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             ctp$zRot = persp.getLean() * Mth.cos((persp.getYaw() - y) * Mth.DEG_TO_RAD);
-            setRotation(y, x - persp.getLean() * Mth.sin((persp.getYaw() - y) * Mth.DEG_TO_RAD));
+            setRotation(
+                    MixinUtil.applyDirectionYRotChange(persp, x, y),
+                    MixinUtil.applyDirectionXRotChange(persp, x, y)
+            );
         } else {
             ctp$zRot = 0;
             setRotation(y, x);

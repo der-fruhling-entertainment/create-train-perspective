@@ -10,7 +10,11 @@ public class MixinUtil {
         return (Camera3D) camera;
     }
 
-    public static float applyDirectionXRotChange(Perspective persp, float original, float yRot) {
-        return original - persp.getLean() * Mth.sin((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
+    public static float applyDirectionXRotChange(Perspective persp, float xRot, float yRot) {
+        return xRot - persp.getLean() * Mth.sin((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
+    }
+
+    public static float applyDirectionYRotChange(Perspective persp, float xRot, float yRot) {
+        return yRot + persp.getLean() * Mth.sin(xRot * Mth.DEG_TO_RAD);
     }
 }
