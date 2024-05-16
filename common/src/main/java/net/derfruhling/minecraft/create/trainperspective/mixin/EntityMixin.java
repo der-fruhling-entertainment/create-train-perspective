@@ -36,11 +36,21 @@ public abstract class EntityMixin {
 
     @SuppressWarnings("UnreachableCode")
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 1, argsOnly = true)
-    public float adjustViewVector(float original, @Local(argsOnly = true, index = 2) float yRot) {
+    public float adjustXRot(float xRot, @Local(argsOnly = true, index = 2) float yRot) {
         if (this.level.isClientSide) {
             if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
-                return MixinUtil.applyDirectionXRotChange(persp, original, yRot);
-            } else return original;
-        } else return original;
+                return MixinUtil.applyDirectionXRotChange(persp, xRot, yRot);
+            } else return xRot;
+        } else return xRot;
+    }
+
+    @SuppressWarnings("UnreachableCode")
+    @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 2, argsOnly = true)
+    public float adjustYRot(float yRot, @Local(argsOnly = true, index = 1) float xRot) {
+        if (this.level.isClientSide) {
+            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
+                return yRot + MixinUtil.getExtraYRot(persp, xRot, yRot);
+            } else return yRot;
+        } else return yRot;
     }
 }

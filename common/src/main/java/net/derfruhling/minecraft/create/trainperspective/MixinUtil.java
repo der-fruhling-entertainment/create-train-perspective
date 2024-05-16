@@ -18,10 +18,6 @@ public class MixinUtil {
         return xRot - persp.getLean() * Mth.sin((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
     }
 
-    public static float applyDirectionYRotChange(Perspective persp, float xRot, float yRot) {
-        return yRot - getExtraYRot(persp, xRot, yRot);
-    }
-
     public static float getExtraYRot(Perspective persp, float xRot, float yRot) {
         return persp.getLean() * (xRot / 90.0f) * invCos((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
     }

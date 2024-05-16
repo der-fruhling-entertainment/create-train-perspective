@@ -17,4 +17,11 @@ public class CreateRaycastHelperMixin {
             return MixinUtil.applyDirectionXRotChange(persp, value, player.getYRot());
         } else return value;
     }
+
+    @ModifyVariable(method = "getTraceTarget", at = @At("STORE"), index = 5)
+    private static float modifyYRot(float value, Player player) {
+        if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof Perspective persp) {
+            return value + MixinUtil.getExtraYRot(persp, player.getXRot(), value);
+        } else return value;
+    }
 }
