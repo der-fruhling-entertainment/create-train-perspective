@@ -2,11 +2,11 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
+import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +39,7 @@ public abstract class EntityMixin {
     public float adjustViewVector(float original, @Local(argsOnly = true, index = 2) float yRot) {
         if (this.level.isClientSide) {
             if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
-                return original - persp.getLean() * Mth.sin((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
+                return MixinUtil.applyDirectionXRotChange(persp, original, yRot);
             } else return original;
         } else return original;
     }

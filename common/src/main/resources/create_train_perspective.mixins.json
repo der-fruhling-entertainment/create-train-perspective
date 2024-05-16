@@ -6,9 +6,10 @@
   "client": [
     "CameraMixin",
     "ContraptionColliderMixin",
+    "EntityMixin",
     "GameRendererMixin",
     "PlayerRendererMixin",
-    "EntityMixin"
+    "CreateRaycastHelperMixin"
   ],
   "injectors": {
     "defaultRequire": 1
