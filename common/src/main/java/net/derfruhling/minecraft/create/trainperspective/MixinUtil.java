@@ -14,11 +14,11 @@ public class MixinUtil {
         return Mth.cos(x + Mth.PI);
     }
 
-    public static float applyDirectionXRotChange(Perspective persp, float xRot, float yRot) {
-        return xRot - persp.getLean() * Mth.sin((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
+    public static float applyDirectionXRotChange(Perspective persp, float xRot, float yRot, float f) {
+        return xRot - persp.getLean(f) * Mth.sin((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 
-    public static float getExtraYRot(Perspective persp, float xRot, float yRot) {
-        return persp.getLean() * (xRot / 90.0f) * invCos((persp.getYaw() - yRot) * Mth.DEG_TO_RAD);
+    public static float getExtraYRot(Perspective persp, float xRot, float yRot, float f) {
+        return persp.getLean(f) * (xRot / 90.0f) * invCos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 }

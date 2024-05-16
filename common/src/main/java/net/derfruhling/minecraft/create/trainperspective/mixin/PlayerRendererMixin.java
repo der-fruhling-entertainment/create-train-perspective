@@ -22,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 public class PlayerRendererMixin {
     @Unique private boolean ctp$perspectiveActive = false;
-    @Unique private float ctp$lean = 0.0f, ctp$yaw = 0.0f;
+    @Unique private float ctp$lean = 0.0f, ctp$yaw = 0.0f, ctp$oldLean = 0.0f, ctp$oldYaw = 0.0f;
 
     public void ctp$enable(float initialLean, float initialYaw) {
         ctp$perspectiveActive = true;
@@ -41,19 +41,23 @@ public class PlayerRendererMixin {
     }
 
     public void ctp$setLean(float lean) {
+        ctp$oldLean = ctp$lean;
         ctp$lean = lean;
     }
 
     public void ctp$setYaw(float yaw) {
+        ctp$oldYaw = ctp$yaw;
         ctp$yaw = yaw;
     }
 
-    public float ctp$getLean() {
-        return ctp$lean;
+    public float ctp$getLean(float f) {
+        if(f == 1.0f) return ctp$lean;
+        return Mth.lerp(f, ctp$oldLean, ctp$lean);
     }
 
-    public float ctp$getYaw() {
-        return ctp$yaw;
+    public float ctp$getYaw(float f) {
+        if(f == 1.0f) return ctp$yaw;
+        return Mth.lerp(f, ctp$oldYaw, ctp$yaw);
     }
 
     @Inject(

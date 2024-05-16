@@ -39,7 +39,7 @@ public abstract class EntityMixin {
     public float adjustXRot(float xRot, @Local(argsOnly = true, index = 2) float yRot) {
         if (this.level.isClientSide) {
             if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
-                return MixinUtil.applyDirectionXRotChange(persp, xRot, yRot);
+                return MixinUtil.applyDirectionXRotChange(persp, xRot, yRot, 1.0f);
             } else return xRot;
         } else return xRot;
     }
@@ -49,7 +49,7 @@ public abstract class EntityMixin {
     public float adjustYRot(float yRot, @Local(argsOnly = true, index = 1) float xRot) {
         if (this.level.isClientSide) {
             if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
-                return yRot + MixinUtil.getExtraYRot(persp, xRot, yRot);
+                return yRot + MixinUtil.getExtraYRot(persp, xRot, yRot, 1.0f);
             } else return yRot;
         } else return yRot;
     }

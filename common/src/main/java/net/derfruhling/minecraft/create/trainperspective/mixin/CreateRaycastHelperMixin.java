@@ -14,14 +14,14 @@ public class CreateRaycastHelperMixin {
     @ModifyVariable(method = "getTraceTarget", at = @At("STORE"), index = 4)
     private static float modifyXRot(float value, Player player) {
         if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof Perspective persp) {
-            return MixinUtil.applyDirectionXRotChange(persp, value, player.getYRot());
+            return MixinUtil.applyDirectionXRotChange(persp, value, player.getYRot(), 1.0f);
         } else return value;
     }
 
     @ModifyVariable(method = "getTraceTarget", at = @At("STORE"), index = 5)
     private static float modifyYRot(float value, Player player) {
         if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof Perspective persp) {
-            return value + MixinUtil.getExtraYRot(persp, player.getXRot(), value);
+            return value + MixinUtil.getExtraYRot(persp, player.getXRot(), value, 1.0f);
         } else return value;
     }
 }
