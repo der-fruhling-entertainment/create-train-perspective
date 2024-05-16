@@ -1,6 +1,8 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -11,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
-public class EntityMixin {
+@Environment(EnvType.CLIENT)
+public abstract class EntityMixin {
     @Shadow @Nullable private Entity vehicle;
 
     @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At(value = "RETURN", ordinal = 4))

@@ -3,6 +3,8 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;
@@ -13,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
+@Environment(EnvType.CLIENT)
 public class GameRendererMixin {
     @Shadow @Final private Camera mainCamera;
 

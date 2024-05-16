@@ -3,6 +3,8 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.derfruhling.minecraft.create.trainperspective.Camera3D;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(Camera.class)
 @Implements({@Interface(iface = Camera3D.class, prefix = "c3d$")})
+@Environment(EnvType.CLIENT)
 public abstract class CameraMixin {
     @Shadow private Entity entity;
     @Unique private float ctp$zRot;

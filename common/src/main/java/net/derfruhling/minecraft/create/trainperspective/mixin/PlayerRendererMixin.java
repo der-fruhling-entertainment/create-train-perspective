@@ -2,7 +2,10 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
@@ -16,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerRenderer.class)
 @Implements({@Interface(iface = Perspective.class, prefix = "ctp$")})
+@Environment(EnvType.CLIENT)
 public class PlayerRendererMixin {
     @Unique private boolean ctp$perspectiveActive = false;
     @Unique private float ctp$lean = 0.0f, ctp$yaw = 0.0f;
