@@ -7,7 +7,8 @@
   "contact": {
     "homepage": "https://github.com/der-fruhling-entertainment/create-train-perspective",
     "issues": "https://github.com/der-fruhling-entertainment/create-train-perspective/issues",
-    "sources": "https://github.com/der-fruhling-entertainment/create-train-perspective"
+    "sources": "https://github.com/der-fruhling-entertainment/create-train-perspective",
+    "email": "works-on-my-machine@der-fruhling.mozmail.com"
   },
   "license": "MIT",
   "environment": "client",
