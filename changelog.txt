@@ -1,5 +1,6 @@
 Major update to fix major problems. The mod is in a pretty good state now.
 
+[Changelog]
 - Players now look at their perceived down (e.g. the seat they're sitting in) rather than the real ground. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/32
 - Fixed jittery leaning. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/22
 - When targetting a block with the crosshair, the mod now makes some adjustments to target the block you should be looking at instead of the block the game thinks you're looking at. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/35
@@ -8,7 +9,7 @@ Major update to fix major problems. The mod is in a pretty good state now.
 - Fixed jittering of hand when traveling along the negative X axis.
 - Fabric only: added a contact email.
 
-Changelog: https://github.com/der-fruhling/create-train-perspective/compare/v0.2.3...v0.3.0
+Commits: https://github.com/der-fruhling/create-train-perspective/compare/v0.2.3...v0.3.0
 
 ---
 
