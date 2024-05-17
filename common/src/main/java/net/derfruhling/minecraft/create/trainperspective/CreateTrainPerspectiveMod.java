@@ -10,9 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import org.apache.commons.lang3.mutable.MutableInt;
 import org.slf4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 // The value here should match an entry in the META-INF/mods.toml file
 public class CreateTrainPerspectiveMod {
@@ -30,7 +28,10 @@ public class CreateTrainPerspectiveMod {
     private static class RotationState {
         public final CarriageContraptionEntity entity;
         private float lastYaw;
-        public boolean standingState, isMounted, shouldTickState = true;
+        public boolean standingState;
+        public boolean isMounted;
+        public boolean shouldTickState = true;
+        public int ticksSinceLastUpdate = 0;
 
         public RotationState(CarriageContraptionEntity entity, boolean standingState, boolean isMounted) {
             this.entity = entity;
@@ -60,40 +61,31 @@ public class CreateTrainPerspectiveMod {
                     states.put(entityMounting.getUUID(), state);
                     persp.enable(state.entity.pitch, state.entity.yaw);
                 } else {
-                    states.get(entityMounting.getUUID()).isMounted = true;
+                    var state = states.get(entityMounting.getUUID());
+                    state.isMounted = true;
+                    state.shouldTickState = true;
                 }
             } else {
                 if(states.containsKey(entityMounting.getUUID())) {
-                    if(states.get(entityMounting.getUUID()).standingState) {
-                        states.get(entityMounting.getUUID()).isMounted = false;
-                    } else {
-                        states.remove(entityMounting.getUUID());
-                        persp.disable();
-                    }
+                    states.remove(entityMounting.getUUID());
+                    persp.disable();
                 }
             }
         }
     }
 
-    public void tickStandingPlayers(final CarriageContraptionEntity contraption) {
-        for(Map.Entry<Entity, MutableInt> entry : contraption.collidingEntities.entrySet()) {
-            var entity = entry.getKey();
-            var ticks = entry.getValue();
-            if(entity instanceof LocalPlayer player) {
-                if(player.getVehicle() != null) continue;
+    public void tickStandingPlayer(final CarriageContraptionEntity contraption, final Player player) {
+        if(player.getVehicle() != null) return;
 
-                var state = states.get(player.getUUID());
-                if (state == null) {
-                    var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-                    state = new RotationState(contraption, true, false);
-                    states.put(player.getUUID(), state);
-                    persp.enable(state.entity.pitch, state.entity.yaw);
-                } else if(ticks.getValue() >= 2) {
-                    state.shouldTickState = false;
-                } else if(!state.shouldTickState) {
-                    state.shouldTickState = true;
-                }
-            }
+        var state = states.get(player.getUUID());
+
+        if (state == null || !Objects.equals(state.entity, contraption)) {
+            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+            state = new RotationState(contraption, true, false);
+            states.put(player.getUUID(), state);
+            persp.enable(state.entity.pitch, state.entity.yaw);
+        } else {
+            state.ticksSinceLastUpdate = 0;
         }
     }
 
@@ -104,6 +96,14 @@ public class CreateTrainPerspectiveMod {
         persp.setYaw(state.entity.yaw);
         player.setYRot(player.getYRot() + state.getYawDelta());
         player.setYBodyRot(player.getYRot());
+
+        if(state.standingState && !state.isMounted) {
+            state.ticksSinceLastUpdate += 1;
+
+            if(state.ticksSinceLastUpdate > 5) {
+                state.shouldTickState = false;
+            }
+        }
     }
 
     public void onTickPlayer(final Player player) {

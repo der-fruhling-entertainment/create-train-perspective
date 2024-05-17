@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "CameraMixin",
-    "ContraptionColliderMixin",
+    "AbstractContraptionEntityMixin",
     "EntityMixin",
     "GameRendererMixin",
     "PlayerRendererMixin",

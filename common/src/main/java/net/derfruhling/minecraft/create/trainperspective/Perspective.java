@@ -16,6 +16,6 @@ public interface Perspective {
     }
 
     default boolean diminished() {
-        return Mth.abs(getLean(1.0f)) < 0.02f;
+        return Mth.abs(getLean(1.0f)) < 0.01f;
     }
 }
