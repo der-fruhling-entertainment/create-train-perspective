@@ -4,11 +4,13 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
+import net.derfruhling.minecraft.create.trainperspective.RotationState;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Implements;
 import org.spongepowered.asm.mixin.Interface;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,6 +25,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class PlayerRendererMixin {
     @Unique private boolean ctp$perspectiveActive = false;
     @Unique private float ctp$lean = 0.0f, ctp$yaw = 0.0f, ctp$oldLean = 0.0f, ctp$oldYaw = 0.0f;
+    @Unique private @Nullable RotationState ctp$currentState = null;
 
     public void ctp$enable(float initialLean, float initialYaw) {
         ctp$perspectiveActive = true;
@@ -72,6 +75,14 @@ public class PlayerRendererMixin {
     public float ctp$getYaw(float f) {
         if(f == 1.0f) return ctp$yaw;
         return Mth.lerp(f, ctp$oldYaw, ctp$yaw);
+    }
+
+    public @Nullable RotationState ctp$getRotationState() {
+        return ctp$currentState;
+    }
+
+    public void ctp$setRotationState(@Nullable RotationState state) {
+        ctp$currentState = state;
     }
 
     @Inject(

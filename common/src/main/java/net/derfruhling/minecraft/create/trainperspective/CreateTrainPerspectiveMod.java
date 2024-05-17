@@ -24,8 +24,6 @@ public class CreateTrainPerspectiveMod {
         INSTANCE = this;
     }
 
-    private final HashMap<UUID, RotationStateKeeper> states = new HashMap<>();
-
     public void onEntityMount(boolean isMounting, Entity entityMounting, Entity entityBeingMounted) {
         if(
                 entityMounting instanceof LocalPlayer player &&
@@ -33,19 +31,19 @@ public class CreateTrainPerspectiveMod {
         ) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             if(isMounting) {
-                if(!states.containsKey(entityMounting.getUUID())) {
+                if(persp.getRotationState() == null) {
                     var state = new RotationState(contraption, false, true);
-                    states.put(entityMounting.getUUID(), state);
+                    persp.setRotationState(state);
                     var carriage = state.getCarriageEntity();
                     assert carriage != null;
                     persp.enable(carriage.pitch, carriage.yaw);
                 } else {
-                    var state = states.get(entityMounting.getUUID());
+                    var state = persp.getRotationState();
                     state.onMounted();
                 }
             } else {
-                if(states.containsKey(entityMounting.getUUID())) {
-                    states.remove(entityMounting.getUUID());
+                if(persp.getRotationState() != null) {
+                    persp.setRotationState(null);
                     persp.disable();
                 }
             }
@@ -55,12 +53,12 @@ public class CreateTrainPerspectiveMod {
     public void tickStandingPlayer(final CarriageContraptionEntity contraption, final Player player) {
         if(player.getVehicle() != null) return;
 
-        var state = states.get(player.getUUID());
+        var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        var state = persp.getRotationState();
 
         if (state == null || !Objects.equals(state.getCarriageEntity(), contraption)) {
-            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             state = new RotationState(contraption, true, false);
-            states.put(player.getUUID(), state);
+            persp.setRotationState(state);
             var carriage = state.getCarriageEntity();
             assert carriage != null;
             persp.enable(carriage.pitch, carriage.yaw);
@@ -70,8 +68,10 @@ public class CreateTrainPerspectiveMod {
     }
 
     private void tickState(LocalPlayer player) {
-        var state = states.get(player.getUUID());
         var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        var state = persp.getRotationState();
+        if(state == null) return;
+
         var carriage = state.getCarriageEntity();
         if(carriage == null) return;
         persp.setLean(carriage.pitch);
@@ -89,17 +89,18 @@ public class CreateTrainPerspectiveMod {
     }
 
     public void onTickPlayer(final Player player) {
-        if(player instanceof LocalPlayer localPlayer && states.containsKey(player.getUUID())) {
-            var state = states.get(player.getUUID());
+        if(player instanceof LocalPlayer localPlayer) {
+            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+            var state = persp.getRotationState();
+            if(state == null) return;
 
             if(state.shouldTickState()) {
                 tickState(localPlayer);
             } else {
-                var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
                 persp.diminish();
 
                 if(persp.diminished()) {
-                    states.remove(player.getUUID());
+                    persp.setRotationState(null);
                     persp.disable();
                 }
             }
