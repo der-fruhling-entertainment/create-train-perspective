@@ -50,8 +50,18 @@ public class PlayerRendererMixin {
     }
 
     public void ctp$setYaw(float yaw) {
+        // some configurations flip between 0 and 360 constantly
+        // adjust accordingly
         ctp$oldYaw = ctp$yaw;
         ctp$yaw = yaw;
+
+        while (ctp$yaw - ctp$oldYaw < -180.0f) {
+            ctp$oldYaw -= 360.0f;
+        }
+
+        while (ctp$yaw - ctp$oldYaw >= 180.0f) {
+            ctp$oldYaw += 360.0f;
+        }
     }
 
     public float ctp$getLean(float f) {

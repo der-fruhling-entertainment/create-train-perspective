@@ -41,6 +41,14 @@ public class CreateTrainPerspectiveMod {
         }
 
         public float getYawDelta() {
+            while (entity.yaw - lastYaw < -180.0f) {
+                lastYaw -= 360.0f;
+            }
+
+            while (entity.yaw - lastYaw >= 180.0f) {
+                lastYaw += 360.0f;
+            }
+
             var rotation = entity.yaw - lastYaw;
             lastYaw = entity.yaw;
             return rotation;
