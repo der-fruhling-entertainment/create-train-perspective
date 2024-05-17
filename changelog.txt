@@ -1,16 +1,15 @@
-Minor update to fix some issues.
+Major update to fix major problems. The mod is in a pretty good state now.
 
-- Fixed incorrect rolling when looking certain directions
-- Now compatible with [do a barrel roll] and hopefully other camera roll kinds of mods.
-- The third-person camera while seated on a train is now improved. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/24
+[Changelog]
+- Players now look at their perceived down (e.g. the seat they're sitting in) rather than the real ground. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/32
+- Fixed jittery leaning. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/22
+- When targetting a block with the crosshair, the mod now makes some adjustments to target the block you should be looking at instead of the block the game thinks you're looking at. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/35
+  - This is probably incompatible with anti-cheat mods/plugins.
+  - The feature is also still *ever so slightly* janky, but for most purposes it should be very usable.
+- Fixed jittering of hand when traveling along the negative X axis.
+- Fabric only: added a contact email.
 
-Known issues:
-- The mod's leaning is a bit jittery. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/22
-  - This is probably more of a limitation of Minecraft itself. It might be fixable with a config option to emulate pitch, but that wouldn't make the player appear correctly to other players.
-  - Update: it's most definitely possible to fix this up. 
-- The easing back to normal posture after jumping off a train on a slope could use some work. https://github.com/der-fruhling-entertainment/create-train-perspective/issues/23
-
-https://github.com/der-fruhling/create-train-perspective/compare/v0.2.2...v0.2.3
+Commits: https://github.com/der-fruhling/create-train-perspective/compare/v0.2.3...v0.3.0
 
 ---
 

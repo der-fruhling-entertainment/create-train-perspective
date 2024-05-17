@@ -5,10 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "CameraMixin",
-    "ContraptionColliderMixin",
+    "AbstractContraptionEntityMixin",
+    "EntityMixin",
     "GameRendererMixin",
     "PlayerRendererMixin",
-    "EntityMixin"
+    "CreateRaycastHelperMixin"
   ],
   "injectors": {
     "defaultRequire": 1
