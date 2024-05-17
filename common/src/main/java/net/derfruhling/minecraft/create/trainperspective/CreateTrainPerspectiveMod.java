@@ -4,7 +4,7 @@ import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ public class CreateTrainPerspectiveMod {
 
     public void onEntityMount(boolean isMounting, Entity entityMounting, Entity entityBeingMounted) {
         if(
-                entityMounting instanceof LocalPlayer player &&
+                entityMounting instanceof AbstractClientPlayer player &&
                 entityBeingMounted instanceof CarriageContraptionEntity contraption
         ) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
@@ -67,11 +67,7 @@ public class CreateTrainPerspectiveMod {
         }
     }
 
-    private void tickState(LocalPlayer player) {
-        var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-        var state = persp.getRotationState();
-        if(state == null) return;
-
+    private void tickState(Player player, Perspective persp, RotationState state) {
         var carriage = state.getCarriageEntity();
         if(carriage == null) return;
         persp.setLean(carriage.pitch);
@@ -89,13 +85,14 @@ public class CreateTrainPerspectiveMod {
     }
 
     public void onTickPlayer(final Player player) {
-        if(player instanceof LocalPlayer localPlayer) {
-            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+        if(!(player instanceof AbstractClientPlayer)) return;
+        if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof Perspective persp
+           && persp.getRotationState() != null) {
             var state = persp.getRotationState();
-            if(state == null) return;
+            assert state != null;
 
             if(state.shouldTickState()) {
-                tickState(localPlayer);
+                tickState(player, persp, state);
             } else {
                 persp.diminish();
 
