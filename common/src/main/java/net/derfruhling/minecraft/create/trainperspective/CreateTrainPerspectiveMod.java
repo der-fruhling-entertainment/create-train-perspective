@@ -1,23 +1,17 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
-import com.mojang.logging.LogUtils;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import org.slf4j.Logger;
 
 import java.util.*;
 
-// The value here should match an entry in the META-INF/mods.toml file
 public class CreateTrainPerspectiveMod {
-    // Define mod id in a common place for everything to reference
     public static final String MODID = "create_train_perspective";
     public static CreateTrainPerspectiveMod INSTANCE;
-    // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
 
     public CreateTrainPerspectiveMod() {
         TickEvent.PLAYER_POST.register(this::onTickPlayer);
