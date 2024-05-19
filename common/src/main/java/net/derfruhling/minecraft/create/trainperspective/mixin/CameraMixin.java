@@ -33,7 +33,7 @@ public abstract class CameraMixin {
 
     @ModifyArg(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;"), index = 2)
     private float modifyRoll(float original) {
-        return original + ctp$zRot;
+        return original + (ctp$zRot * Mth.DEG_TO_RAD);
     }
 
     @Inject(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;", shift = At.Shift.AFTER))
