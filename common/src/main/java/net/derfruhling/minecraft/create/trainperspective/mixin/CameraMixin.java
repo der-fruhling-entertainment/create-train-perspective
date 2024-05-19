@@ -38,7 +38,7 @@ public abstract class CameraMixin {
 
     @Inject(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;", shift = At.Shift.AFTER))
     private void modifyQuaternion(float f, float g, CallbackInfo ci) {
-        this.rotation.rotateY(ctp$extraYRot);
+        //this.rotation.rotateY(ctp$extraYRot * Mth.DEG_TO_RAD);
     }
 
     @Unique
