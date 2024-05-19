@@ -8,7 +8,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.joml.Quaternionf;
@@ -57,7 +57,7 @@ public abstract class CameraMixin {
                                        float x,
                                        @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
                                        @Local(argsOnly = true) float f) {
-        if(entity instanceof LocalPlayer player && !isThirdPerson) {
+        if(entity instanceof AbstractClientPlayer player && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             ctp$zRot = persp.getLean(f) * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD);
             ctp$extraYRot = MixinUtil.getExtraYRot(persp, x, y, f);

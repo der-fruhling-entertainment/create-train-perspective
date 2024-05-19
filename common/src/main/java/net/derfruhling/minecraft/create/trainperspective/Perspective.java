@@ -1,6 +1,7 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
 import net.minecraft.util.Mth;
+import org.jetbrains.annotations.Nullable;
 
 public interface Perspective {
     void enable(float initialLean, float initialYaw);
@@ -10,6 +11,8 @@ public interface Perspective {
     void setYaw(float yaw);
     float getLean(float f);
     float getYaw(float f);
+    @Nullable RotationState getRotationState();
+    void setRotationState(@Nullable RotationState state);
 
     default void diminish() {
         setLean(getLean(1.0f) * 0.9f);
