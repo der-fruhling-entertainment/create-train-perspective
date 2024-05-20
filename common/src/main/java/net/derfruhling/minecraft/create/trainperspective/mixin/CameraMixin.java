@@ -36,11 +36,6 @@ public abstract class CameraMixin {
         return original + (ctp$zRot * Mth.DEG_TO_RAD);
     }
 
-    @Inject(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;", shift = At.Shift.AFTER))
-    private void modifyQuaternion(float f, float g, CallbackInfo ci) {
-        //this.rotation.rotateY(ctp$extraYRot * Mth.DEG_TO_RAD);
-    }
-
     @Unique
     public float c3d$getZRot() {
         return this.ctp$zRot;
