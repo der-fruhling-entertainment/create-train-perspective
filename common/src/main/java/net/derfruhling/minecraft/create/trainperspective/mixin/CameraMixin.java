@@ -59,7 +59,9 @@ public abstract class CameraMixin {
                                        @Local(argsOnly = true) float f) {
         if(entity instanceof AbstractClientPlayer player && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-            ctp$zRot = persp.getLean(f) * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD);
+            ctp$zRot = persp.getLean(f)
+                       * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD)
+                       * Mth.sin((x * Mth.DEG_TO_RAD + Mth.PI) / 2.0f);
             ctp$extraYRot = MixinUtil.getExtraYRot(persp, x, y, f);
             setRotation(
                     y,
