@@ -18,7 +18,7 @@ public interface Perspective {
         setLean(getLean(1.0f) * 0.9f);
     }
 
-    default boolean diminished() {
+    default boolean isDiminished() {
         return Mth.abs(getLean(1.0f)) < 0.01f;
     }
 }
