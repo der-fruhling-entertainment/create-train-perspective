@@ -14,10 +14,8 @@ import net.minecraft.world.entity.Entity;
 import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
 @Implements({@Interface(iface = Camera3D.class, prefix = "c3d$")})
@@ -47,11 +45,11 @@ public abstract class CameraMixin {
     }
 
     @Redirect(method = "setup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setRotation(FF)V"))
-    public void modifyRotationsPrimary(Camera instance,
-                                       float y,
-                                       float x,
-                                       @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
-                                       @Local(argsOnly = true) float f) {
+    public void modifyRotations(Camera instance,
+                                float y,
+                                float x,
+                                @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
+                                @Local(argsOnly = true) float f) {
         if(entity instanceof AbstractClientPlayer player && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
             ctp$zRot = persp.getLean(f)

@@ -23,34 +23,34 @@ public abstract class EntityMixin {
     @Shadow private Level level;
 
     @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At(value = "RETURN", ordinal = 4))
-    public void onStartRiding(Entity entity, boolean bl, CallbackInfoReturnable<Boolean> cir) {
-        CreateTrainPerspectiveMod.INSTANCE.onEntityMount(true, (Entity)(Object)this, entity);
+    public void onMount(Entity entity, boolean bl, CallbackInfoReturnable<Boolean> cir) {
+        CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(true, (Entity)(Object)this, entity);
     }
 
     @Inject(method = "removeVehicle", at = @At("HEAD"))
-    public void onRemoveVehicle(CallbackInfo ci) {
+    public void onDismount(CallbackInfo ci) {
         if(vehicle != null) {
-            CreateTrainPerspectiveMod.INSTANCE.onEntityMount(false, (Entity)(Object)this, vehicle);
+            CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(false, (Entity)(Object)this, vehicle);
         }
     }
 
     @SuppressWarnings("UnreachableCode")
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 1, argsOnly = true)
-    public float adjustXRot(float xRot, @Local(argsOnly = true, index = 2) float yRot) {
+    public float modifyPitch(float pitch, @Local(argsOnly = true, index = 2) float yaw) {
         if (this.level.isClientSide) {
             if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
-                return MixinUtil.applyDirectionXRotChange(persp, xRot, yRot, 1.0f);
-            } else return xRot;
-        } else return xRot;
+                return MixinUtil.applyDirectionXRotChange(persp, pitch, yaw, 1.0f);
+            } else return pitch;
+        } else return pitch;
     }
 
     @SuppressWarnings("UnreachableCode")
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 2, argsOnly = true)
-    public float adjustYRot(float yRot, @Local(argsOnly = true, index = 1) float xRot) {
+    public float modifyYaw(float yaw, @Local(argsOnly = true, index = 1) float pitch) {
         if (this.level.isClientSide) {
             if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
-                return yRot + MixinUtil.getExtraYRot(persp, xRot, yRot, 1.0f);
-            } else return yRot;
-        } else return yRot;
+                return yaw + MixinUtil.getExtraYRot(persp, pitch, yaw, 1.0f);
+            } else return yaw;
+        } else return yaw;
     }
 }

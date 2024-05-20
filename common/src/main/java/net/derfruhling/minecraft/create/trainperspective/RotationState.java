@@ -4,48 +4,48 @@ import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class RotationState implements RotationStateKeeper {
-    private CarriageContraptionEntity entity;
-    private float lastYaw;
-    private final boolean standingState;
+    private CarriageContraptionEntity contraption;
+    private float lastRecordedYaw;
+    private final boolean isStandingState;
     private boolean isMounted;
     private boolean shouldTickState = true;
     private int ticksSinceLastUpdate = 0;
 
-    public RotationState(CarriageContraptionEntity entity, boolean standingState, boolean isMounted) {
-        this.entity = entity;
-        lastYaw = entity.yaw;
-        this.standingState = standingState;
+    public RotationState(CarriageContraptionEntity contraption, boolean isStandingState, boolean isMounted) {
+        this.contraption = contraption;
+        lastRecordedYaw = contraption.yaw;
+        this.isStandingState = isStandingState;
         this.isMounted = isMounted;
     }
 
     @Override
     public float getYawDelta() {
-        while (entity.yaw - lastYaw < -180.0f) {
-            lastYaw -= 360.0f;
+        while (contraption.yaw - lastRecordedYaw < -180.0f) {
+            lastRecordedYaw -= 360.0f;
         }
 
-        while (entity.yaw - lastYaw >= 180.0f) {
-            lastYaw += 360.0f;
+        while (contraption.yaw - lastRecordedYaw >= 180.0f) {
+            lastRecordedYaw += 360.0f;
         }
 
-        var rotation = entity.yaw - lastYaw;
-        lastYaw = entity.yaw;
+        var rotation = contraption.yaw - lastRecordedYaw;
+        lastRecordedYaw = contraption.yaw;
         return rotation;
     }
 
     @Override
-    public @Nullable CarriageContraptionEntity getCarriageEntity() {
-        return entity;
+    public @Nullable CarriageContraptionEntity getContraption() {
+        return contraption;
     }
 
     @Override
-    public void setCarriageEntity(@Nullable CarriageContraptionEntity entity) {
-        this.entity = entity;
+    public void setCarriageEntity(@Nullable CarriageContraptionEntity contraption) {
+        this.contraption = contraption;
     }
 
     @Override
     public boolean isStanding() {
-        return standingState;
+        return isStandingState;
     }
 
     @Override

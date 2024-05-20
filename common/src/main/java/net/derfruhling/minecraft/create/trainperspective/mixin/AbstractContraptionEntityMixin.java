@@ -3,10 +3,11 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
+import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,8 +22,10 @@ public class AbstractContraptionEntityMixin {
             Entity entity,
             CallbackInfo ci
     ) {
-        if((Object) this instanceof CarriageContraptionEntity carriage && entity instanceof Player player) {
-            CreateTrainPerspectiveMod.INSTANCE.tickStandingPlayer(carriage, player);
+        if(!entity.level().isClientSide) return;
+        if((Object) this instanceof CarriageContraptionEntity carriage &&
+           Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof Perspective) {
+            CreateTrainPerspectiveMod.INSTANCE.tickStandingEntity(carriage, entity);
         }
     }
 }

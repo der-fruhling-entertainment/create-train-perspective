@@ -4,7 +4,7 @@ import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import org.jetbrains.annotations.Nullable;
 
 public interface RotationStateKeeper {
-    @Nullable CarriageContraptionEntity getCarriageEntity();
+    @Nullable CarriageContraptionEntity getContraption();
     void setCarriageEntity(@Nullable CarriageContraptionEntity entity);
     boolean isStanding();
     boolean isMounted();
