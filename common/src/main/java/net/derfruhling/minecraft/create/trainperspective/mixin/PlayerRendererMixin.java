@@ -1,8 +1,7 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Axis;
-import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
+import com.mojang.math.Vector3f;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.derfruhling.minecraft.create.trainperspective.RotationState;
 import net.fabricmc.api.EnvType;
@@ -99,8 +98,10 @@ public class PlayerRendererMixin {
                 height = 1.4f;
             }
 
-            p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean), 0, height, 0);
-            p_117803_.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -ctp$lean), 0, height, 0);
+            p_117803_.translate(0, height, 0);
+            p_117803_.mulPose(Vector3f.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean));
+            p_117803_.mulPose(Vector3f.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -ctp$lean));
+            p_117803_.translate(0, -height, 0);
         }
     }
 }

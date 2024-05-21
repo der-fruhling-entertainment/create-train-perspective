@@ -22,7 +22,7 @@ public abstract class EntityMixin {
     @Shadow @Nullable private Entity vehicle;
     @Shadow private Level level;
 
-    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At(value = "RETURN", ordinal = 4))
+    @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At(value = "RETURN", ordinal = 3))
     public void onMount(Entity entity, boolean bl, CallbackInfoReturnable<Boolean> cir) {
         CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(true, (Entity)(Object)this, entity);
     }
