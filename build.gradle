@@ -11,7 +11,7 @@ architectury {
 }
 
 group = maven_group
-version = mod_version
+version = "${mod_version}+mc1.20.1"
 
 subprojects {
     apply plugin: "dev.architectury.loom"
