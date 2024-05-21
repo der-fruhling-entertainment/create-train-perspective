@@ -2,6 +2,7 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.derfruhling.minecraft.create.trainperspective.Conditional;
 import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -21,7 +22,9 @@ public class GameRendererMixin {
 
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V", ordinal = 2, shift = At.Shift.BEFORE))
     public void applyLevelRotations(float f, long l, PoseStack poseStack, CallbackInfo ci) {
-        poseStack.mulPose(Axis.ZP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getZRot()));
-        poseStack.mulPose(Axis.YP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getExtraYRot()));
+        if(Conditional.shouldApplyPerspectiveTo(mainCamera.getEntity())) {
+            poseStack.mulPose(Axis.ZP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getZRot()));
+            poseStack.mulPose(Axis.YP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getExtraYRot()));
+        }
     }
 }

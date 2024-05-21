@@ -11,7 +11,7 @@ architectury {
 }
 
 group = maven_group
-version = mod_version
+version = "${mod_version}+mc1.20.1"
 
 subprojects {
     apply plugin: "dev.architectury.loom"
@@ -59,6 +59,8 @@ allprojects {
         maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
         maven { url = "https://maven.jamieswhiteshirt.com/libs-release" }
         maven { url = "https://jitpack.io/" }
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://maven.terraformersmc.com/releases/" }
     }
 
     tasks.withType(JavaCompile).configureEach {
