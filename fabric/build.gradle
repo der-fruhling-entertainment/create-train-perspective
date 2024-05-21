@@ -80,6 +80,7 @@ modrinth {
     versionNumber = "${mod_version}+fabric"
     versionType = modrinth_version_type
     uploadFile = remapJar
+    additionalFiles = [sourcesJar]
     gameVersions = [minecraft_version]
     loaders = ["fabric", "quilt"]
     changelog = rootProject.file("changelog.md").getText()

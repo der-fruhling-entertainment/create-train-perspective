@@ -92,6 +92,7 @@ modrinth {
     versionNumber = "${mod_version}+forge"
     versionType = modrinth_version_type
     uploadFile = remapJar
+    additionalFiles = [sourcesJar]
     gameVersions = [minecraft_version]
     loaders = ["forge", "neoforge"]
     changelog = rootProject.file("changelog.md").getText()
