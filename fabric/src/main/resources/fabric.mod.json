@@ -13,7 +13,8 @@
   "license": "MIT",
   "environment": "client",
   "suggests": {
-    "railways": "*"
+    "railways": "*",
+    "modmenu": "*"
   },
   "icon": "create_train_perspective.png",
   "authors": [
@@ -22,6 +23,9 @@
   "entrypoints": {
     "client": [
       "net.derfruhling.minecraft.create.trainperspective.fabric.ModFabricEntrypoint"
+    ],
+    "modmenu": [
+      "net.derfruhling.minecraft.create.trainperspective.fabric.ConfigIntegration"
     ]
   },
   "mixins": [
@@ -34,6 +38,7 @@
       "0.5.1-f-build.1335+mc1.20.1",
       "0.5.1-f-build.1417+mc1.20.1"
     ],
-    "minecraft": "1.20.1"
+    "minecraft": "1.20.1",
+    "cloth-config": ">=8"
   }
 }

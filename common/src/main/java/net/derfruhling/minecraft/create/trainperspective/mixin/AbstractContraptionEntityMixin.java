@@ -2,6 +2,7 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
+import net.derfruhling.minecraft.create.trainperspective.Conditional;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.fabricmc.api.EnvType;
@@ -23,8 +24,9 @@ public class AbstractContraptionEntityMixin {
             CallbackInfo ci
     ) {
         if(!entity.level().isClientSide) return;
-        if((Object) this instanceof CarriageContraptionEntity carriage &&
-           Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof Perspective) {
+        if((Object) this instanceof CarriageContraptionEntity carriage
+           && Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof Perspective
+           && Conditional.shouldApplyPerspectiveTo(entity)) {
             CreateTrainPerspectiveMod.INSTANCE.tickStandingEntity(carriage, entity);
         }
     }

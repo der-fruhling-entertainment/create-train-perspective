@@ -1,0 +1,21 @@
+{
+    "title.create_train_perspective.config": "Create: Train Perspective",
+    
+    "category.create_train_perspective.general": "General",
+    "category.create_train_perspective.leaning": "Leaning",
+    "category.create_train_perspective.multiplayer": "Multiplayer",
+    "category.create_train_perspective.advanced": "Advanced",
+    
+    "option.create_train_perspective.enabled": "Enabled",
+    "option.create_train_perspective.enabled.tooltip": "Enables the mod. If False, the mod is disabled.",
+    "option.create_train_perspective.leaning.enabled": "Enable Leaning",
+    "option.create_train_perspective.leaning.enabled.tooltip": "If True, players will lean forwards and backwards.",
+    "option.create_train_perspective.leaning.roll_enabled": "Enable Rolling",
+    "option.create_train_perspective.leaning.roll_enabled.tooltip": "If True, players will roll when looking to the side on a slope.",
+    "option.create_train_perspective.multiplayer.apply_to_others": "Apply mod to others",
+    "option.create_train_perspective.multiplayer.apply_to_others.tooltip": "Applies the mod to other players as well.",
+    "option.create_train_perspective.advanced.lean_magnitude": "Leaning Magnitude",
+    "option.create_train_perspective.advanced.lean_magnitude.tooltip": "The magnitude to which the player will lean. Higher = more intense.",
+    "option.create_train_perspective.advanced.roll_magnitude": "Rolling Magnitude",
+    "option.create_train_perspective.advanced.roll_magnitude.tooltip": "The magnitude to which the player will roll. Higher = more intense."
+}

@@ -1,6 +1,7 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import net.derfruhling.minecraft.create.trainperspective.Conditional;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
 import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
@@ -24,13 +25,19 @@ public abstract class EntityMixin {
 
     @Inject(method = "startRiding(Lnet/minecraft/world/entity/Entity;Z)Z", at = @At(value = "RETURN", ordinal = 4))
     public void onMount(Entity entity, boolean bl, CallbackInfoReturnable<Boolean> cir) {
-        CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(true, (Entity)(Object)this, entity);
+        var self = (Entity)(Object)this;
+        if(Conditional.shouldApplyPerspectiveTo(self)) {
+            CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(true, self, entity);
+        }
     }
 
     @Inject(method = "removeVehicle", at = @At("HEAD"))
     public void onDismount(CallbackInfo ci) {
         if(vehicle != null) {
-            CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(false, (Entity)(Object)this, vehicle);
+            var self = (Entity)(Object)this;
+            if(Conditional.shouldApplyPerspectiveTo(self)) {
+                CreateTrainPerspectiveMod.INSTANCE.onEntityMountEvent(false, self, vehicle);
+            }
         }
     }
 
@@ -38,7 +45,9 @@ public abstract class EntityMixin {
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 1, argsOnly = true)
     public float modifyPitch(float pitch, @Local(argsOnly = true, index = 2) float yaw) {
         if (this.level.isClientSide) {
-            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
+            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp
+                && persp.isEnabled()
+                && Conditional.shouldApplyPerspectiveTo((Entity)(Object)this)) {
                 return MixinUtil.applyDirectionXRotChange(persp, pitch, yaw, 1.0f);
             } else return pitch;
         } else return pitch;
@@ -48,7 +57,9 @@ public abstract class EntityMixin {
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 2, argsOnly = true)
     public float modifyYaw(float yaw, @Local(argsOnly = true, index = 1) float pitch) {
         if (this.level.isClientSide) {
-            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp && persp.isEnabled()) {
+            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp
+                && persp.isEnabled()
+                && Conditional.shouldApplyPerspectiveTo((Entity)(Object)this)) {
                 return yaw + MixinUtil.getExtraYRot(persp, pitch, yaw, 1.0f);
             } else return yaw;
         } else return yaw;
