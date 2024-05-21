@@ -2,6 +2,8 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
+import net.derfruhling.minecraft.create.trainperspective.Conditional;
+import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.derfruhling.minecraft.create.trainperspective.RotationState;
 import net.fabricmc.api.EnvType;
@@ -91,7 +93,7 @@ public class PlayerRendererMixin {
             )
     )
     protected void setupRotations(AbstractClientPlayer p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float p_117806_, CallbackInfo ci) {
-        if(ctp$perspectiveActive) {
+        if(ctp$perspectiveActive && Conditional.shouldApplyPerspectiveTo(p_117802_)) {
             float height = 0;
 
             if(p_117802_.getVehicle() != null) {

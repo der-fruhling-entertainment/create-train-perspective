@@ -1,6 +1,7 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
+import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.common.TickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
@@ -13,6 +14,9 @@ public class CreateTrainPerspectiveMod {
 
     public CreateTrainPerspectiveMod() {
         TickEvent.PLAYER_POST.register(this::tickEntity);
+        ClientTickEvent.CLIENT_PRE.register(instance -> {
+            ModConfig.tick();
+        });
         INSTANCE = this;
     }
 
@@ -85,7 +89,8 @@ public class CreateTrainPerspectiveMod {
 
     public void tickEntity(final Entity entity) {
         if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof Perspective persp
-           && persp.getRotationState() != null) {
+           && persp.getRotationState() != null
+           && Conditional.shouldApplyPerspectiveTo(entity)) {
             var state = persp.getRotationState();
             assert state != null;
 
