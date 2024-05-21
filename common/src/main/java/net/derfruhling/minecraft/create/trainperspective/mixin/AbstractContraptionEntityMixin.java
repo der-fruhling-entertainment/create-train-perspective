@@ -22,7 +22,7 @@ public class AbstractContraptionEntityMixin {
             Entity entity,
             CallbackInfo ci
     ) {
-        if(!entity.level().isClientSide) return;
+        if(!entity.level.isClientSide) return;
         if((Object) this instanceof CarriageContraptionEntity carriage &&
            Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof Perspective) {
             CreateTrainPerspectiveMod.INSTANCE.tickStandingEntity(carriage, entity);
