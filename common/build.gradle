@@ -13,6 +13,8 @@ dependencies {
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 
     modImplementation("com.simibubi.create:create-${create_minecraft_version}:${create_version}:slim") { transitive = false }
+
+    modApi("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
 }
 
 publishing {

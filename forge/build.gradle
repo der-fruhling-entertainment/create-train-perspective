@@ -36,6 +36,8 @@ dependencies {
     modImplementation "com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}"
     modImplementation "com.tterrag.registrate:Registrate:${registrate_version}"
 
+    modApi("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }
@@ -99,5 +101,6 @@ modrinth {
     dependencies {
         required.project 'create'
         required.project 'architectury-api'
+        required.project 'supermartijn642s-config-lib'
     }
 }

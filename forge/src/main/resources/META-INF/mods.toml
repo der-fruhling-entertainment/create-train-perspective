@@ -77,3 +77,9 @@ Moves your camera (and body!) with the Create Mod train you're riding to increas
    versionRange="[9.0.8,)"
    ordering="NONE"
    side="BOTH"
+[[dependencies."${mod_id}"]]
+   modId="cloth_config"
+   mandatory=true
+   versionRange="[8.0.0,)"
+   ordering="NONE"
+   side="BOTH"

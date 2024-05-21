@@ -1,9 +1,7 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import net.derfruhling.minecraft.create.trainperspective.Camera3D;
-import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
-import net.derfruhling.minecraft.create.trainperspective.Perspective;
+import net.derfruhling.minecraft.create.trainperspective.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
@@ -50,11 +48,19 @@ public abstract class CameraMixin {
                                 float x,
                                 @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
                                 @Local(argsOnly = true) float f) {
-        if(entity instanceof AbstractClientPlayer player && !isThirdPerson) {
+        if(entity instanceof AbstractClientPlayer player
+           && Conditional.shouldApplyPerspectiveTo(entity)
+           && Conditional.shouldApplyLeaning()
+           && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-            ctp$zRot = persp.getLean(f)
-                       * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD)
-                       * Mth.sin((x * Mth.DEG_TO_RAD + Mth.PI) / 2.0f);
+
+            if(Conditional.shouldApplyRolling()) {
+                ctp$zRot = persp.getLean(f)
+                           * ModConfig.INSTANCE.rollMagnitude
+                           * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD)
+                           * Mth.sin((x * Mth.DEG_TO_RAD + Mth.PI) / 2.0f);
+            }
+
             ctp$extraYRot = MixinUtil.getExtraYRot(persp, x, y, f);
             setRotation(
                     y,
