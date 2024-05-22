@@ -6,11 +6,17 @@
   "client": [
     "CameraMixin",
     "AbstractContraptionEntityMixin",
+    "ClientLevelMixin",
     "EntityMixin",
     "GameRendererMixin",
+    "LocalPlayerMixin",
     "PlayerRendererMixin",
     "CreateRaycastHelperMixin"
   ],
+  "overwrites": {
+    "requireAnnotations": true,
+    "conformVisibility": true
+  },
   "injectors": {
     "defaultRequire": 1
   }

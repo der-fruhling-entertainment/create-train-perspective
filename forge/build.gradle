@@ -102,6 +102,6 @@ modrinth {
     dependencies {
         required.project 'create'
         required.project 'architectury-api'
-        required.project 'supermartijn642s-config-lib'
+        required.project 'cloth-config'
     }
 }

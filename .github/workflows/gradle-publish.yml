@@ -5,25 +5,41 @@
 # This workflow will build a package using Gradle and then publish it to GitHub packages when a release is created
 # For more information see: https://github.com/actions/setup-java/blob/main/docs/advanced-usage.md#Publishing-using-gradle
 
-name: Gradle Package
+name: Package & Publish All Versions
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The version to publish
+        required: true
+      master-ref:
+        default: "master"
+        description: The 1.20.1 version of the mod
+        required: true
+      port-19-ref:
+        default: "port-1.19.2"
+        description: The 1.19.2 version of the mod
+        required: true
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    environment:
-      name: Modrinth
-      url: https://modrinth.com/mod/create-train-perspective
     permissions:
       contents: read
-      packages: write
+
+    strategy:
+      matrix:
+        include:
+          - branch: ${{ inputs.master-ref }}
+            version: 1.20.1
+          - branch: ${{ inputs.port-19-ref }}
+            version: 1.19.2
 
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ matrix.branch }}
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
@@ -31,22 +47,98 @@ jobs:
         distribution: 'temurin'
         server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
         settings-path: ${{ github.workspace }} # location for the settings.xml file
-
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-
     - name: Build with Gradle
       run: ./gradlew build
+    - name: Upload Forge artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: create-train-perspective-${{ inputs.version }}-forge${{ matrix.version }}.jar
+        path: forge/build/libs/create-train-perspective-0.4.0.jar
+        if-no-files-found: error
+        compression: 0
+        overwrite: true
+    - name: Upload Fabric artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: create-train-perspective-${{ inputs.version }}-fabric${{ matrix.version }}.jar
+        path: fabric/build/libs/create-train-perspective-0.4.0.jar
+        if-no-files-found: error
+        compression: 0
+        overwrite: true
 
-    # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-    # the publishing section of your build.gradle
-    - name: Publish to GitHub Packages
-      run: ./gradlew publish
-      env:
-        USERNAME: ${{ github.actor }}
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  publish-ghp:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs: build
+    strategy:
+      matrix:
+        include:
+          - branch: ${{ inputs.master-ref }}
+            version: 1.20.1
+          - branch: ${{ inputs.port-19-ref }}
+            version: 1.19.2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
-    - name: Publish to Modrinth
-      run: ./gradlew modrinth
-      env:
-        MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+      # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
+      # the publishing section of your build.gradle
+      - name: Publish to GitHub Packages
+        run: ./gradlew publish
+        env:
+          USERNAME: ${{ github.actor }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-modrinth:
+    runs-on: ubuntu-latest
+    environment:
+      name: Modrinth
+      url: https://modrinth.com/mod/create-train-perspective
+    permissions:
+      contents: read
+    needs: build
+    strategy:
+      matrix:
+        include:
+          - branch: ${{ inputs.master-ref }}
+            loader: forge
+          - branch: ${{ inputs.master-ref }}
+            loader: fabric
+          - branch: ${{ inputs.port-19-ref }}
+            loader: forge
+          - branch: ${{ inputs.port-19-ref }}
+            loader: fabric
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.branch }}
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
+          settings-path: ${{ github.workspace }} # location for the settings.xml file
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+
+      # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
+      # the publishing section of your build.gradle
+      - name: Publish to GitHub Packages
+        run: ./gradlew :${{ matrix.loader }}:modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}

@@ -13,7 +13,6 @@ public class CreateTrainPerspectiveMod {
     public static CreateTrainPerspectiveMod INSTANCE;
 
     public CreateTrainPerspectiveMod() {
-        TickEvent.PLAYER_POST.register(this::tickEntity);
         ClientTickEvent.CLIENT_PRE.register(instance -> {
             ModConfig.tick();
         });

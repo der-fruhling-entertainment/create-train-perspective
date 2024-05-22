@@ -2,9 +2,8 @@ package net.derfruhling.minecraft.create.trainperspective;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.simibubi.create.foundation.config.ui.entries.BooleanEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigScreen;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -21,6 +20,7 @@ public class ModConfig {
     public boolean rollEnabled = true;
     public float rollMagnitude = 1.0f;
     public boolean applyToOthers = true;
+    public boolean dbgShowStandingTransforms = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final WatchService WATCH_SERVICE;
@@ -90,10 +90,10 @@ public class ModConfig {
         general.addEntry(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.enabled"),
-                    true)
+                    INSTANCE.enabled)
             .setTooltip(Component.translatable("option.create_train_perspective.enabled.tooltip"))
             .setSaveConsumer(value -> INSTANCE.enabled = value)
-            .setDefaultValue(() -> INSTANCE.enabled)
+            .setDefaultValue(true)
             .build());
 
         var leaning = entryBuilder.startSubCategory(Component.translatable(
@@ -103,19 +103,19 @@ public class ModConfig {
         leaning.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.leaning.enabled"),
-                    true)
+                    INSTANCE.leanEnabled)
             .setTooltip(Component.translatable("option.create_train_perspective.leaning.enabled.tooltip"))
             .setSaveConsumer(value -> INSTANCE.leanEnabled = value)
-            .setDefaultValue(() -> INSTANCE.leanEnabled)
+            .setDefaultValue(true)
             .build());
 
         leaning.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.leaning.roll_enabled"),
-                    true)
+                    INSTANCE.rollEnabled)
             .setTooltip(Component.translatable("option.create_train_perspective.leaning.roll_enabled.tooltip"))
             .setSaveConsumer(value -> INSTANCE.rollEnabled = value)
-            .setDefaultValue(() -> INSTANCE.rollEnabled)
+            .setDefaultValue(true)
             .build());
 
         general.addEntry(leaning.build());
@@ -127,10 +127,10 @@ public class ModConfig {
         multiplayer.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.multiplayer.apply_to_others"),
-                    true)
+                    INSTANCE.applyToOthers)
             .setTooltip(Component.translatable("option.create_train_perspective.multiplayer.apply_to_others.tooltip"))
             .setSaveConsumer(value -> INSTANCE.applyToOthers = value)
-            .setDefaultValue(() -> INSTANCE.applyToOthers)
+            .setDefaultValue(true)
             .build());
 
         general.addEntry(multiplayer.build());
@@ -142,21 +142,37 @@ public class ModConfig {
         advanced.add(entryBuilder
             .startFloatField(
                     Component.translatable("option.create_train_perspective.advanced.lean_magnitude"),
-                    1.0f)
+                    INSTANCE.leanMagnitude)
             .setTooltip(Component.translatable("option.create_train_perspective.advanced.lean_magnitude.tooltip"))
             .setSaveConsumer(value -> INSTANCE.leanMagnitude = value)
-            .setDefaultValue(() -> INSTANCE.leanMagnitude)
+            .setDefaultValue(1.0f)
             .build());
 
         advanced.add(entryBuilder
             .startFloatField(
                     Component.translatable("option.create_train_perspective.advanced.roll_magnitude"),
-                    1.0f)
+                    INSTANCE.rollMagnitude)
             .setTooltip(Component.translatable("option.create_train_perspective.advanced.roll_magnitude.tooltip"))
             .setSaveConsumer(value -> INSTANCE.rollMagnitude = value)
-            .setDefaultValue(() -> INSTANCE.rollMagnitude)
+            .setDefaultValue(1.0f)
             .build());
 
+        var debug = entryBuilder.startSubCategory(Component.translatable("category.create_train_perspective.debug"));
+
+        debug.add(entryBuilder
+                .startTextDescription(Component.translatable("category.create_train_perspective.debug.description").withStyle(ChatFormatting.BOLD))
+                .build());
+
+        debug.add(entryBuilder
+                .startBooleanToggle(
+                        Component.translatable("option.create_train_perspective.debug.standing_transforms"),
+                        INSTANCE.dbgShowStandingTransforms)
+                .setSaveConsumer(value -> INSTANCE.dbgShowStandingTransforms = value)
+                .setTooltip(Component.translatable("option.create_train_perspective.debug.standing_transforms.tooltip"))
+                .setDefaultValue(false)
+                .build());
+
+        advanced.add(debug.build());
         general.addEntry(advanced.build());
 
         return builder.build();

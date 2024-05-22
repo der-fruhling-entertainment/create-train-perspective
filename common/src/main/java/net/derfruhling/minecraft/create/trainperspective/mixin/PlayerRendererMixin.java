@@ -97,7 +97,7 @@ public class PlayerRendererMixin {
             float height = 0;
 
             if(p_117802_.getVehicle() != null) {
-                height = 1.4f;
+                height = p_117802_.getEyeHeight();
             }
 
             p_117803_.translate(0, height, 0);

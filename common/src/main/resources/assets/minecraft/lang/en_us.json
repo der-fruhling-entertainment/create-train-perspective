@@ -5,7 +5,9 @@
     "category.create_train_perspective.leaning": "Leaning",
     "category.create_train_perspective.multiplayer": "Multiplayer",
     "category.create_train_perspective.advanced": "Advanced",
-    
+    "category.create_train_perspective.debug": "Debug Features",
+    "category.create_train_perspective.debug.description": "These are debugging features used for development. You probably don't want to touch these unless you're working on the mod itself.",
+
     "option.create_train_perspective.enabled": "Enabled",
     "option.create_train_perspective.enabled.tooltip": "Enables the mod. If False, the mod is disabled.",
     "option.create_train_perspective.leaning.enabled": "Enable Leaning",
@@ -17,5 +19,7 @@
     "option.create_train_perspective.advanced.lean_magnitude": "Leaning Magnitude",
     "option.create_train_perspective.advanced.lean_magnitude.tooltip": "The magnitude to which the player will lean. Higher = more intense.",
     "option.create_train_perspective.advanced.roll_magnitude": "Rolling Magnitude",
-    "option.create_train_perspective.advanced.roll_magnitude.tooltip": "The magnitude to which the player will roll. Higher = more intense."
+    "option.create_train_perspective.advanced.roll_magnitude.tooltip": "The magnitude to which the player will roll. Higher = more intense.",
+    "option.create_train_perspective.debug.standing_transforms": "Show Standing Translations",
+    "option.create_train_perspective.debug.standing_transforms.tooltip": "Shows translations used to transform the player while standing on a train. (X, Y, Z)"
 }

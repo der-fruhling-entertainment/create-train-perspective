@@ -5,20 +5,12 @@
 # This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Build Project
+name: Build All Versions
 
 on:
   push:
-    branches-ignore:
+    branches:
       - master
-    paths-ignore:
-      - .github/workflows/gradle-publish.yml
-      - .idea/**
-      - .gitignore
-      - changelog.md
-      - LICENSE
-      - README.md
-  pull_request:
     paths-ignore:
       - .github/workflows/gradle-publish.yml
       - .idea/**
@@ -34,8 +26,14 @@ jobs:
     permissions:
       contents: read
 
+    strategy:
+      matrix:
+        branch: [master, port-1.19.2]
+
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ matrix.branch }}
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
@@ -66,8 +64,14 @@ jobs:
     permissions:
       contents: write
 
+    strategy:
+      matrix:
+        branch: [master, port-1.19.2]
+
     steps:
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ matrix.branch }}
     - name: Set up JDK 17
       uses: actions/setup-java@v4
       with:
