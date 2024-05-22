@@ -97,7 +97,7 @@ public class PlayerRendererMixin {
             float height = 0;
 
             if(p_117802_.getVehicle() != null) {
-                height = 1.4f;
+                height = p_117802_.getEyeHeight();
             }
 
             p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean), 0, height, 0);
