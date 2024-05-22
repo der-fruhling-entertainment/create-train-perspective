@@ -110,6 +110,7 @@ modrinth {
         required.project 'fabric-api'
         required.project 'create-fabric'
         required.project 'architectury-api'
-        required.project 'supermartijn642s-config-lib'
+        required.project 'cloth-config'
+        optional.project 'modmenu'
     }
 }
