@@ -17,6 +17,10 @@ subprojects {
     apply plugin: "dev.architectury.loom"
     apply plugin: "maven-publish"
 
+    configurations {
+        mixinDependency
+    }
+
     loom {
         silentMojangMappingsLicense()
     }
@@ -24,6 +28,7 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
+        mixinDependency("net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5") { transitive = false }
     }
 
     publishing {
