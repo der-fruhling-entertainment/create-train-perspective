@@ -8,6 +8,21 @@ architectury {
     fabric()
 }
 
+loom {
+    runs {
+        client {
+            client()
+            ideConfigGenerated = true
+
+            configurations.mixinDependency.files.each {
+                vmArg "-javaagent:$it.absolutePath".toString()
+            }
+
+            source sourceSets.main
+        }
+    }
+}
+
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
