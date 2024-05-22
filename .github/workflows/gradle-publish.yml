@@ -22,19 +22,15 @@ on:
         description: The 1.19.2 version of the mod
         required: true
       publish-ghp:
-        default: "true"
+        default: true
         description: Publish to GitHub packages
         required: true
-        options:
-          - "true"
-          - "false"
+        type: boolean
       publish-modrinth:
-        default: "true"
+        default: true
         description: Publish to Modrinth
         required: true
-        options:
-          - "true"
-          - "false"
+        type: boolean
 
 jobs:
   build:
@@ -88,7 +84,7 @@ jobs:
       contents: read
       packages: write
     needs: build
-    if: inputs.publish-ghp == 'true'
+    if: inputs.publish-ghp
     strategy:
       matrix:
         include:
@@ -126,7 +122,7 @@ jobs:
     permissions:
       contents: read
     needs: build
-    if: inputs.publish-modrinth == 'true'
+    if: inputs.publish-modrinth
     strategy:
       matrix:
         branch:
