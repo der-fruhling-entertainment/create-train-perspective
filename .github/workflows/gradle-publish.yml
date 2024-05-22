@@ -21,6 +21,16 @@ on:
         default: "port-1.19.2"
         description: The 1.19.2 version of the mod
         required: true
+      publish-ghp:
+        default: true
+        description: Publish to GitHub packages
+        required: true
+        type: boolean
+      publish-modrinth:
+        default: true
+        description: Publish to Modrinth
+        required: true
+        type: boolean
 
 jobs:
   build:
@@ -51,22 +61,6 @@ jobs:
       uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
     - name: Build with Gradle
       run: ./gradlew build
-    - name: Upload Forge artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: create-train-perspective-${{ inputs.version }}-forge${{ matrix.version }}.jar
-        path: forge/build/libs/create-train-perspective-0.4.0.jar
-        if-no-files-found: error
-        compression: 0
-        overwrite: true
-    - name: Upload Fabric artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: create-train-perspective-${{ inputs.version }}-fabric${{ matrix.version }}.jar
-        path: fabric/build/libs/create-train-perspective-0.4.0.jar
-        if-no-files-found: error
-        compression: 0
-        overwrite: true
 
   publish-ghp:
     runs-on: ubuntu-latest
@@ -74,6 +68,7 @@ jobs:
       contents: read
       packages: write
     needs: build
+    if: inputs.publish-ghp
     strategy:
       matrix:
         include:
@@ -111,17 +106,12 @@ jobs:
     permissions:
       contents: read
     needs: build
+    if: inputs.publish-modrinth
     strategy:
       matrix:
-        include:
-          - branch: ${{ inputs.master-ref }}
-            loader: forge
-          - branch: ${{ inputs.master-ref }}
-            loader: fabric
-          - branch: ${{ inputs.port-19-ref }}
-            loader: forge
-          - branch: ${{ inputs.port-19-ref }}
-            loader: fabric
+        branch:
+          - ${{ inputs.master-ref }}
+          - ${{ inputs.port-19-ref }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -138,7 +128,7 @@ jobs:
 
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
-      - name: Publish to GitHub Packages
-        run: ./gradlew :${{ matrix.loader }}:modrinth
+      - name: Publish to Modrinth
+        run: ./gradlew modrinth
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
