@@ -90,10 +90,10 @@ public class ModConfig {
         general.addEntry(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.enabled"),
-                    true)
+                    INSTANCE.enabled)
             .setTooltip(Component.translatable("option.create_train_perspective.enabled.tooltip"))
             .setSaveConsumer(value -> INSTANCE.enabled = value)
-            .setDefaultValue(() -> INSTANCE.enabled)
+            .setDefaultValue(true)
             .build());
 
         var leaning = entryBuilder.startSubCategory(Component.translatable(
@@ -103,19 +103,19 @@ public class ModConfig {
         leaning.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.leaning.enabled"),
-                    true)
+                    INSTANCE.leanEnabled)
             .setTooltip(Component.translatable("option.create_train_perspective.leaning.enabled.tooltip"))
             .setSaveConsumer(value -> INSTANCE.leanEnabled = value)
-            .setDefaultValue(() -> INSTANCE.leanEnabled)
+            .setDefaultValue(true)
             .build());
 
         leaning.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.leaning.roll_enabled"),
-                    true)
+                    INSTANCE.rollEnabled)
             .setTooltip(Component.translatable("option.create_train_perspective.leaning.roll_enabled.tooltip"))
             .setSaveConsumer(value -> INSTANCE.rollEnabled = value)
-            .setDefaultValue(() -> INSTANCE.rollEnabled)
+            .setDefaultValue(true)
             .build());
 
         general.addEntry(leaning.build());
@@ -127,10 +127,10 @@ public class ModConfig {
         multiplayer.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.multiplayer.apply_to_others"),
-                    true)
+                    INSTANCE.applyToOthers)
             .setTooltip(Component.translatable("option.create_train_perspective.multiplayer.apply_to_others.tooltip"))
             .setSaveConsumer(value -> INSTANCE.applyToOthers = value)
-            .setDefaultValue(() -> INSTANCE.applyToOthers)
+            .setDefaultValue(true)
             .build());
 
         general.addEntry(multiplayer.build());
@@ -142,19 +142,19 @@ public class ModConfig {
         advanced.add(entryBuilder
             .startFloatField(
                     Component.translatable("option.create_train_perspective.advanced.lean_magnitude"),
-                    1.0f)
+                    INSTANCE.leanMagnitude)
             .setTooltip(Component.translatable("option.create_train_perspective.advanced.lean_magnitude.tooltip"))
             .setSaveConsumer(value -> INSTANCE.leanMagnitude = value)
-            .setDefaultValue(() -> INSTANCE.leanMagnitude)
+            .setDefaultValue(1.0f)
             .build());
 
         advanced.add(entryBuilder
             .startFloatField(
                     Component.translatable("option.create_train_perspective.advanced.roll_magnitude"),
-                    1.0f)
+                    INSTANCE.rollMagnitude)
             .setTooltip(Component.translatable("option.create_train_perspective.advanced.roll_magnitude.tooltip"))
             .setSaveConsumer(value -> INSTANCE.rollMagnitude = value)
-            .setDefaultValue(() -> INSTANCE.rollMagnitude)
+            .setDefaultValue(1.0f)
             .build());
 
         general.addEntry(advanced.build());
