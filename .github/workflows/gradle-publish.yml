@@ -113,15 +113,7 @@ jobs:
     needs: build
     strategy:
       matrix:
-        include:
-          - branch: ${{ inputs.master-ref }}
-            loader: forge
-          - branch: ${{ inputs.master-ref }}
-            loader: fabric
-          - branch: ${{ inputs.port-19-ref }}
-            loader: forge
-          - branch: ${{ inputs.port-19-ref }}
-            loader: fabric
+        branch: [${{ inputs.master-ref }}, ${{ inputs.port-19-ref }}]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -139,6 +131,6 @@ jobs:
       # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
       # the publishing section of your build.gradle
       - name: Publish to Modrinth
-        run: ./gradlew :${{ matrix.loader }}:modrinth
+        run: ./gradlew modrinth
         env:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
