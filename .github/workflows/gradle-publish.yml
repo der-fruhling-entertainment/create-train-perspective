@@ -21,6 +21,20 @@ on:
         default: "port-1.19.2"
         description: The 1.19.2 version of the mod
         required: true
+      publish-ghp:
+        default: "true"
+        description: Publish to GitHub packages
+        required: true
+        options:
+          - "true"
+          - "false"
+      publish-modrinth:
+        default: "true"
+        description: Publish to Modrinth
+        required: true
+        options:
+          - "true"
+          - "false"
 
 jobs:
   build:
@@ -74,6 +88,7 @@ jobs:
       contents: read
       packages: write
     needs: build
+    if: inputs.publish-ghp == 'true'
     strategy:
       matrix:
         include:
@@ -111,6 +126,7 @@ jobs:
     permissions:
       contents: read
     needs: build
+    if: inputs.publish-modrinth == 'true'
     strategy:
       matrix:
         branch: [${{ inputs.master-ref }}, ${{ inputs.port-19-ref }}]
