@@ -2,9 +2,8 @@ package net.derfruhling.minecraft.create.trainperspective;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.simibubi.create.foundation.config.ui.entries.BooleanEntry;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.ConfigScreen;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -21,6 +20,7 @@ public class ModConfig {
     public boolean rollEnabled = true;
     public float rollMagnitude = 1.0f;
     public boolean applyToOthers = true;
+    public boolean dbgShowStandingTransforms = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final WatchService WATCH_SERVICE;
@@ -157,6 +157,22 @@ public class ModConfig {
             .setDefaultValue(1.0f)
             .build());
 
+        var debug = entryBuilder.startSubCategory(Component.translatable("category.create_train_perspective.debug"));
+
+        debug.add(entryBuilder
+                .startTextDescription(Component.translatable("category.create_train_perspective.debug.description").withStyle(ChatFormatting.BOLD))
+                .build());
+
+        debug.add(entryBuilder
+                .startBooleanToggle(
+                        Component.translatable("option.create_train_perspective.debug.standing_transforms"),
+                        INSTANCE.dbgShowStandingTransforms)
+                .setSaveConsumer(value -> INSTANCE.dbgShowStandingTransforms = value)
+                .setTooltip(Component.translatable("option.create_train_perspective.debug.standing_transforms.tooltip"))
+                .setDefaultValue(false)
+                .build());
+
+        advanced.add(debug.build());
         general.addEntry(advanced.build());
 
         return builder.build();

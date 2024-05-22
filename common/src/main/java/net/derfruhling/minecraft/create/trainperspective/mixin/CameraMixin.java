@@ -7,6 +7,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import org.joml.Quaternionf;
@@ -26,6 +27,8 @@ public abstract class CameraMixin {
     @Shadow protected abstract void setRotation(float f, float g);
 
     @Shadow @Final private Quaternionf rotation;
+
+    @Shadow protected abstract void setPosition(double d, double e, double f);
 
     @ModifyArg(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;"), index = 2)
     private float modifyRoll(float original) {
@@ -70,6 +73,39 @@ public abstract class CameraMixin {
             ctp$zRot = 0;
             ctp$extraYRot = 0;
             setRotation(y, x);
+        }
+    }
+
+    @Redirect(method = "setup", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setPosition(DDD)V"))
+    public void modifyPosition(Camera instance,
+                               double x,
+                               double y,
+                               double z,
+                               @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
+                               @Local(argsOnly = true) float f) {
+        if(entity instanceof AbstractClientPlayer player
+                && Conditional.shouldApplyPerspectiveTo(entity)
+                && Conditional.shouldApplyLeaning()
+                && player.getVehicle() == null
+                && !isThirdPerson) {
+            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
+            var lean = persp.getLean(f);
+            var yaw = persp.getYaw(f);
+
+            var height = player.getEyeHeight();
+            // var leanFactor = (1.0f - Mth.cos(2.0f * lean * Mth.DEG_TO_RAD)) / 2.0f;
+            var leanFactor = (lean / 90.0f);
+            var newY = y - (height * leanFactor);
+            var newX = x - Mth.abs(height * height * (Mth.cos(yaw * Mth.DEG_TO_RAD)) * leanFactor);
+            var newZ = z - Mth.abs(height * height * (Mth.sin(yaw * Mth.DEG_TO_RAD)) * leanFactor);
+
+            if(ModConfig.INSTANCE.dbgShowStandingTransforms) {
+                player.displayClientMessage(Component.literal(String.format("%f, %f, %f", newX - x, newY - y, newZ - z)), true);
+            }
+
+            setPosition(newX, newY, newZ);
+        } else {
+            setPosition(x, y, z);
         }
     }
 }
