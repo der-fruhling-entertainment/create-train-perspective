@@ -92,7 +92,7 @@ public class PlayerRendererMixin {
                     value = "HEAD"
             )
     )
-    protected void setupRotations(AbstractClientPlayer p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float p_117806_, CallbackInfo ci) {
+    protected void setupRotations(AbstractClientPlayer p_117802_, PoseStack p_117803_, float p_117804_, float p_117805_, float f, CallbackInfo ci) {
         if(ctp$perspectiveActive && Conditional.shouldApplyPerspectiveTo(p_117802_)) {
             float height = 0;
 
@@ -100,8 +100,9 @@ public class PlayerRendererMixin {
                 height = p_117802_.getEyeHeight();
             }
 
-            p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * ctp$lean), 0, height, 0);
-            p_117803_.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -ctp$lean), 0, height, 0);
+            var lean = ctp$getLean(f);
+            p_117803_.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * ctp$yaw) * lean), 0, height, 0);
+            p_117803_.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * ctp$yaw) * -lean), 0, height, 0);
         }
     }
 }

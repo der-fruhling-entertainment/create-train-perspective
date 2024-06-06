@@ -10,6 +10,7 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.BlockGetter;
 import org.joml.Quaternionf;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,8 +50,11 @@ public abstract class CameraMixin {
     public void modifyRotations(Camera instance,
                                 float y,
                                 float x,
-                                @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
-                                @Local(argsOnly = true) float f) {
+                                BlockGetter blockGetter,
+                                Entity entity,
+                                boolean isThirdPerson,
+                                boolean bl2,
+                                float f) {
         if(entity instanceof AbstractClientPlayer player
            && Conditional.shouldApplyPerspectiveTo(entity)
            && Conditional.shouldApplyLeaning()
@@ -81,29 +85,24 @@ public abstract class CameraMixin {
                                double x,
                                double y,
                                double z,
-                               @Local(argsOnly = true, ordinal = 0) boolean isThirdPerson,
-                               @Local(argsOnly = true) float f) {
+                               BlockGetter blockGetter,
+                               Entity entity,
+                               boolean isThirdPerson,
+                               boolean bl2,
+                               float f) {
         if(entity instanceof AbstractClientPlayer player
                 && Conditional.shouldApplyPerspectiveTo(entity)
                 && Conditional.shouldApplyLeaning()
                 && player.getVehicle() == null
                 && !isThirdPerson) {
             var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-            var lean = persp.getLean(f);
-            var yaw = persp.getYaw(f);
+            var newV = MixinUtil.applyStandingCameraRotation(player, x, y, z, persp, f);
 
-            var height = player.getEyeHeight();
-            // var leanFactor = (1.0f - Mth.cos(2.0f * lean * Mth.DEG_TO_RAD)) / 2.0f;
-            var leanFactor = (lean / 90.0f);
-            var newY = y - (height * leanFactor);
-            var newX = x - Mth.abs(height * height * (Mth.cos(yaw * Mth.DEG_TO_RAD)) * leanFactor);
-            var newZ = z - Mth.abs(height * height * (Mth.sin(yaw * Mth.DEG_TO_RAD)) * leanFactor);
-
-            if(ModConfig.INSTANCE.dbgShowStandingTransforms) {
-                player.displayClientMessage(Component.literal(String.format("%f, %f, %f", newX - x, newY - y, newZ - z)), true);
+            if (ModConfig.INSTANCE.dbgShowStandingTransforms) {
+                player.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
             }
 
-            setPosition(newX, newY, newZ);
+            setPosition(newV.x, newV.y, newV.z);
         } else {
             setPosition(x, y, z);
         }
