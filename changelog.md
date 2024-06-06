@@ -1,21 +1,12 @@
-A major update to add configuration and port to 1.19.2.
+A minor update to fix some larger issues.
 
 Changelog:
-- Added a configuration system.  [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/36)
-  - Allows enabling and disabling parts of the mod or the entire mod.
-  - Also includes some advanced options:
-    - "Leaning Magnitude" changes the intensity of the leaning effect.
-    - "Rolling Magnitude" changes the intensity of the rolling effect.
-    - All of these options are not something you should modify in a useful scenario, but may be fun regardless.
-- Ported to 1.19.2. The new version is fully featured. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/48)
-- **Fixed:** Jittering while standing on a train. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/47)
-- **Fixed:** Some perspective stuff. [View issue.](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/53)
-- **Technical:** Now publishing sources jar to Modrinth for whatever reason.
+- **Fixed:** Crash when using Figura.
+- **Fixed:** Jittery rotations when in third-person and probably also when viewing other players on trains.
+- **Fixed:** Some jittering issues when using this mod with others.
+- **Improved:** Standing while on a train is now tolerable.
 
-Known Issues:
-- A small workaround implemented in this update may cause some mods (including this one) to be ever so slightly jittery.
-
-[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.3.1...v0.4.0)
+[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.4.0...v0.4.1)
 
 ---
 
