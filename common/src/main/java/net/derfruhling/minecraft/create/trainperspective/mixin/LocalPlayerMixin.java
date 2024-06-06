@@ -1,31 +1,23 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
-import com.mojang.authlib.GameProfile;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.AbstractClientPlayer;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.derfruhling.minecraft.create.trainperspective.Perspective;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.world.entity.player.ProfilePublicKey;
-import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
 
 // If anything else tries to @Overwrite getViewYRot, use their changes.
-@Mixin(value = LocalPlayer.class, priority = 200)
-public class LocalPlayerMixin extends AbstractClientPlayer {
-    public LocalPlayerMixin(ClientLevel clientLevel, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
-        super(clientLevel, gameProfile, profilePublicKey);
-    }
+@Mixin(value = LocalPlayer.class)
+public class LocalPlayerMixin {
+    @Shadow @Final protected Minecraft minecraft;
 
-    /**
-     * @author der_frühling
-     * @reason Mojang, for some reason, is not using the value of getViewYRot unless
-     * the player is a passenger.
-     * This breaks yaw while standing on a train.
-     * This is an {@link Overwrite @Overwrite} method because of the small
-     * size of the target method and the simple fix it needs to apply.
-     */
-    @Overwrite
-    public float getViewYRot(float f) {
-        return super.getViewYRot(f);
+    @WrapOperation(method = "getViewYRot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
+    public boolean isPassenger(LocalPlayer instance, Operation<Boolean> original) {
+        var perspective = (Perspective) minecraft.getEntityRenderDispatcher().getRenderer(instance);
+        return original.call(instance) || perspective.isEnabled();
     }
 }
