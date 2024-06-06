@@ -101,6 +101,7 @@ modrinth {
     gameVersions = [minecraft_version]
     loaders = ["forge", "neoforge"]
     changelog = rootProject.file("changelog.md").getText()
+    syncBodyFrom = rootProject.file("README.md").text
 
     dependencies {
         required.project 'create'
