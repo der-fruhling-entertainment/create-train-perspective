@@ -14,10 +14,6 @@ public class MixinUtil {
         return (Camera3D) camera;
     }
 
-    private static float invCos(float x) {
-        return Mth.cos(x + Mth.PI);
-    }
-
     public static float applyDirectionXRotChange(Perspective persp, float xRot, float yRot, float f) {
         return xRot - persp.getLean(f)
                 * ModConfig.INSTANCE.leanMagnitude
@@ -25,7 +21,7 @@ public class MixinUtil {
     }
 
     public static float getExtraYRot(Perspective persp, float xRot, float yRot, float f) {
-        return persp.getLean(f) * (xRot / 90.0f) * invCos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
+        return persp.getLean(f) * (xRot / 90.0f) * -Mth.cos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 
     public static Vector3d applyStandingCameraRotation(Player player, double x, double y, double z, Perspective persp, float f) {
