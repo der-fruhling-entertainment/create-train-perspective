@@ -86,10 +86,8 @@ public class CreateTrainPerspectiveMod {
         }
     }
 
-    public void tickEntity(final Entity entity) {
-        if(entity instanceof Perspective persp
-           && persp.getRotationState() != null
-           && Conditional.shouldApplyPerspectiveTo(entity)) {
+    public void tickEntity(Entity entity, Perspective persp) {
+        if(persp.getRotationState() != null) {
             var state = persp.getRotationState();
             assert state != null;
 
