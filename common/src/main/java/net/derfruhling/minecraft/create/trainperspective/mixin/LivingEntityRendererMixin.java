@@ -31,8 +31,8 @@ public class LivingEntityRendererMixin {
                 height = livingEntity.getEyeHeight();
             }
 
-            var lean = persp.getLean(f);
-            var yaw = persp.getYaw(f);
+            var lean = persp.getLean(h);
+            var yaw = persp.getYaw(h);
             poseStack.rotateAround(Axis.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * yaw) * lean), 0, height, 0);
             poseStack.rotateAround(Axis.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * yaw) * -lean), 0, height, 0);
         }
