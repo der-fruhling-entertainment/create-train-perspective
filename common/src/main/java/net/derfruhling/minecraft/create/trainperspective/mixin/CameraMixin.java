@@ -98,7 +98,7 @@ public abstract class CameraMixin {
                 && clientPlayer.getVehicle() == null
                 && !isThirdPerson) {
             var persp = (Perspective) clientPlayer;
-            var newV = MixinUtil.applyStandingCameraRotation(clientPlayer, x, y, z, persp, f);
+            var newV = MixinUtil.applyStandingCameraTranslation(clientPlayer, x, y, z, persp, f);
 
             if (ModConfig.INSTANCE.dbgShowStandingTransforms) {
                 clientPlayer.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);

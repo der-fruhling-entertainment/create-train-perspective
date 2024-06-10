@@ -24,7 +24,7 @@ public class MixinUtil {
         return persp.getLean(f) * (xRot / 90.0f) * -Mth.cos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 
-    public static Vector3d applyStandingCameraRotation(Player player, double x, double y, double z, Perspective persp, float f) {
+    public static Vector3d applyStandingCameraTranslation(Player player, double x, double y, double z, Perspective persp, float f) {
         var lean = persp.getLean(f) * Mth.DEG_TO_RAD;
         var yaw = persp.getYaw(f) * Mth.DEG_TO_RAD;
         var height = player.getEyeHeight();
@@ -36,8 +36,8 @@ public class MixinUtil {
         return new Vector3d(newX, newY, newZ);
     }
 
-    public static Vec3 applyStandingCameraRotation(Player player, Vec3 v, Perspective persp, float f) {
-        var vec = applyStandingCameraRotation(player, v.x, v.y, v.z, persp, f);
+    public static Vec3 applyStandingCameraTranslation(Player player, Vec3 v, Perspective persp, float f) {
+        var vec = applyStandingCameraTranslation(player, v.x, v.y, v.z, persp, f);
         return new Vec3(vec.x, vec.y, vec.z);
     }
 }
