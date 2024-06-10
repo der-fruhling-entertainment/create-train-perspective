@@ -16,8 +16,8 @@ public class LocalPlayerMixin {
     @Shadow @Final protected Minecraft minecraft;
 
     @WrapOperation(method = "getViewYRot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
-    public boolean isPassenger(LocalPlayer instance, Operation<Boolean> original) {
-        var perspective = (Perspective) minecraft.getEntityRenderDispatcher().getRenderer(instance);
-        return original.call(instance) || perspective.isEnabled();
+    public boolean isPassenger(LocalPlayer localPlayer, Operation<Boolean> original) {
+        var perspective = (Perspective) localPlayer;
+        return original.call(localPlayer) || perspective.isEnabled();
     }
 }

@@ -21,7 +21,7 @@ public class CreateTrainPerspectiveMod {
 
     public void onEntityMountEvent(boolean isMounting, Entity entityMounting, Entity entityBeingMounted) {
         if(
-                Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entityMounting) instanceof Perspective persp &&
+                entityMounting instanceof Perspective persp &&
                 entityBeingMounted instanceof CarriageContraptionEntity contraption
         ) {
             if(isMounting) {
@@ -54,8 +54,8 @@ public class CreateTrainPerspectiveMod {
 
     public void tickStandingEntity(final CarriageContraptionEntity contraption, final Entity entity) {
         if(entity.getVehicle() != null) return;
+        if(!(entity instanceof Perspective persp)) return;
 
-        var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
         var state = persp.getRotationState();
 
         if (state == null || !Objects.equals(state.getContraption(), contraption)) {
@@ -87,7 +87,7 @@ public class CreateTrainPerspectiveMod {
     }
 
     public void tickEntity(final Entity entity) {
-        if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity) instanceof Perspective persp
+        if(entity instanceof Perspective persp
            && persp.getRotationState() != null
            && Conditional.shouldApplyPerspectiveTo(entity)) {
             var state = persp.getRotationState();

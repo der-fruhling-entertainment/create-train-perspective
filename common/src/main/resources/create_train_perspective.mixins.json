@@ -4,14 +4,15 @@
   "package": "net.derfruhling.minecraft.create.trainperspective.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "CameraMixin",
+    "AbstractClientPlayerMixin",
     "AbstractContraptionEntityMixin",
+    "CameraMixin",
     "ClientLevelMixin",
+    "CreateRaycastHelperMixin",
     "EntityMixin",
     "GameRendererMixin",
     "LocalPlayerMixin",
-    "PlayerRendererMixin",
-    "CreateRaycastHelperMixin"
+    "PlayerRendererMixin"
   ],
   "overwrites": {
     "requireAnnotations": true,

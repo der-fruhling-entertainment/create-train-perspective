@@ -16,11 +16,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class CreateRaycastHelperMixin {
     @ModifyReturnValue(method = "getTraceOrigin", at = @At("RETURN"))
     private static Vec3 applyLeaning(Vec3 original, Player player) {
-        if(player.isLocalPlayer()) {
-            var renderer = Minecraft.getInstance()
-                    .getEntityRenderDispatcher()
-                    .getRenderer(player);
-            var persp = (Perspective) renderer;
+        if(Conditional.shouldApplyPerspectiveTo(player) && player instanceof Perspective persp) {
             return MixinUtil.applyStandingCameraRotation(player, original, persp, 1.0f);
         } else {
             return original;
@@ -29,7 +25,7 @@ public class CreateRaycastHelperMixin {
 
     @ModifyVariable(method = "getTraceTarget", at = @At("STORE"), index = 4)
     private static float modifyPitch(float pitch, Player player) {
-        if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof Perspective persp
+        if(player instanceof Perspective persp
            && Conditional.shouldApplyPerspectiveTo(player)) {
             return MixinUtil.applyDirectionXRotChange(persp, pitch, player.getYRot(), 1.0f);
         } else return pitch;
@@ -37,7 +33,7 @@ public class CreateRaycastHelperMixin {
 
     @ModifyVariable(method = "getTraceTarget", at = @At("STORE"), index = 5)
     private static float modifyYaw(float yaw, Player player) {
-        if(Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player) instanceof Perspective persp
+        if(player instanceof Perspective persp
            && Conditional.shouldApplyPerspectiveTo(player)) {
             return yaw + MixinUtil.getExtraYRot(persp, player.getXRot(), yaw, 1.0f);
         } else return yaw;

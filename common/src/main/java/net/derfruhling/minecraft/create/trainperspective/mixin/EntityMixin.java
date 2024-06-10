@@ -45,7 +45,7 @@ public abstract class EntityMixin {
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 1, argsOnly = true)
     public float modifyPitch(float pitch, @Local(argsOnly = true, index = 2) float yaw) {
         if (this.level.isClientSide) {
-            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp
+            if (((Entity)(Object)this) instanceof Perspective persp
                 && persp.isEnabled()
                 && Conditional.shouldApplyPerspectiveTo((Entity)(Object)this)) {
                 return MixinUtil.applyDirectionXRotChange(persp, pitch, yaw, 1.0f);
@@ -57,7 +57,7 @@ public abstract class EntityMixin {
     @ModifyVariable(method = "calculateViewVector", at = @At(value = "LOAD"), index = 2, argsOnly = true)
     public float modifyYaw(float yaw, @Local(argsOnly = true, index = 1) float pitch) {
         if (this.level.isClientSide) {
-            if (Minecraft.getInstance().getEntityRenderDispatcher().getRenderer((Entity)(Object)this) instanceof Perspective persp
+            if (((Entity)(Object)this) instanceof Perspective persp
                 && persp.isEnabled()
                 && Conditional.shouldApplyPerspectiveTo((Entity)(Object)this)) {
                 return yaw + MixinUtil.getExtraYRot(persp, pitch, yaw, 1.0f);

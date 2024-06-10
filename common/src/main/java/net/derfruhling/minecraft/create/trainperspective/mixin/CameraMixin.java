@@ -55,12 +55,10 @@ public abstract class CameraMixin {
                                 boolean isThirdPerson,
                                 boolean bl2,
                                 float f) {
-        if(entity instanceof AbstractClientPlayer player
+        if(entity instanceof Perspective persp
            && Conditional.shouldApplyPerspectiveTo(entity)
            && Conditional.shouldApplyLeaning()
            && !isThirdPerson) {
-            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-
             if(Conditional.shouldApplyRolling()) {
                 ctp$zRot = persp.getLean(f)
                            * ModConfig.INSTANCE.rollMagnitude
@@ -90,16 +88,16 @@ public abstract class CameraMixin {
                                boolean isThirdPerson,
                                boolean bl2,
                                float f) {
-        if(entity instanceof AbstractClientPlayer player
+        if(entity instanceof AbstractClientPlayer clientPlayer
                 && Conditional.shouldApplyPerspectiveTo(entity)
                 && Conditional.shouldApplyLeaning()
-                && player.getVehicle() == null
+                && clientPlayer.getVehicle() == null
                 && !isThirdPerson) {
-            var persp = (Perspective) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(player);
-            var newV = MixinUtil.applyStandingCameraRotation(player, x, y, z, persp, f);
+            var persp = (Perspective) clientPlayer;
+            var newV = MixinUtil.applyStandingCameraRotation(clientPlayer, x, y, z, persp, f);
 
             if (ModConfig.INSTANCE.dbgShowStandingTransforms) {
-                player.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
+                clientPlayer.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
             }
 
             setPosition(newV.x, newV.y, newV.z);
