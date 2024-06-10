@@ -32,7 +32,7 @@ public class CreateTrainPerspectiveMod {
 
     public void onEntityMount(Perspective persp, CarriageContraptionEntity contraption) {
         if (persp.getRotationState() == null) {
-            var state = new RotationState(contraption, false, true);
+            var state = new RotationState(contraption, false);
             persp.setRotationState(state);
             var carriage = state.getContraption();
             assert carriage != null;
@@ -45,8 +45,7 @@ public class CreateTrainPerspectiveMod {
 
     private void onEntityDismount(Perspective persp) {
         if (persp.getRotationState() != null) {
-            persp.setRotationState(null);
-            persp.disable();
+            persp.getRotationState().onDismount();
         }
     }
 
@@ -57,7 +56,7 @@ public class CreateTrainPerspectiveMod {
         var state = persp.getRotationState();
 
         if (state == null || !Objects.equals(state.getContraption(), contraption)) {
-            state = new RotationState(contraption, true, false);
+            state = new RotationState(contraption, true);
             persp.setRotationState(state);
             var carriage = state.getContraption();
             assert carriage != null;
@@ -75,7 +74,7 @@ public class CreateTrainPerspectiveMod {
         player.setYRot(player.getYRot() + state.getYawDelta());
         player.setYBodyRot(player.getYRot());
 
-        if (state.isStanding() && !state.isMounted()) {
+        if (state.isStanding() && !state.isSeated()) {
             state.tick();
 
             if (state.getTicksSinceLastUpdate() > 5) {

@@ -4,18 +4,16 @@ import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class RotationState {
-    private final boolean isStandingState;
+    private boolean isStandingState;
     private CarriageContraptionEntity contraption;
     private float lastRecordedYaw;
-    private boolean isMounted;
     private boolean shouldTickState = true;
     private int ticksSinceLastUpdate = 0;
 
-    public RotationState(CarriageContraptionEntity contraption, boolean isStandingState, boolean isMounted) {
+    public RotationState(CarriageContraptionEntity contraption, boolean isStandingState) {
         this.contraption = contraption;
         lastRecordedYaw = contraption.yaw;
         this.isStandingState = isStandingState;
-        this.isMounted = isMounted;
     }
 
     public float getYawDelta() {
@@ -44,8 +42,8 @@ public class RotationState {
         return isStandingState;
     }
 
-    public boolean isMounted() {
-        return isMounted;
+    public boolean isSeated() {
+        return !isStandingState;
     }
 
     public boolean shouldTickState() {
@@ -53,12 +51,12 @@ public class RotationState {
     }
 
     public void onMounted() {
-        this.isMounted = true;
+        this.isStandingState = false;
         this.shouldTickState = true;
     }
 
     public void onDismount() {
-        this.isMounted = false;
+        this.isStandingState = true;
     }
 
     public void setShouldTickState(boolean shouldTickState) {
