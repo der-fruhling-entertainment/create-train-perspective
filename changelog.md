@@ -2,10 +2,9 @@ A minor update to fix some larger issues.
 
 Changelog:
 
-- **Fixed:** Crash when using Figura.
-- **Fixed:** Jittery rotations when in third-person and probably also when viewing other players on trains.
-- **Fixed:** Some jittering issues when using this mod with others.
-- **Improved:** Standing while on a train is now tolerable.
+- **Fixed:** Player camera turns when an unrelated player is on a train.
+- **Added:** Ability for non-player entities to be affected by this mod.
+- **Technical:** Cleaned up the code a bit.
 
 [View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.4.0...v0.4.1)
 
