@@ -7,7 +7,6 @@ import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveM
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

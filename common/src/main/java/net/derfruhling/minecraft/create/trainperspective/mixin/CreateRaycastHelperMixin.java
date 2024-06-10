@@ -5,7 +5,6 @@ import com.simibubi.create.foundation.utility.RaycastHelper;
 import net.derfruhling.minecraft.create.trainperspective.Conditional;
 import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 import org.spongepowered.asm.mixin.Mixin;

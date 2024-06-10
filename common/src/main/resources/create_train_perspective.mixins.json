@@ -10,8 +10,8 @@
     "CreateRaycastHelperMixin",
     "EntityMixin",
     "GameRendererMixin",
-    "LocalPlayerMixin",
-    "LivingEntityRendererMixin"
+    "LivingEntityRendererMixin",
+    "LocalPlayerMixin"
   ],
   "overwrites": {
     "requireAnnotations": true,

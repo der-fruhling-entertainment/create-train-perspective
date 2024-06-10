@@ -2,11 +2,9 @@ package net.derfruhling.minecraft.create.trainperspective;
 
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.event.events.common.TickEvent;
-import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.Entity;
 
-import java.util.*;
+import java.util.Objects;
 
 public class CreateTrainPerspectiveMod {
     public static final String MODID = "create_train_perspective";

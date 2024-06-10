@@ -1,11 +1,9 @@
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import net.derfruhling.minecraft.create.trainperspective.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
