@@ -1,4 +1,4 @@
-A minor update to fix some larger issues.
+Multiplayer and non-player entity compatibility, along with 1.18.2 support.
 
 Changelog:
 
@@ -6,7 +6,7 @@ Changelog:
 - **Added:** Ability for non-player entities to be affected by this mod.
 - **Technical:** Cleaned up the code a bit.
 
-[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.4.0...v0.4.1)
+[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.4.1...v0.5.0)
 
 ---
 
