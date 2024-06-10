@@ -8,6 +8,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.BlockGetter;
@@ -101,7 +102,7 @@ public abstract class CameraMixin {
             var newV = MixinUtil.applyStandingCameraTranslation(clientPlayer, x, y, z, persp, f);
 
             if (ModConfig.INSTANCE.dbgShowStandingTransforms) {
-                clientPlayer.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
+                clientPlayer.displayClientMessage(new TextComponent("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
             }
 
             setPosition(newV.x, newV.y, newV.z);
