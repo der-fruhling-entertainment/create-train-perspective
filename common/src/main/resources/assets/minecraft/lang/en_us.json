@@ -20,8 +20,10 @@
     "option.create_train_perspective.advanced.lean_magnitude.tooltip": "The magnitude to which the player will lean. Higher = more intense.",
     "option.create_train_perspective.advanced.roll_magnitude": "Rolling Magnitude",
     "option.create_train_perspective.advanced.roll_magnitude.tooltip": "The magnitude to which the player will roll. Higher = more intense.",
-    "option.create_train_perspective.multiplayer.apply_to_entities": "Apply mod to non-player entities",
-    "option.create_train_perspective.multiplayer.apply_to_entities.tooltip": "Applies the mod to non-player entities as well (may be broken with some entities)",
+    "option.create_train_perspective.advanced.apply_to_entities": "Apply mod to non-player entities",
+    "option.create_train_perspective.advanced.apply_to_entities.tooltip": "Applies the mod to non-player entities as well (may be broken with some entities)",
+    "option.create_train_perspective.advanced.blocked_entities": "Blocked entities",
+    "option.create_train_perspective.advanced.blocked_entities.tooltip": "Entities with an ID in this list will not be considered for this mod's functionality",
     "option.create_train_perspective.debug.standing_transforms": "Show Standing Translations",
     "option.create_train_perspective.debug.standing_transforms.tooltip": "Shows translations used to transform the player while standing on a train. (X, Y, Z)"
 }

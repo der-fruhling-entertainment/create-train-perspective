@@ -7,9 +7,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModConfig {
     private ModConfig() {}
@@ -21,6 +24,7 @@ public class ModConfig {
     public float rollMagnitude = 1.0f;
     public boolean applyToOthers = true;
     public boolean applyToNonPlayerEntities = true;
+    public List<ResourceLocation> blockedEntities = new ArrayList<>();
     public boolean dbgShowStandingTransforms = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -160,12 +164,21 @@ public class ModConfig {
 
         advanced.add(entryBuilder
             .startBooleanToggle(
-                    Component.translatable("option.create_train_perspective.multiplayer.apply_to_entities"),
+                    Component.translatable("option.create_train_perspective.advanced.apply_to_entities"),
                     INSTANCE.applyToNonPlayerEntities)
-            .setTooltip(Component.translatable("option.create_train_perspective.multiplayer.apply_to_entities.tooltip"))
+            .setTooltip(Component.translatable("option.create_train_perspective.advanced.apply_to_entities.tooltip"))
             .setSaveConsumer(value -> INSTANCE.applyToNonPlayerEntities = value)
             .setDefaultValue(true)
             .build());
+
+        advanced.add(entryBuilder
+                .startStrList(
+                        Component.translatable("option.create_train_perspective.advanced.blocked_entities"),
+                        INSTANCE.blockedEntities.stream().map(ResourceLocation::toString).toList())
+                .setTooltip(Component.translatable("option.create_train_perspective.advanced.blocked_entities.tooltip"))
+                .setSaveConsumer(value -> INSTANCE.blockedEntities = value.stream().map(ResourceLocation::new).toList())
+                .setDefaultValue(new ArrayList<>())
+                .build());
 
         var debug = entryBuilder.startSubCategory(Component.translatable("category.create_train_perspective.debug"));
 
