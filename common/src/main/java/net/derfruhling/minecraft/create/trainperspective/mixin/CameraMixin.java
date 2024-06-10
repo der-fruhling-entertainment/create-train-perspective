@@ -19,15 +19,21 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 @Implements({@Interface(iface = Camera3D.class, prefix = "c3d$")})
 @Environment(EnvType.CLIENT)
 public abstract class CameraMixin {
-    @Shadow private Entity entity;
-    @Unique private float ctp$zRot;
-    @Unique private float ctp$extraYRot;
+    @Shadow
+    private Entity entity;
+    @Unique
+    private float ctp$zRot;
+    @Unique
+    private float ctp$extraYRot;
+    @Shadow
+    @Final
+    private Quaternionf rotation;
 
-    @Shadow protected abstract void setRotation(float f, float g);
+    @Shadow
+    protected abstract void setRotation(float f, float g);
 
-    @Shadow @Final private Quaternionf rotation;
-
-    @Shadow protected abstract void setPosition(double d, double e, double f);
+    @Shadow
+    protected abstract void setPosition(double d, double e, double f);
 
     @ModifyArg(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;"), index = 2)
     private float modifyRoll(float original) {
@@ -53,15 +59,15 @@ public abstract class CameraMixin {
                                 boolean isThirdPerson,
                                 boolean bl2,
                                 float f) {
-        if(entity instanceof Perspective persp
-           && Conditional.shouldApplyPerspectiveTo(entity)
-           && Conditional.shouldApplyLeaning()
-           && !isThirdPerson) {
-            if(Conditional.shouldApplyRolling()) {
+        if (entity instanceof Perspective persp
+                && Conditional.shouldApplyPerspectiveTo(entity)
+                && Conditional.shouldApplyLeaning()
+                && !isThirdPerson) {
+            if (Conditional.shouldApplyRolling()) {
                 ctp$zRot = persp.getLean(f)
-                           * ModConfig.INSTANCE.rollMagnitude
-                           * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD)
-                           * Mth.sin((x * Mth.DEG_TO_RAD + Mth.PI) / 2.0f);
+                        * ModConfig.INSTANCE.rollMagnitude
+                        * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD)
+                        * Mth.sin((x * Mth.DEG_TO_RAD + Mth.PI) / 2.0f);
             }
 
             ctp$extraYRot = MixinUtil.getExtraYRot(persp, x, y, f);
@@ -86,7 +92,7 @@ public abstract class CameraMixin {
                                boolean isThirdPerson,
                                boolean bl2,
                                float f) {
-        if(entity instanceof AbstractClientPlayer clientPlayer
+        if (entity instanceof AbstractClientPlayer clientPlayer
                 && Conditional.shouldApplyPerspectiveTo(entity)
                 && Conditional.shouldApplyLeaning()
                 && clientPlayer.getVehicle() == null

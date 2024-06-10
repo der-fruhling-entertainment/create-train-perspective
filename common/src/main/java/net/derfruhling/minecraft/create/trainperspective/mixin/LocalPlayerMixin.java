@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(value = LocalPlayer.class)
 public class LocalPlayerMixin {
-    @Shadow @Final protected Minecraft minecraft;
+    @Shadow
+    @Final
+    protected Minecraft minecraft;
 
     @WrapOperation(method = "getViewYRot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
     public boolean isPassenger(LocalPlayer localPlayer, Operation<Boolean> original) {

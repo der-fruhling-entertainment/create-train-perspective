@@ -10,10 +10,15 @@ _More immersion!_
 
 ## What is this?
 
-With the normal Create behavior, the player's camera stays in the same direction when the train turns, giving the appearance that the player themselves are turning. This mod turns the player's camera with the train they're riding to provide more immersion. This mod also applies "lean" and "roll" to the player when the train is on a slope.
+With the normal Create behavior, the player's camera stays in the same direction when the train turns, giving the
+appearance that the player themselves are turning. This mod turns the player's camera with the train they're riding to
+provide more immersion. This mod also applies "lean" and "roll" to the player when the train is on a slope.
 
-The mod should also work while standing on the train, though this functionality is a bit experimental at the moment (and horribly unsafe). If you have any issues (with the mod), [remember to report them!](https://github.com/der-fruhling-entertainment/create-train-perspective/issues)
+The mod should also work while standing on the train, though this functionality is a bit experimental at the moment (and
+horribly unsafe). If you have any issues (with the
+mod), [remember to report them!](https://github.com/der-fruhling-entertainment/create-train-perspective/issues)
 
 **Notice:** This mod may cause motion sickness. Just like real trains, but blockier.
 
-This is a client-side only mod. It does nothing on the server and will probably crash if you try to use it on one anyways, so don't do that!!
+This is a client-side only mod. It does nothing on the server and will probably crash if you try to use it on one
+anyways, so don't do that!!

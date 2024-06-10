@@ -19,11 +19,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class LivingEntityRendererMixin {
     @Inject(method = "setupRotations", at = @At("HEAD"))
     protected void setupRotations(LivingEntity livingEntity, PoseStack poseStack, float f, float g, float h, CallbackInfo ci) {
-        if(Conditional.shouldApplyPerspectiveTo(livingEntity)) {
+        if (Conditional.shouldApplyPerspectiveTo(livingEntity)) {
             Perspective persp = (Perspective) livingEntity;
             float height = 0;
 
-            if(livingEntity.getVehicle() != null) {
+            if (livingEntity.getVehicle() != null) {
                 height = livingEntity.getEyeHeight();
             }
 

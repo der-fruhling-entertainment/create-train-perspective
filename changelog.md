@@ -1,6 +1,7 @@
 A minor update to fix some larger issues.
 
 Changelog:
+
 - **Fixed:** Crash when using Figura.
 - **Fixed:** Jittery rotations when in third-person and probably also when viewing other players on trains.
 - **Fixed:** Some jittering issues when using this mod with others.

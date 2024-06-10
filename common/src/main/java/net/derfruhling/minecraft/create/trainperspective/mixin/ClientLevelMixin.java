@@ -15,14 +15,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientLevelMixin {
     @Inject(method = "tickNonPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;tick()V", shift = At.Shift.AFTER))
     public void onTickNonPassenger(Entity entity, CallbackInfo ci) {
-        if(Conditional.shouldApplyPerspectiveTo(entity)) {
+        if (Conditional.shouldApplyPerspectiveTo(entity)) {
             CreateTrainPerspectiveMod.INSTANCE.tickEntity(entity, (Perspective) entity);
         }
     }
 
     @Inject(method = "tickPassenger", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/Entity;rideTick()V", shift = At.Shift.AFTER))
     public void onTickPassenger(Entity vehicle, Entity rider, CallbackInfo ci) {
-        if(Conditional.shouldApplyPerspectiveTo(rider) && vehicle instanceof CarriageContraptionEntity) {
+        if (Conditional.shouldApplyPerspectiveTo(rider) && vehicle instanceof CarriageContraptionEntity) {
             CreateTrainPerspectiveMod.INSTANCE.tickEntity(rider, (Perspective) rider);
         }
     }

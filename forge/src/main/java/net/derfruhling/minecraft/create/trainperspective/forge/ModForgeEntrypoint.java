@@ -17,7 +17,7 @@ public class ModForgeEntrypoint {
     public ModForgeEntrypoint() {
         MinecraftForge.EVENT_BUS.addListener(this::onClientSetupEvent);
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () ->
-            new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfig.createConfigScreen(screen)));
+                new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfig.createConfigScreen(screen)));
     }
 
     private void onClientSetupEvent(FMLClientSetupEvent event) {

@@ -18,11 +18,11 @@ public class CreateTrainPerspectiveMod {
     }
 
     public void onEntityMountEvent(boolean isMounting, Entity entityMounting, Entity entityBeingMounted) {
-        if(
+        if (
                 entityMounting instanceof Perspective persp &&
-                entityBeingMounted instanceof CarriageContraptionEntity contraption
+                        entityBeingMounted instanceof CarriageContraptionEntity contraption
         ) {
-            if(isMounting) {
+            if (isMounting) {
                 onEntityMount(persp, contraption);
             } else {
                 onEntityDismount(persp);
@@ -31,7 +31,7 @@ public class CreateTrainPerspectiveMod {
     }
 
     public void onEntityMount(Perspective persp, CarriageContraptionEntity contraption) {
-        if(persp.getRotationState() == null) {
+        if (persp.getRotationState() == null) {
             var state = new RotationState(contraption, false, true);
             persp.setRotationState(state);
             var carriage = state.getContraption();
@@ -44,15 +44,15 @@ public class CreateTrainPerspectiveMod {
     }
 
     private void onEntityDismount(Perspective persp) {
-        if(persp.getRotationState() != null) {
+        if (persp.getRotationState() != null) {
             persp.setRotationState(null);
             persp.disable();
         }
     }
 
     public void tickStandingEntity(final CarriageContraptionEntity contraption, final Entity entity) {
-        if(entity.getVehicle() != null) return;
-        if(!(entity instanceof Perspective persp)) return;
+        if (entity.getVehicle() != null) return;
+        if (!(entity instanceof Perspective persp)) return;
 
         var state = persp.getRotationState();
 
@@ -69,32 +69,32 @@ public class CreateTrainPerspectiveMod {
 
     private void tickPerspectiveState(Entity player, Perspective persp, RotationState state) {
         var carriage = state.getContraption();
-        if(carriage == null) return;
+        if (carriage == null) return;
         persp.setLean(carriage.pitch);
         persp.setYaw(carriage.yaw);
         player.setYRot(player.getYRot() + state.getYawDelta());
         player.setYBodyRot(player.getYRot());
 
-        if(state.isStanding() && !state.isMounted()) {
+        if (state.isStanding() && !state.isMounted()) {
             state.tick();
 
-            if(state.getTicksSinceLastUpdate() > 5) {
+            if (state.getTicksSinceLastUpdate() > 5) {
                 state.setShouldTickState(false);
             }
         }
     }
 
     public void tickEntity(Entity entity, Perspective persp) {
-        if(persp.getRotationState() != null) {
+        if (persp.getRotationState() != null) {
             var state = persp.getRotationState();
             assert state != null;
 
-            if(state.shouldTickState()) {
+            if (state.shouldTickState()) {
                 tickPerspectiveState(entity, persp, state);
             } else {
                 persp.diminish();
 
-                if(persp.isDiminished()) {
+                if (persp.isDiminished()) {
                     persp.setRotationState(null);
                     persp.disable();
                 }

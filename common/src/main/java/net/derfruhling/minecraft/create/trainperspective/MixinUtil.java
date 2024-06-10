@@ -7,7 +7,8 @@ import net.minecraft.world.phys.Vec3;
 import org.joml.Vector3d;
 
 public class MixinUtil {
-    private MixinUtil() {}
+    private MixinUtil() {
+    }
 
     public static Camera3D asCamera3D(Camera camera) {
         return (Camera3D) camera;
@@ -19,8 +20,8 @@ public class MixinUtil {
 
     public static float applyDirectionXRotChange(Perspective persp, float xRot, float yRot, float f) {
         return xRot - persp.getLean(f)
-                      * ModConfig.INSTANCE.leanMagnitude
-                      * Mth.sin((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
+                * ModConfig.INSTANCE.leanMagnitude
+                * Mth.sin((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 
     public static float getExtraYRot(Perspective persp, float xRot, float yRot, float f) {
