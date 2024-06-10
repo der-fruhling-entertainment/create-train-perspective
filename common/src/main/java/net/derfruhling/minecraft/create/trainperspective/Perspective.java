@@ -5,13 +5,22 @@ import org.jetbrains.annotations.Nullable;
 
 public interface Perspective {
     void enable(float initialLean, float initialYaw);
+
     void disable();
+
     boolean isEnabled();
+
     void setLean(float lean);
+
     void setYaw(float yaw);
+
     float getLean(float f);
+
     float getYaw(float f);
-    @Nullable RotationState getRotationState();
+
+    @Nullable
+    RotationState getRotationState();
+
     void setRotationState(@Nullable RotationState state);
 
     default void diminish() {

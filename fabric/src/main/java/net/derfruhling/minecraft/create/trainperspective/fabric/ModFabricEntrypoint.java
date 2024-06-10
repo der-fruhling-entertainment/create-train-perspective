@@ -8,13 +8,13 @@ public class ModFabricEntrypoint implements ClientModInitializer {
 
     public CreateTrainPerspectiveMod common;
 
+    public static ModFabricEntrypoint getInstance() {
+        return INSTANCE;
+    }
+
     @Override
     public void onInitializeClient() {
         common = new CreateTrainPerspectiveMod();
         INSTANCE = this;
-    }
-
-    public static ModFabricEntrypoint getInstance() {
-        return INSTANCE;
     }
 }
