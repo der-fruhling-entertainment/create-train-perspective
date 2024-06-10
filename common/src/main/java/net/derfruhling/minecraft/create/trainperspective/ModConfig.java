@@ -20,7 +20,7 @@ public class ModConfig {
     public boolean rollEnabled = true;
     public float rollMagnitude = 1.0f;
     public boolean applyToOthers = true;
-    public boolean applyToNonPlayerEntities = false;
+    public boolean applyToNonPlayerEntities = true;
     public boolean dbgShowStandingTransforms = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -157,7 +157,7 @@ public class ModConfig {
             .setSaveConsumer(value -> INSTANCE.rollMagnitude = value)
             .setDefaultValue(1.0f)
             .build());
-        
+
         advanced.add(entryBuilder
             .startBooleanToggle(
                     Component.translatable("option.create_train_perspective.multiplayer.apply_to_entities"),
