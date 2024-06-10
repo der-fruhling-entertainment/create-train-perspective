@@ -20,6 +20,7 @@ public class ModConfig {
     public boolean rollEnabled = true;
     public float rollMagnitude = 1.0f;
     public boolean applyToOthers = true;
+    public boolean applyToNonPlayerEntities = false;
     public boolean dbgShowStandingTransforms = false;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -155,6 +156,15 @@ public class ModConfig {
             .setTooltip(Component.translatable("option.create_train_perspective.advanced.roll_magnitude.tooltip"))
             .setSaveConsumer(value -> INSTANCE.rollMagnitude = value)
             .setDefaultValue(1.0f)
+            .build());
+        
+        advanced.add(entryBuilder
+            .startBooleanToggle(
+                    Component.translatable("option.create_train_perspective.multiplayer.apply_to_entities"),
+                    INSTANCE.applyToNonPlayerEntities)
+            .setTooltip(Component.translatable("option.create_train_perspective.multiplayer.apply_to_entities.tooltip"))
+            .setSaveConsumer(value -> INSTANCE.applyToNonPlayerEntities = value)
+            .setDefaultValue(true)
             .build());
 
         var debug = entryBuilder.startSubCategory(Component.translatable("category.create_train_perspective.debug"));

@@ -9,7 +9,8 @@ public class Conditional {
     
     public static boolean shouldApplyPerspectiveTo(Entity player) {
         if(ModConfig.INSTANCE.enabled) {
-            return (ModConfig.INSTANCE.applyToOthers && player instanceof RemotePlayer)
+            return ModConfig.INSTANCE.applyToNonPlayerEntities ||
+                   (ModConfig.INSTANCE.applyToOthers && player instanceof RemotePlayer)
                    || player instanceof LocalPlayer;
         } else {
             return false;
