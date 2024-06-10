@@ -4,8 +4,8 @@ import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class RotationState {
-    private boolean isStandingState;
     private CarriageContraptionEntity contraption;
+    private boolean isStandingState;
     private float lastRecordedYaw;
     private boolean shouldTickState = true;
     private int ticksSinceLastUpdate = 0;
