@@ -15,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-@Mixin(Camera.class)
+// workaround for figura to work (this is terrible but works)
+@Mixin(value = Camera.class, priority = 1100)
 @Implements({@Interface(iface = Camera3D.class, prefix = "c3d$")})
 @Environment(EnvType.CLIENT)
 public abstract class CameraMixin {
