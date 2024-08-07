@@ -1,31 +1,46 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
+import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import org.jetbrains.annotations.Nullable;
 
 public interface Perspective {
-    void enable(float initialLean, float initialYaw);
+    void enable(CarriageContraptionEntity entity);
 
     void disable();
 
     boolean isEnabled();
 
-    void setLean(float lean);
+    void setReference(CarriageContraptionEntity entity);
 
-    void setYaw(float yaw);
+    @Nullable
+    CarriageContraptionEntity getReference();
 
-    float getLean(float f);
+    default float getLean(float f) {
+        var ref = getReference();
+        if (ref == null) return 0.0f;
+        if (f == 1.0f) return ref.pitch * getScale();
+        return Mth.lerp(f, ref.prevPitch * getPrevScale(), ref.pitch * getScale());
+    }
 
-    float getYaw(float f);
+    default float getYaw(float f) {
+        var ref = getReference();
+        if (ref == null) return 0.0f;
+        if (f == 1.0f) return ref.yaw * getScale();
+        return Mth.lerp(f, ref.prevYaw * getPrevScale(), ref.yaw * getScale());
+    }
 
     @Nullable
     RotationState getRotationState();
 
     void setRotationState(@Nullable RotationState state);
 
-    default void diminish() {
-        setLean(getLean(1.0f) * 0.9f);
-    }
+    void diminish();
+
+    float getPrevScale();
+
+    float getScale();
 
     default boolean isDiminished() {
         return Mth.abs(getLean(1.0f)) < 0.01f;

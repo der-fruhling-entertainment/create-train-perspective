@@ -36,7 +36,7 @@ public class CreateTrainPerspectiveMod {
             persp.setRotationState(state);
             var carriage = state.getContraption();
             assert carriage != null;
-            persp.enable(carriage.pitch, carriage.yaw);
+            persp.enable(carriage);
         } else {
             var state = persp.getRotationState();
             state.onMounted();
@@ -60,7 +60,7 @@ public class CreateTrainPerspectiveMod {
             persp.setRotationState(state);
             var carriage = state.getContraption();
             assert carriage != null;
-            persp.enable(carriage.pitch, carriage.yaw);
+            persp.enable(carriage);
         } else {
             state.update();
         }
@@ -69,8 +69,7 @@ public class CreateTrainPerspectiveMod {
     private void tickPerspectiveState(Entity player, Perspective persp, RotationState state) {
         var carriage = state.getContraption();
         if (carriage == null) return;
-        persp.setLean(carriage.pitch);
-        persp.setYaw(carriage.yaw);
+        persp.setReference(carriage);
         player.setYRot(player.getYRot() + state.getYawDelta());
         player.setYBodyRot(player.getYRot());
 
