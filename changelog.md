@@ -1,12 +1,14 @@
-Multiplayer and non-player entity compatibility, along with 1.18.2 support.
+Extra smoothness and extra compatibility change.
 
 Changelog:
 
-- **Fixed:** Player camera turns when an unrelated player is on a train.
-- **Added:** Ability for non-player entities to be affected by this mod.
-- **Technical:** Cleaned up the code a bit.
+- **Fixed:** Delayed camera movement when train turns.
+- **Added:** Debug option to display new value scales used to fix the aforementioned delayed camera movement.
+- **Fixed:** Incompatibility with Figura combined with some mods. [#67](https://github.com/der-fruhling-entertainment/create-train-perspective/issues/67)
+  - (fixed via possibly temporary workaround. please report any other issues with this mod and mine! it likes to get breaky)
+- **Technical:** Cleaned up the code a bit more.
 
-[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.4.1...v0.5.0)
+[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.5.0...v0.6.0)
 
 ---
 
