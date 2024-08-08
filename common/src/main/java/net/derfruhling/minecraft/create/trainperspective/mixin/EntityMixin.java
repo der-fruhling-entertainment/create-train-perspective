@@ -1,3 +1,29 @@
+/*
+ * Part of the Create: Train Perspective project.
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2024 der_frühling
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
@@ -79,8 +105,9 @@ public abstract class EntityMixin {
         } else return yaw;
     }
 
-    public void ctp$enable(CarriageContraptionEntity entity) {
+    public void ctp$enable(CarriageContraptionEntity entity, RotationState state) {
         ctp$perspectiveActive = true;
+        ctp$currentState = state;
         ctp$reference = entity;
         ctp$prevScale = 1.0f;
         ctp$scale = 1.0f;
@@ -88,6 +115,7 @@ public abstract class EntityMixin {
 
     public void ctp$disable() {
         ctp$perspectiveActive = false;
+        ctp$currentState = null;
         ctp$reference = null;
         ctp$prevScale = 1.0f;
         ctp$scale = 1.0f;
@@ -125,6 +153,8 @@ public abstract class EntityMixin {
         return ctp$currentState;
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(since = "0.6.0", forRemoval = true)
     public void ctp$setRotationState(@Nullable RotationState state) {
         ctp$currentState = state;
     }
