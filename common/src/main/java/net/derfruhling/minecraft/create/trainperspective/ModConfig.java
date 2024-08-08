@@ -218,10 +218,10 @@ public class ModConfig {
 
         debug.add(entryBuilder
                 .startBooleanToggle(
-                        Component.translatable("option.create_train_perspective.debug.value_scales"),
+                        new TranslatableComponent("option.create_train_perspective.debug.value_scales"),
                         INSTANCE.dbgShowValueScales)
                 .setSaveConsumer(value -> INSTANCE.dbgShowValueScales = value)
-                .setTooltip(Component.translatable("option.create_train_perspective.debug.value_scales.tooltip"))
+                .setTooltip(new TranslatableComponent("option.create_train_perspective.debug.value_scales.tooltip"))
                 .setDefaultValue(false)
                 .build());
 

@@ -36,7 +36,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.player.ProfilePublicKey;
+import net.minecraft.network.chat.TextComponent;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -53,8 +53,8 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
 
     @Shadow public abstract void displayClientMessage(Component arg, boolean bl);
 
-    public LocalPlayerMixin(ClientLevel clientLevel, GameProfile gameProfile, @Nullable ProfilePublicKey profilePublicKey) {
-        super(clientLevel, gameProfile, profilePublicKey);
+    public LocalPlayerMixin(ClientLevel clientLevel, GameProfile gameProfile) {
+        super(clientLevel, gameProfile);
     }
 
     @WrapOperation(method = "getViewYRot", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isPassenger()Z"))
@@ -68,7 +68,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
         var persp = (Perspective) this;
 
         if(ModConfig.INSTANCE.dbgShowValueScales) {
-            this.displayClientMessage(Component.literal(persp.getValueScale() + ", " + persp.getPrevValueScale()), true);
+            this.displayClientMessage(new TextComponent(persp.getValueScale() + ", " + persp.getPrevValueScale()), true);
         }
     }
 }
