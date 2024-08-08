@@ -31,7 +31,9 @@ public abstract class EntityMixin {
     @Unique
     private @Nullable CarriageContraptionEntity ctp$reference = null;
     @Unique
-    private float ctp$scale = 1.0f, ctp$prevScale = 1.0f;
+    private float ctp$scale = 1.0f;
+    @Unique
+    private float ctp$prevScale = 1.0f;
     @Unique
     private @Nullable RotationState ctp$currentState = null;
 
@@ -80,11 +82,15 @@ public abstract class EntityMixin {
     public void ctp$enable(CarriageContraptionEntity entity) {
         ctp$perspectiveActive = true;
         ctp$reference = entity;
+        ctp$prevScale = 1.0f;
+        ctp$scale = 1.0f;
     }
 
     public void ctp$disable() {
         ctp$perspectiveActive = false;
         ctp$reference = null;
+        ctp$prevScale = 1.0f;
+        ctp$scale = 1.0f;
     }
 
     public void ctp$setReference(CarriageContraptionEntity entity) {
@@ -100,14 +106,14 @@ public abstract class EntityMixin {
     public void ctp$diminish() {
         if (ctp$scale <= 0.0f) return;
         ctp$prevScale = ctp$scale;
-        ctp$scale -= 0.99f;
+        ctp$scale = Mth.lerp(0.1f, ctp$scale, 0.0f);
     }
 
-    public float ctp$getScale() {
+    public float ctp$getValueScale() {
         return ctp$scale;
     }
 
-    public float ctp$getPrevScale() {
+    public float ctp$getPrevValueScale() {
         return ctp$prevScale;
     }
 

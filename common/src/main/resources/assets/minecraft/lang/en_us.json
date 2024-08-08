@@ -5,7 +5,7 @@
   "category.create_train_perspective.multiplayer": "Multiplayer",
   "category.create_train_perspective.advanced": "Advanced",
   "category.create_train_perspective.debug": "Debug Features",
-  "category.create_train_perspective.debug.description": "These are debugging features used for development. You probably don't want to touch these unless you're working on the mod itself.",
+  "category.create_train_perspective.debug.description": "These are debugging features used for development. You probably don't want to touch these unless you're working on the mod itself, and you should only enable one at a time if you want them to mean anything.",
   "option.create_train_perspective.enabled": "Enabled",
   "option.create_train_perspective.enabled.tooltip": "Enables the mod. If False, the mod is disabled.",
   "option.create_train_perspective.leaning.enabled": "Enable Leaning",
@@ -23,5 +23,7 @@
   "option.create_train_perspective.advanced.blocked_entities": "Blocked entities",
   "option.create_train_perspective.advanced.blocked_entities.tooltip": "Entities with an ID in this list will not be considered for this mod's functionality",
   "option.create_train_perspective.debug.standing_transforms": "Show Standing Translations",
-  "option.create_train_perspective.debug.standing_transforms.tooltip": "Shows translations used to transform the player while standing on a train. (X, Y, Z)"
+  "option.create_train_perspective.debug.standing_transforms.tooltip": "Shows translations used to transform the player while standing on a train. (X, Y, Z)",
+  "option.create_train_perspective.debug.value_scales": "Show Value Scales",
+  "option.create_train_perspective.debug.value_scales.tooltip": "Shows scalars used to scale leaning and yaw after leaving a train. (CURRENT, LAST)"
 }

@@ -40,6 +40,7 @@ public class ModConfig {
     public boolean applyToNonPlayerEntities = true;
     public List<ResourceLocation> blockedEntities = new ArrayList<>();
     public boolean dbgShowStandingTransforms = false;
+    public boolean dbgShowValueScales = false;
 
     private ModConfig() {
     }
@@ -184,6 +185,16 @@ public class ModConfig {
                         INSTANCE.dbgShowStandingTransforms)
                 .setSaveConsumer(value -> INSTANCE.dbgShowStandingTransforms = value)
                 .setTooltip(Component.translatable("option.create_train_perspective.debug.standing_transforms.tooltip"))
+                .setDefaultValue(false)
+                .build());
+
+
+        debug.add(entryBuilder
+                .startBooleanToggle(
+                        Component.translatable("option.create_train_perspective.debug.value_scales"),
+                        INSTANCE.dbgShowValueScales)
+                .setSaveConsumer(value -> INSTANCE.dbgShowValueScales = value)
+                .setTooltip(Component.translatable("option.create_train_perspective.debug.value_scales.tooltip"))
                 .setDefaultValue(false)
                 .build());
 
