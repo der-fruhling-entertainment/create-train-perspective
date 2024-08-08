@@ -1,6 +1,33 @@
+/*
+ * Part of the Create: Train Perspective project.
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2024 der_frühling
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.derfruhling.minecraft.create.trainperspective.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -28,7 +55,11 @@ public abstract class EntityMixin {
     @Unique
     private boolean ctp$perspectiveActive = false;
     @Unique
-    private float ctp$lean = 0.0f, ctp$yaw = 0.0f, ctp$oldLean = 0.0f, ctp$oldYaw = 0.0f;
+    private @Nullable CarriageContraptionEntity ctp$reference = null;
+    @Unique
+    private float ctp$scale = 1.0f;
+    @Unique
+    private float ctp$prevScale = 1.0f;
     @Unique
     private @Nullable RotationState ctp$currentState = null;
 
@@ -74,60 +105,56 @@ public abstract class EntityMixin {
         } else return yaw;
     }
 
-    public void ctp$enable(float initialLean, float initialYaw) {
+    public void ctp$enable(CarriageContraptionEntity entity, RotationState state) {
         ctp$perspectiveActive = true;
-        ctp$lean = initialLean;
-        ctp$yaw = initialYaw;
-        ctp$oldLean = initialLean;
-        ctp$oldYaw = initialYaw;
+        ctp$currentState = state;
+        ctp$reference = entity;
+        ctp$prevScale = 1.0f;
+        ctp$scale = 1.0f;
     }
 
     public void ctp$disable() {
         ctp$perspectiveActive = false;
-        ctp$lean = 0.0f;
-        ctp$yaw = 0.0f;
-        ctp$oldLean = 0.0f;
-        ctp$oldYaw = 0.0f;
+        ctp$currentState = null;
+        ctp$reference = null;
+        ctp$prevScale = 1.0f;
+        ctp$scale = 1.0f;
+    }
+
+    public void ctp$setReference(CarriageContraptionEntity entity) {
+        ctp$reference = entity;
+        ctp$prevScale = ctp$scale;
+        ctp$scale = 1.0f;
+    }
+
+    public CarriageContraptionEntity ctp$getReference() {
+        return ctp$reference;
+    }
+
+    public void ctp$diminish() {
+        if (ctp$scale <= 0.0f) return;
+        ctp$prevScale = ctp$scale;
+        ctp$scale = Mth.lerp(0.1f, ctp$scale, 0.0f);
+    }
+
+    public float ctp$getValueScale() {
+        return ctp$scale;
+    }
+
+    public float ctp$getPrevValueScale() {
+        return ctp$prevScale;
     }
 
     public boolean ctp$isEnabled() {
         return ctp$perspectiveActive;
     }
 
-    public void ctp$setLean(float lean) {
-        ctp$oldLean = ctp$lean;
-        ctp$lean = lean;
-    }
-
-    public void ctp$setYaw(float yaw) {
-        // some configurations flip between 0 and 360 constantly
-        // adjust accordingly
-        ctp$oldYaw = ctp$yaw;
-        ctp$yaw = yaw;
-
-        while (ctp$yaw - ctp$oldYaw < -180.0f) {
-            ctp$oldYaw -= 360.0f;
-        }
-
-        while (ctp$yaw - ctp$oldYaw >= 180.0f) {
-            ctp$oldYaw += 360.0f;
-        }
-    }
-
-    public float ctp$getLean(float f) {
-        if (f == 1.0f) return ctp$lean;
-        return Mth.lerp(f, ctp$oldLean, ctp$lean);
-    }
-
-    public float ctp$getYaw(float f) {
-        if (f == 1.0f) return ctp$yaw;
-        return Mth.lerp(f, ctp$oldYaw, ctp$yaw);
-    }
-
     public @Nullable RotationState ctp$getRotationState() {
         return ctp$currentState;
     }
 
+    @SuppressWarnings("removal")
+    @Deprecated(since = "0.6.0", forRemoval = true)
     public void ctp$setRotationState(@Nullable RotationState state) {
         ctp$currentState = state;
     }
