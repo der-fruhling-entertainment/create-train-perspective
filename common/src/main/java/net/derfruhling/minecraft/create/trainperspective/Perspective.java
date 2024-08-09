@@ -87,6 +87,15 @@ public interface Perspective {
         var ref = getReference();
         if (ref == null) return 0.0f;
         if (f == 1.0f) return ref.yaw * getValueScale();
+
+        while (ref.yaw - ref.prevYaw < -180.0f) {
+            ref.prevYaw -= 360.0f;
+        }
+
+        while (ref.yaw - ref.prevYaw >= 180.0f) {
+            ref.prevYaw += 360.0f;
+        }
+
         return Mth.lerp(f, ref.prevYaw * getPrevValueScale(), ref.yaw * getValueScale());
     }
 
