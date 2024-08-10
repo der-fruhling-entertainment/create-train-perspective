@@ -9,8 +9,6 @@ name: Build Project
 
 on:
   push:
-    branches-ignore:
-      - master
     paths-ignore:
       - .github/workflows/gradle-publish.yml
       - .idea/**
