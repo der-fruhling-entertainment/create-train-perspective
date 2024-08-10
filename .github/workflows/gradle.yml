@@ -9,8 +9,6 @@ name: Build Project
 
 on:
   push:
-    branches-ignore:
-      - master
     paths-ignore:
       - .github/workflows/gradle-publish.yml
       - .idea/**
@@ -47,8 +45,25 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
 
+      - name: Compute values
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew -Pcommit_hash=${{ steps.vars.outputs.sha_short }} build
+
+      - name: Upload Forge Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: forge
+          path: forge/build/libs/*.jar
+          if-no-files-found: error
+      - name: Upload Fabric Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: fabric
+          path: fabric/build/libs/*.jar
+          if-no-files-found: error
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.

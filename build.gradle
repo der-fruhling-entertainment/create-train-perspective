@@ -11,7 +11,12 @@ architectury {
 }
 
 group = maven_group
-version = "${mod_version}+mc1.19.2"
+
+if(project.properties['commit_hash'] != null) {
+    version = "${mod_version}-commit.${project.properties['commit_hash']}+mc${minecraft_version}"
+} else {
+    version = "${mod_version}+mc${minecraft_version}"
+}
 
 subprojects {
     apply plugin: "dev.architectury.loom"
