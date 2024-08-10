@@ -13,9 +13,9 @@ architectury {
 group = maven_group
 
 if(project.properties['commit_hash'] != null) {
-    version = "${mod_version}-commit.${project.properties['commit_hash']}+mc1.20.1"
+    version = "${mod_version}-commit.${project.properties['commit_hash']}+mc${minecraft_version}"
 } else {
-    version = "${mod_version}+mc1.20.1"
+    version = "${mod_version}+mc${minecraft_version}"
 }
 
 subprojects {
