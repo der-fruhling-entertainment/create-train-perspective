@@ -106,12 +106,6 @@ public interface Perspective {
     RotationState getRotationState();
 
     /**
-     * Sets the rotation state.
-     */
-    @Deprecated(since = "0.6.0", forRemoval = true)
-    void setRotationState(@Nullable RotationState state);
-
-    /**
      * Applies a diminishing effect to this perspective, called every tick if
      * {@link RotationState#shouldTickState()} returns {@code false}.
      */

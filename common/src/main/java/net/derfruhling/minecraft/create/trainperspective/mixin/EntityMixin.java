@@ -152,10 +152,4 @@ public abstract class EntityMixin {
     public @Nullable RotationState ctp$getRotationState() {
         return ctp$currentState;
     }
-
-    @SuppressWarnings("removal")
-    @Deprecated(since = "0.6.0", forRemoval = true)
-    public void ctp$setRotationState(@Nullable RotationState state) {
-        ctp$currentState = state;
-    }
 }
