@@ -62,7 +62,7 @@ public abstract class CameraMixin {
     @Shadow
     protected abstract void setPosition(double d, double e, double f);
 
-    @ModifyArg(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;"), index = 2)
+    @ModifyArg(method = "setRotation", at = @At(value = "INVOKE", target = "Lorg/joml/Quaternionf;rotationYXZ(FFF)Lorg/joml/Quaternionf;", remap = false), index = 2)
     private float modifyRoll(float original) {
         return original + (ctp$zRot * Mth.DEG_TO_RAD);
     }
