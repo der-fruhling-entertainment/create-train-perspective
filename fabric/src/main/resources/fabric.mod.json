@@ -8,13 +8,28 @@
     "homepage": "https://github.com/der-fruhling-entertainment/create-train-perspective",
     "issues": "https://github.com/der-fruhling-entertainment/create-train-perspective/issues",
     "sources": "https://github.com/der-fruhling-entertainment/create-train-perspective",
-    "email": "works-on-my-machine@der-fruhling.mozmail.com"
+    "email": "incoming@derfruhling.net"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/AyM66DhPKr",
+        "modmenu.modrinth": "https://modrinth.com/mod/create-train-perspective"
+      }
+    }
   },
   "license": "MIT",
   "environment": "client",
   "suggests": {
-    "railways": "*",
-    "modmenu": "*"
+    "railways": "*"
+  },
+  "recommends": {
+    "modmenu": "*",
+    "cloth-config": ">=8"
+  },
+  "breaks": {
+    "create_interactive": "*",
+    "trainperspectivefix": "*"
   },
   "icon": "create_train_perspective.png",
   "authors": [
@@ -33,12 +48,7 @@
   ],
   "depends": {
     "architectury": "*",
-    "create": [
-      "0.5.1-d-build.1161+mc1.20.1",
-      "0.5.1-f-build.1335+mc1.20.1",
-      "0.5.1-f-build.1417+mc1.20.1"
-    ],
-    "minecraft": "1.20.1",
-    "cloth-config": ">=8"
+    "create": "~0.5.0",
+    "minecraft": "1.20.1"
   }
 }

@@ -106,6 +106,6 @@ modrinth {
     dependencies {
         required.project 'create'
         required.project 'architectury-api'
-        required.project 'cloth-config'
+        optional.project 'cloth-config'
     }
 }
