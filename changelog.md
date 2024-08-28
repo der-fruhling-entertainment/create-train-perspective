@@ -1,8 +1,10 @@
 Changelog:
 
-- **Fixed:** Critical jittering bug introduced in v0.6.0
+- **Updated:** Made Cloth Config optional. If Cloth Config is not installed, the config screen will not be accessible.
+- **Updated:** Replaced debug config options with an enum selector to enforce the ability to select only one.
+- **Fixed:** Config screen now visible when using forge 1.18.2
 
-[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.6.0...v0.6.1)
+[View full change log.](https://github.com/der-fruhling/create-train-perspective/compare/v0.6.1...v1.0.0)
 
 ---
 
