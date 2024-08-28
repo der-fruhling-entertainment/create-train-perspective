@@ -29,6 +29,7 @@ package net.derfruhling.minecraft.create.trainperspective.mixin;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.authlib.GameProfile;
+import net.derfruhling.minecraft.create.trainperspective.DebugMode;
 import net.derfruhling.minecraft.create.trainperspective.ModConfig;
 import net.derfruhling.minecraft.create.trainperspective.Perspective;
 import net.minecraft.client.Minecraft;
@@ -65,7 +66,7 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
     public void tickDebugFeatures(CallbackInfo ci) {
         var persp = (Perspective) this;
 
-        if(ModConfig.INSTANCE.dbgShowValueScales) {
+        if(ModConfig.INSTANCE.debugMode == DebugMode.SHOW_VALUE_SCALES) {
             this.displayClientMessage(Component.literal(persp.getValueScale() + ", " + persp.getPrevValueScale()), true);
         }
     }
