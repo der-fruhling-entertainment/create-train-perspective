@@ -44,17 +44,13 @@ public class ModForgeEntrypoint {
 
     public ModForgeEntrypoint() {
         MinecraftForge.EVENT_BUS.addListener(this::onClientSetupEvent);
+        if(ModList.get().isLoaded("cloth_config")) {
+            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () ->
+                    new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfig.createConfigScreen(screen)));
+        }
     }
 
     private void onClientSetupEvent(FMLClientSetupEvent event) {
         EventBuses.registerModEventBus(CreateTrainPerspectiveMod.MODID, FMLJavaModLoadingContext.get().getModEventBus());
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonSetup);
-    }
-
-    private void commonSetup(FMLCommonSetupEvent event) {
-        if(ModList.get().isLoaded("cloth-config")) {
-            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () ->
-                    new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfig.createConfigScreen(screen)));
-        }
     }
 }
