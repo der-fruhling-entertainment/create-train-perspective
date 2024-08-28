@@ -33,7 +33,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.player.AbstractClientPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -128,7 +127,7 @@ public abstract class CameraMixin {
             var persp = (Perspective) clientPlayer;
             var newV = MixinUtil.applyStandingCameraTranslation(clientPlayer, x, y, z, persp, f);
 
-            if (ModConfig.INSTANCE.dbgShowStandingTransforms) {
+            if (ModConfig.INSTANCE.debugMode == DebugMode.SHOW_STANDING_TRANSFORMS) {
                 clientPlayer.displayClientMessage(new TextComponent("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
             }
 

@@ -95,11 +95,6 @@ public class RotationState {
         return contraption;
     }
 
-    @Deprecated(since = "0.6.0", forRemoval = true)
-    public void setContraption(@Nullable CarriageContraptionEntity contraption) {
-        this.contraption = contraption;
-    }
-
     /**
      * @return {@code true} if this is a standing state,
      *         {@code false} otherwise.
@@ -145,11 +140,6 @@ public class RotationState {
      */
     public void onDismount() {
         this.isStandingState = true;
-    }
-
-    @Deprecated(since = "0.6.0", forRemoval = true)
-    public void setShouldTickState(boolean shouldTickState) {
-        this.shouldTickState = shouldTickState;
     }
 
     /**

@@ -8,13 +8,28 @@
     "homepage": "https://github.com/der-fruhling-entertainment/create-train-perspective",
     "issues": "https://github.com/der-fruhling-entertainment/create-train-perspective/issues",
     "sources": "https://github.com/der-fruhling-entertainment/create-train-perspective",
-    "email": "works-on-my-machine@der-fruhling.mozmail.com"
+    "email": "incoming@derfruhling.net"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.discord": "https://discord.gg/AyM66DhPKr",
+        "modmenu.modrinth": "https://modrinth.com/mod/create-train-perspective"
+      }
+    }
   },
   "license": "MIT",
   "environment": "client",
   "suggests": {
-    "railways": "*",
-    "modmenu": "*"
+    "railways": "*"
+  },
+  "recommends": {
+    "modmenu": "*",
+    "cloth-config": ">=8"
+  },
+  "breaks": {
+    "create_interactive": "*",
+    "trainperspectivefix": "*"
   },
   "icon": "create_train_perspective.png",
   "authors": [
@@ -33,30 +48,7 @@
   ],
   "depends": {
     "architectury": "*",
-    "create": [
-      "0.5.0.c-708+1.18.2",
-      "0.5.0.d-728+1.18.2",
-      "0.5.0.d-730+1.18.2",
-      "0.5.0.d-731+1.18.2",
-      "0.5.0.e-733+1.18.2",
-      "0.5.0.g-788+1.18.2",
-      "0.5.0.g-792+1.18.2",
-      "0.5.0.i-921+1.18.2",
-      "0.5.0.i-944+1.18.2",
-      "0.5.0.i-960+1.18.2",
-      "0.5.0.i-963+1.18.2",
-      "0.5.0.i-979+1.18.2",
-      "0.5.0.i-988+1.18.2",
-      "0.5.0.i-1002+1.18.2",
-      "0.5.0.i-1016+1.18.2",
-      "0.5.1-b-build.1070+mc1.18.2",
-      "0.5.1-b-build.1078+mc1.18.2",
-      "0.5.1-b-build.1088+mc1.18.2",
-      "0.5.1-c-build.1159+mc1.18.2",
-      "0.5.1-f-build.1333+mc1.18.2",
-      "0.5.1-f-build.1415+mc1.18.2"
-    ],
-    "minecraft": "1.18.2",
-    "cloth-config": ">=6"
+    "create": "~0.5.0",
+    "minecraft": "1.18.2"
   }
 }
