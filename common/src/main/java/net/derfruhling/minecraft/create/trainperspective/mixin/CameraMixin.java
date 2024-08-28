@@ -127,7 +127,7 @@ public abstract class CameraMixin {
             var persp = (Perspective) clientPlayer;
             var newV = MixinUtil.applyStandingCameraTranslation(clientPlayer, x, y, z, persp, f);
 
-            if (ModConfig.INSTANCE.dbgShowStandingTransforms) {
+            if (ModConfig.INSTANCE.debugMode == DebugMode.SHOW_STANDING_TRANSFORMS) {
                 clientPlayer.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
             }
 

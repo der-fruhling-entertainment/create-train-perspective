@@ -22,8 +22,9 @@
   "option.create_train_perspective.advanced.apply_to_entities.tooltip": "Applies the mod to non-player entities as well (may be broken with some entities)",
   "option.create_train_perspective.advanced.blocked_entities": "Blocked entities",
   "option.create_train_perspective.advanced.blocked_entities.tooltip": "Entities with an ID in this list will not be considered for this mod's functionality",
-  "option.create_train_perspective.debug.standing_transforms": "Show Standing Translations",
-  "option.create_train_perspective.debug.standing_transforms.tooltip": "Shows translations used to transform the player while standing on a train. (X, Y, Z)",
-  "option.create_train_perspective.debug.value_scales": "Show Value Scales",
-  "option.create_train_perspective.debug.value_scales.tooltip": "Shows scalars used to scale leaning and yaw after leaving a train. (CURRENT, LAST)"
+  "option.create_train_perspective.debug.debug_mode": "Enabled Debug Info",
+  "option.create_train_perspective.debug.debug_mode.tooltip": "Select a debug mode to display some internal information. May be useful if working on the mod itself",
+  "option.create_train_perspective.debug.debug_mode.none": "None",
+  "option.create_train_perspective.debug.debug_mode.show_standing_transforms": "Standing transforms",
+  "option.create_train_perspective.debug.debug_mode.show_value_scales": "Value scales"
 }

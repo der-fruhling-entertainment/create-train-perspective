@@ -1,3 +1,6 @@
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 plugins {
     id 'eclipse'
     id 'idea'
@@ -19,6 +22,16 @@ if(project.properties['commit_hash'] != null) {
 }
 
 subprojects {
+    buildscript {
+        repositories {
+            mavenCentral()
+        }
+
+        dependencies {
+            classpath("org.codehaus.groovy:groovy-json:3.0.9")
+        }
+    }
+
     apply plugin: "dev.architectury.loom"
     apply plugin: "maven-publish"
 
@@ -34,6 +47,14 @@ subprojects {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
         mixinDependency("net.fabricmc:sponge-mixin:0.12.5+mixin.0.8.5") { transitive = false }
+    }
+
+    processResources {
+        doLast {
+            fileTree(dir: outputs.files.asPath, include: "**/*.json").each {
+                File file -> file.text = JsonOutput.toJson(new JsonSlurper().parse(file))
+            }
+        }
     }
 
     publishing {

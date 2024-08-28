@@ -39,6 +39,7 @@ import java.io.IOException;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -65,8 +66,7 @@ public class ModConfig {
     public boolean applyToOthers = true;
     public boolean applyToNonPlayerEntities = true;
     public List<ResourceLocation> blockedEntities = new ArrayList<>();
-    public boolean dbgShowStandingTransforms = false;
-    public boolean dbgShowValueScales = false;
+    public DebugMode debugMode = DebugMode.NONE;
 
     private ModConfig() {
     }
@@ -206,22 +206,14 @@ public class ModConfig {
                 .build());
 
         debug.add(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("option.create_train_perspective.debug.standing_transforms"),
-                        INSTANCE.dbgShowStandingTransforms)
-                .setSaveConsumer(value -> INSTANCE.dbgShowStandingTransforms = value)
-                .setTooltip(Component.translatable("option.create_train_perspective.debug.standing_transforms.tooltip"))
-                .setDefaultValue(false)
-                .build());
-
-
-        debug.add(entryBuilder
-                .startBooleanToggle(
-                        Component.translatable("option.create_train_perspective.debug.value_scales"),
-                        INSTANCE.dbgShowValueScales)
-                .setSaveConsumer(value -> INSTANCE.dbgShowValueScales = value)
-                .setTooltip(Component.translatable("option.create_train_perspective.debug.value_scales.tooltip"))
-                .setDefaultValue(false)
+                .startEnumSelector(
+                        Component.translatable("option.create_train_perspective.debug.debug_mode"),
+                        DebugMode.class,
+                        INSTANCE.debugMode)
+                .setSaveConsumer(value -> INSTANCE.debugMode = value)
+                .setTooltip(Component.translatable("option.create_train_perspective.debug.debug_mode"))
+                .setEnumNameProvider(m -> Component.translatable("option.create_train_perspective.debug.debug_mode." + m.name().toLowerCase(Locale.US)))
+                .setDefaultValue(DebugMode.NONE)
                 .build());
 
         advanced.add(debug.build());

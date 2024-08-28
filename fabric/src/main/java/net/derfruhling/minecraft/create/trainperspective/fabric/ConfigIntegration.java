@@ -29,10 +29,15 @@ package net.derfruhling.minecraft.create.trainperspective.fabric;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 import net.derfruhling.minecraft.create.trainperspective.ModConfig;
+import net.fabricmc.loader.api.FabricLoader;
 
 public class ConfigIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return ModConfig::createConfigScreen;
+        if(FabricLoader.getInstance().isModLoaded("cloth-config")) {
+            return ModConfig::createConfigScreen;
+        } else {
+            return screen -> null;
+        }
     }
 }
