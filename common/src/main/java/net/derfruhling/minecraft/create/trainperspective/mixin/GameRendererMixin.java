@@ -48,7 +48,7 @@ public class GameRendererMixin {
     @Final
     private Camera mainCamera;
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;mulPose(Lorg/joml/Quaternionf;)V", ordinal = 2, shift = At.Shift.BEFORE))
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V", shift = At.Shift.AFTER))
     public void applyLevelRotations(float f, long l, PoseStack poseStack, CallbackInfo ci) {
         if (Conditional.shouldApplyPerspectiveTo(mainCamera.getEntity())) {
             poseStack.mulPose(Axis.ZP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getZRot()));
