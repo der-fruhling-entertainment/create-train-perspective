@@ -29,7 +29,6 @@ package net.derfruhling.minecraft.create.trainperspective;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
-import me.shedaniel.clothconfig2.api.Requirement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -69,6 +68,8 @@ public class ModConfig {
     public DebugMode debugMode = DebugMode.NONE;
     public boolean disableRotateWhenSeated = true;
     public transient boolean isRotateWhenSeatedAvailable = true;
+    public boolean debugEnableYawLock = false;
+    public float debugYawLock = 90.0f;
 
     private ModConfig() {
     }
@@ -227,7 +228,6 @@ public class ModConfig {
                 .setTooltip(Component.translatable("option.create_train_perspective.advanced.disable_rotate_when_seated.tooltip"))
                 .setSaveConsumer(value -> INSTANCE.disableRotateWhenSeated = value)
                 .setDisplayRequirement(() -> INSTANCE.isRotateWhenSeatedAvailable)
-                .requireRestart()
                 .setDefaultValue(true)
                 .build());
 
@@ -246,6 +246,26 @@ public class ModConfig {
                 .setTooltip(Component.translatable("option.create_train_perspective.debug.debug_mode"))
                 .setEnumNameProvider(m -> Component.translatable("option.create_train_perspective.debug.debug_mode." + m.name().toLowerCase(Locale.US)))
                 .setDefaultValue(DebugMode.NONE)
+                .build());
+
+        debug.add(entryBuilder
+                .startBooleanToggle(
+                        Component.translatable("option.create_train_perspective.debug.enable_yaw_lock"),
+                        INSTANCE.debugEnableYawLock
+                )
+                .setSaveConsumer(value -> INSTANCE.debugEnableYawLock = value)
+                .setTooltip(Component.translatable("option.create_train_perspective.debug.enable_yaw_lock.tooltip"))
+                .setDefaultValue(false)
+                .build());
+
+        debug.add(entryBuilder
+                .startFloatField(
+                        Component.translatable("option.create_train_perspective.debug.yaw_lock"),
+                        INSTANCE.debugYawLock
+                )
+                .setSaveConsumer(value -> INSTANCE.debugYawLock = value)
+                .setTooltip(Component.translatable("option.create_train_perspective.debug.yaw_lock.tooltip"))
+                .setDefaultValue(90.0f)
                 .build());
 
         advanced.add(debug.build());

@@ -92,6 +92,8 @@ public abstract class CameraMixin {
                 && Conditional.shouldApplyPerspectiveTo(entity)
                 && Conditional.shouldApplyLeaning()
                 && !isThirdPerson) {
+            if (ModConfig.INSTANCE.debugEnableYawLock) y = ModConfig.INSTANCE.debugYawLock;
+
             if (Conditional.shouldApplyRolling()) {
                 ctp$zRot = persp.getLean(f)
                         * ModConfig.INSTANCE.rollMagnitude

@@ -47,7 +47,7 @@ public class MixinUtil {
     }
 
     public static float getExtraYRot(Perspective persp, float xRot, float yRot, float f) {
-        return persp.getLean(f) * (xRot / 90.0f) * -Mth.cos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
+        return persp.getLean(f) * Mth.sin(xRot * Mth.DEG_TO_RAD) * -Mth.cos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 
     public static Vector3d applyStandingCameraTranslation(Player player, double x, double y, double z, Perspective persp, float f) {
