@@ -69,7 +69,7 @@ public class ModConfig {
     public List<ResourceLocation> blockedEntities = new ArrayList<>();
     public DebugMode debugMode = DebugMode.NONE;
     public boolean disableRotateWhenSeated = true;
-    public boolean isRotateWhenSeatedAvailable = true;
+    public transient boolean isRotateWhenSeatedAvailable = true;
 
     private ModConfig() {
     }
