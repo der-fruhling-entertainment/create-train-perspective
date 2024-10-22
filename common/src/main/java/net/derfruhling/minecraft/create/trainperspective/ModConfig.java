@@ -29,6 +29,7 @@ package net.derfruhling.minecraft.create.trainperspective;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
+import me.shedaniel.clothconfig2.api.Requirement;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
@@ -67,6 +68,8 @@ public class ModConfig {
     public boolean applyToNonPlayerEntities = true;
     public List<ResourceLocation> blockedEntities = new ArrayList<>();
     public DebugMode debugMode = DebugMode.NONE;
+    public boolean disableRotateWhenSeated = true;
+    public boolean isRotateWhenSeatedAvailable = true;
 
     private ModConfig() {
     }
@@ -197,6 +200,19 @@ public class ModConfig {
                 .setTooltip(Component.translatable("option.create_train_perspective.advanced.blocked_entities.tooltip"))
                 .setSaveConsumer(value -> INSTANCE.blockedEntities = value.stream().map(ResourceLocation::new).toList())
                 .setDefaultValue(new ArrayList<>())
+                .build());
+
+        //noinspection UnstableApiUsage
+        advanced.add(entryBuilder
+                .startBooleanToggle(
+                        Component.translatable("option.create_train_perspective.advanced.disable_rotate_when_seated"),
+                        INSTANCE.disableRotateWhenSeated
+                )
+                .setTooltip(Component.translatable("option.create_train_perspective.advanced.disable_rotate_when_seated.tooltip"))
+                .setSaveConsumer(value -> INSTANCE.disableRotateWhenSeated = value)
+                .setDisplayRequirement(() -> INSTANCE.isRotateWhenSeatedAvailable)
+                .requireRestart()
+                .setDefaultValue(true)
                 .build());
 
         var debug = entryBuilder.startSubCategory(Component.translatable("category.create_train_perspective.debug"));
