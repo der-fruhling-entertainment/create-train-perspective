@@ -5,7 +5,7 @@
   "category.create_train_perspective.multiplayer": "Multiplayer",
   "category.create_train_perspective.advanced": "Advanced",
   "category.create_train_perspective.debug": "Debug Features",
-  "category.create_train_perspective.debug.description": "These are debugging features used for development. You probably don't want to touch these unless you're working on the mod itself, and you should only enable one at a time if you want them to mean anything.",
+  "category.create_train_perspective.debug.description": "These are debugging features used for development. You probably don't want to touch these unless you're working on the mod itself.",
   "option.create_train_perspective.enabled": "Enabled",
   "option.create_train_perspective.enabled.tooltip": "Enables the mod. If False, the mod is disabled.",
   "option.create_train_perspective.leaning.enabled": "Enable Leaning",
