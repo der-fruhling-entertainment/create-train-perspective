@@ -38,7 +38,7 @@ public class Conditional {
     public static boolean shouldApplyPerspectiveTo(Entity player) {
         if (ModConfig.INSTANCE.enabled) {
             return (ModConfig.INSTANCE.applyToNonPlayerEntities && !ModConfig.INSTANCE.blockedEntities.contains(EntityType.getKey(player.getType()))) ||
-                    (ModConfig.INSTANCE.applyToOthers && player instanceof RemotePlayer)
+                    (ModConfig.INSTANCE.applyToOthers && !ModConfig.INSTANCE.blockedPlayerUUIDs.contains(player.getUUID()) && player instanceof RemotePlayer)
                     || player instanceof LocalPlayer;
         } else {
             return false;

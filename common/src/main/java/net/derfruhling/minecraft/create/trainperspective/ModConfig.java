@@ -38,9 +38,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class ModConfig {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -67,6 +65,7 @@ public class ModConfig {
     public boolean applyToOthers = true;
     public boolean applyToNonPlayerEntities = true;
     public List<ResourceLocation> blockedEntities = new ArrayList<>();
+    public List<UUID> blockedPlayerUUIDs = new ArrayList<>();
     public DebugMode debugMode = DebugMode.NONE;
     public boolean disableRotateWhenSeated = true;
     public transient boolean isRotateWhenSeatedAvailable = true;
@@ -199,6 +198,23 @@ public class ModConfig {
                         INSTANCE.blockedEntities.stream().map(ResourceLocation::toString).toList())
                 .setTooltip(Component.translatable("option.create_train_perspective.advanced.blocked_entities.tooltip"))
                 .setSaveConsumer(value -> INSTANCE.blockedEntities = value.stream().map(ResourceLocation::new).toList())
+                .setDefaultValue(new ArrayList<>())
+                .build());
+
+        advanced.add(entryBuilder
+                .startStrList(
+                        Component.translatable("option.create_train_perspective.advanced.blocked_players"),
+                        INSTANCE.blockedPlayerUUIDs.stream().map(UUID::toString).toList())
+                .setTooltip(Component.translatable("option.create_train_perspective.advanced.blocked_players.tooltip"))
+                .setSaveConsumer(value -> INSTANCE.blockedPlayerUUIDs = value.stream().map(UUID::fromString).toList())
+                .setCellErrorSupplier(s -> {
+                    try {
+                        UUID.fromString(s);
+                        return Optional.empty();
+                    } catch(IllegalArgumentException e) {
+                        return Optional.of(Component.translatable("option.create_train_perspective.advanced.blocked_players.error", e.getLocalizedMessage()));
+                    }
+                })
                 .setDefaultValue(new ArrayList<>())
                 .build());
 
