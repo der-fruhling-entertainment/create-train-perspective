@@ -53,7 +53,7 @@ public class MixinUtil {
     public static Vector3d applyStandingCameraTranslation(Player player, double x, double y, double z, Perspective persp, float f) {
         var lean = persp.getLean(f) * Mth.DEG_TO_RAD;
         var yaw = persp.getYaw(f) * Mth.DEG_TO_RAD;
-        var height = player.getEyeHeight(player.getPose());
+        var height = player.isPassenger() ? player.getEyeHeight() - 0.5f : player.getEyeHeight();
         var newY = y + ((height * Mth.cos(lean)) - height);
         var leanSin = Mth.sin(lean);
         var newZ = z - (height * Mth.sin(yaw) * leanSin);
