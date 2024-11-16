@@ -78,7 +78,7 @@ public interface Perspective {
     }
 
     /**
-     * Calculates the amount of yaw to apply to this perspective.
+     * Figures out the yaw of the contraption on this particular frame.
      *
      * @param f The delta between the last tick and the next tick.
      * @return Yaw value.

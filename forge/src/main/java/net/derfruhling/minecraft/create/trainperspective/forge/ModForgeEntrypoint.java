@@ -28,14 +28,13 @@ package net.derfruhling.minecraft.create.trainperspective.forge;
 
 import dev.architectury.platform.forge.EventBuses;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
-import net.derfruhling.minecraft.create.trainperspective.ModConfig;
+import net.derfruhling.minecraft.create.trainperspective.ModConfigScreenFactory;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(CreateTrainPerspectiveMod.MODID)
@@ -46,7 +45,7 @@ public class ModForgeEntrypoint {
         MinecraftForge.EVENT_BUS.addListener(this::onClientSetupEvent);
         if(ModList.get().isLoaded("cloth_config")) {
             ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () ->
-                    new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfig.createConfigScreen(screen)));
+                    new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfigScreenFactory.createConfigScreen(screen)));
         }
     }
 

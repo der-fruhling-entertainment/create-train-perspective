@@ -27,8 +27,14 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
+import com.simibubi.create.foundation.config.ConfigBase;
+import com.simibubi.create.infrastructure.config.AllConfigs;
+import com.simibubi.create.infrastructure.config.CClient;
+import dev.architectury.event.events.client.ClientLifecycleEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import net.minecraft.world.entity.Entity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 
@@ -36,10 +42,35 @@ public class CreateTrainPerspectiveMod {
     public static final String MODID = "create_train_perspective";
     public static CreateTrainPerspectiveMod INSTANCE;
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(CreateTrainPerspectiveMod.class);
+
     public CreateTrainPerspectiveMod() {
+        ClientLifecycleEvent.CLIENT_SETUP.register(instance -> {
+            var client = CClient.class;
+            if(ModConfig.INSTANCE.disableRotateWhenSeated) {
+                try {
+                    //noinspection JavaReflectionMemberAccess
+                    var field = client.getField("rotateWhenSeated");
+                    field.setAccessible(true); // avoid issues
+                    var value = (ConfigBase.ConfigBool) field.get(AllConfigs.client());
+                    value.set(false);
+                    LOGGER.warn("Workaround applied: disabled rotateWhenSeated in Create's config as it conflicts with this mod's functionality");
+                } catch (NoSuchFieldException e) {
+                    // field does not exist, probably just an older version of create
+                    ModConfig.INSTANCE.isRotateWhenSeatedAvailable = false;
+                    LOGGER.info("No such config option: rotateWhenSeated; probably using older version of Create, which is fine! Hooray!");
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                LOGGER.warn("Not applying rotateWhenSeated workaround; don't blame me if you're rotating too much");
+            }
+        });
+
         ClientTickEvent.CLIENT_PRE.register(instance -> {
             ModConfig.tick();
         });
+
         INSTANCE = this;
     }
 

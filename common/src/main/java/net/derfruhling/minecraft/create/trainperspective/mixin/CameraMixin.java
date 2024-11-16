@@ -32,6 +32,7 @@ import net.derfruhling.minecraft.create.trainperspective.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -90,17 +91,32 @@ public abstract class CameraMixin {
                 && Conditional.shouldApplyPerspectiveTo(entity)
                 && Conditional.shouldApplyLeaning()
                 && !isThirdPerson) {
+            if (ModConfig.INSTANCE.debugEnableYawLock) y = ModConfig.INSTANCE.debugYawLock;
+
             if (Conditional.shouldApplyRolling()) {
                 ctp$zRot = persp.getLean(f)
                         * ModConfig.INSTANCE.rollMagnitude
                         * Mth.cos((persp.getYaw(f) - y) * Mth.DEG_TO_RAD)
-                        * Mth.sin((x * Mth.DEG_TO_RAD + Mth.PI) / 2.0f);
+                        * Mth.cos(x * Mth.DEG_TO_RAD);
             }
 
             ctp$extraYRot = MixinUtil.getExtraYRot(persp, x, y, f);
+            var newX = MixinUtil.applyDirectionXRotChange(persp, x, y, f);
+
+            if(ModConfig.INSTANCE.debugMode == DebugMode.SHOW_CAMERA_ROTATION) {
+                assert Minecraft.getInstance().player != null;
+                Minecraft.getInstance().player.displayClientMessage(Component.literal(String.format(
+                        "%.03f, %.03f (%.03f), %.03f",
+                        newX,
+                        y,
+                        ctp$extraYRot,
+                        ctp$zRot
+                )), true);
+            }
+
             setRotation(
                     y,
-                    MixinUtil.applyDirectionXRotChange(persp, x, y, f)
+                    newX
             );
         } else {
             ctp$zRot = 0;

@@ -47,13 +47,13 @@ public class MixinUtil {
     }
 
     public static float getExtraYRot(Perspective persp, float xRot, float yRot, float f) {
-        return persp.getLean(f) * (xRot / 90.0f) * -Mth.cos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
+        return persp.getLean(f) * Mth.sin(xRot * Mth.DEG_TO_RAD) * -Mth.cos((persp.getYaw(f) - yRot) * Mth.DEG_TO_RAD);
     }
 
     public static Vector3d applyStandingCameraTranslation(Player player, double x, double y, double z, Perspective persp, float f) {
         var lean = persp.getLean(f) * Mth.DEG_TO_RAD;
         var yaw = persp.getYaw(f) * Mth.DEG_TO_RAD;
-        var height = y - player.getY();
+        var height = player.isPassenger() ? player.getEyeHeight() - 0.5f : player.getEyeHeight();
         var newY = y + ((height * Mth.cos(lean)) - height);
         var leanSin = Mth.sin(lean);
         var newZ = z - (height * Mth.sin(yaw) * leanSin);
