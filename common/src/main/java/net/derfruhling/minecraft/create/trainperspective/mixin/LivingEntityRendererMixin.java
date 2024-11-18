@@ -47,18 +47,17 @@ public class LivingEntityRendererMixin {
     protected void setupRotations(LivingEntity livingEntity, PoseStack poseStack, float f, float g, float h, CallbackInfo ci) {
         if (Conditional.shouldApplyPerspectiveTo(livingEntity)) {
             Perspective persp = (Perspective) livingEntity;
-            float height = 0;
+            float offset = 0;
 
             if (livingEntity.getVehicle() != null) {
-                height = livingEntity.getEyeHeight();
+                offset = 0.5f;
             }
 
             var lean = persp.getLean(h);
             var yaw = persp.getYaw(h);
-            poseStack.translate(0, height, 0);
             poseStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.cos(Mth.DEG_TO_RAD * yaw) * lean));
             poseStack.mulPose(Vector3f.XP.rotationDegrees(Mth.sin(Mth.DEG_TO_RAD * yaw) * -lean));
-            poseStack.translate(0, -height, 0);
+            poseStack.translate(0, offset, 0);
         }
     }
 }

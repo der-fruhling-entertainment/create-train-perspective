@@ -42,7 +42,9 @@ public class CreateRaycastHelperMixin {
     @ModifyReturnValue(method = "getTraceOrigin", at = @At("RETURN"))
     private static Vec3 applyLeaning(Vec3 original, Player player) {
         if (Conditional.shouldApplyPerspectiveTo(player) && player instanceof Perspective persp) {
-            return MixinUtil.applyStandingCameraTranslation(player, original, persp, 1.0f);
+            var newV = MixinUtil.applyStandingCameraTranslation(player, original, persp, 1.0f);
+            if(player.isPassenger()) newV.add(0.0f, 0.5f, 0.0f);
+            return newV;
         } else {
             return original;
         }

@@ -5,7 +5,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.5-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
     id "maven-publish"
 }
 
