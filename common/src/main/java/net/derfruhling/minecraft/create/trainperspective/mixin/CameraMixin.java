@@ -138,10 +138,12 @@ public abstract class CameraMixin {
         if (entity instanceof AbstractClientPlayer clientPlayer
                 && Conditional.shouldApplyPerspectiveTo(entity)
                 && Conditional.shouldApplyLeaning()
-                && clientPlayer.getVehicle() == null
+//                && clientPlayer.getVehicle() == null
                 && !isThirdPerson) {
             var persp = (Perspective) clientPlayer;
             var newV = MixinUtil.applyStandingCameraTranslation(clientPlayer, x, y, z, persp, f);
+
+            if(entity.isPassenger()) newV.y += 0.5;
 
             if (ModConfig.INSTANCE.debugMode == DebugMode.SHOW_STANDING_TRANSFORMS) {
                 clientPlayer.displayClientMessage(Component.literal("%f, %f, %f".formatted(x - newV.x, y - newV.y, z - newV.z)), true);
