@@ -34,6 +34,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -105,7 +106,7 @@ public abstract class CameraMixin {
 
             if(ModConfig.INSTANCE.debugMode == DebugMode.SHOW_CAMERA_ROTATION) {
                 assert Minecraft.getInstance().player != null;
-                Minecraft.getInstance().player.displayClientMessage(Component.literal(String.format(
+                Minecraft.getInstance().player.displayClientMessage(new TextComponent(String.format(
                         "%.03f, %.03f (%.03f), %.03f",
                         newX,
                         y,
