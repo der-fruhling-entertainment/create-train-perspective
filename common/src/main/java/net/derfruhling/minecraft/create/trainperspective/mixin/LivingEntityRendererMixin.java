@@ -44,7 +44,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Environment(EnvType.CLIENT)
 public class LivingEntityRendererMixin {
     @Inject(method = "setupRotations", at = @At("HEAD"))
-    protected void setupRotations(LivingEntity livingEntity, PoseStack poseStack, float f, float g, float h, CallbackInfo ci) {
+    protected void setupRotations(LivingEntity livingEntity, PoseStack poseStack, float f, float g, float h, float i, CallbackInfo ci) {
         if (Conditional.shouldApplyPerspectiveTo(livingEntity)) {
             Perspective persp = (Perspective) livingEntity;
             float offset = 0;

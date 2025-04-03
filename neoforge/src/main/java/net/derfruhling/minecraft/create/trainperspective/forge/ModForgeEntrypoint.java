@@ -26,30 +26,37 @@
 
 package net.derfruhling.minecraft.create.trainperspective.forge;
 
-import dev.architectury.platform.forge.EventBuses;
+import dev.architectury.platform.hooks.EventBusesHooks;
 import net.derfruhling.minecraft.create.trainperspective.CreateTrainPerspectiveMod;
+import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.derfruhling.minecraft.create.trainperspective.ModConfigScreenFactory;
-import net.minecraftforge.client.ConfigScreenHandler;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraft.client.Minecraft;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.ModLoadingContext;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.loading.FMLLoader;
+import net.neoforged.neoforge.client.event.ViewportEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
+import net.neoforged.neoforge.common.NeoForge;
 
 @Mod(CreateTrainPerspectiveMod.MODID)
 public class ModForgeEntrypoint {
     public CreateTrainPerspectiveMod mod = new CreateTrainPerspectiveMod();
 
     public ModForgeEntrypoint() {
-        MinecraftForge.EVENT_BUS.addListener(this::onClientSetupEvent);
+        //NeoForge.EVENT_BUS.addListener(this::onClientSetupEvent);
         if(ModList.get().isLoaded("cloth_config")) {
-            ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () ->
-                    new ConfigScreenHandler.ConfigScreenFactory((minecraft, screen) -> ModConfigScreenFactory.createConfigScreen(screen)));
+            ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (container, screen) -> ModConfigScreenFactory.createConfigScreen(screen));
         }
+
+        //var bus = ModLoadingContext.get().getActiveContainer().getEventBus();
+        NeoForge.EVENT_BUS.addListener(ViewportEvent.ComputeCameraAngles.class, computeCameraAngles -> {
+            var camera3d = MixinUtil.asCamera3D(Minecraft.getInstance().gameRenderer.getMainCamera());
+            computeCameraAngles.setRoll(computeCameraAngles.getRoll() + camera3d.getZRot());
+        });
     }
 
-    private void onClientSetupEvent(FMLClientSetupEvent event) {
+    /*private void onClientSetupEvent(FMLClientSetupEvent event) {
         EventBuses.registerModEventBus(CreateTrainPerspectiveMod.MODID, FMLJavaModLoadingContext.get().getModEventBus());
-    }
+    }*/
 }

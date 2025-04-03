@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[47,48)"
+loaderVersion = "[1,)"
 license = "MIT"
 issueTrackerURL = "https://github.com/der-fruhling-entertainment/create-train-perspective/issues"
 
@@ -19,36 +19,40 @@ Moves your camera (and body!) with the Create Mod train you're riding to increas
 '''
 
 [[dependencies."${mod_id}"]]
-modId = "forge"
-mandatory = true
-versionRange = "[47,48)"
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1,21.2)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "minecraft"
-mandatory = true
-versionRange = "1.20.1"
+type = "required"
+versionRange = "1.21.1"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "create"
-mandatory = true
-versionRange = "[0.5.0,0.6.0)"
+type = "required"
+versionRange = "[6,7)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "architectury"
-mandatory = true
-versionRange = "[9.0.8,)"
+type = "required"
+versionRange = "[13,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies."${mod_id}"]]
 modId = "cloth_config"
-mandatory = false
-versionRange = "[8,)"
+type = "optional"
+reason = "Allows editing the config in-game"
+versionRange = "[15,)"
 ordering = "AFTER"
 side = "BOTH"
+
+[[mixins]]
+config = "create_train_perspective.mixins.json"
