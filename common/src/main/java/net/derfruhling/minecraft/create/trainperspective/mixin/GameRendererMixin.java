@@ -26,6 +26,7 @@
 
 package net.derfruhling.minecraft.create.trainperspective.mixin;
 
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.derfruhling.minecraft.create.trainperspective.Conditional;
@@ -33,6 +34,7 @@ import net.derfruhling.minecraft.create.trainperspective.MixinUtil;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
 import org.spongepowered.asm.mixin.Final;
@@ -49,8 +51,8 @@ public class GameRendererMixin {
     @Final
     private Camera mainCamera;
 
-    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;setup(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/world/entity/Entity;ZZF)V", shift = At.Shift.AFTER))
-    public void applyLevelRotations(float f, long l, PoseStack poseStack, CallbackInfo ci) {
+    @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GameRenderer;bobHurt(Lcom/mojang/blaze3d/vertex/PoseStack;F)V", shift = At.Shift.AFTER))
+    public void applyLevelRotations(DeltaTracker deltaTracker, CallbackInfo ci, @Local PoseStack poseStack) {
         if (Conditional.shouldApplyPerspectiveTo(mainCamera.getEntity())) {
             poseStack.mulPose(Axis.ZP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getZRot()));
             poseStack.mulPose(Axis.YP.rotationDegrees(MixinUtil.asCamera3D(mainCamera).getExtraYRot()));

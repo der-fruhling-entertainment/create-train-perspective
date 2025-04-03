@@ -27,7 +27,7 @@
 package net.derfruhling.minecraft.create.trainperspective;
 
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
-import com.simibubi.create.foundation.config.ConfigBase;
+import net.createmod.catnip.config.ConfigBase;
 import com.simibubi.create.infrastructure.config.AllConfigs;
 import com.simibubi.create.infrastructure.config.CClient;
 import dev.architectury.event.events.client.ClientLifecycleEvent;

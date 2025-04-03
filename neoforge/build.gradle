@@ -5,17 +5,19 @@ plugins {
 
 architectury {
     platformSetupLoomIde()
-    forge()
+    neoForge()
 }
 
 loom {
-//    accessWidenerPath = project(":common").loom.accessWidenerPath
+    runs {
+        it.named("client").configure {
+            client()
+            ideConfigGenerated = true
 
-    forge {
-        convertAccessWideners = true
-//        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+            it.property("mixin.debug.export")
 
-        mixinConfig "create_train_perspective.mixins.json"
+            source sourceSets.main
+        }
     }
 }
 
@@ -24,31 +26,39 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
+}
+
+repositories {
+    maven { url "https://maven.neoforged.net/releases/" }
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
     // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    modApi "dev.architectury:architectury-neoforge:${rootProject.architectury_version}"
 
     modImplementation("com.simibubi.create:create-${create_minecraft_version}:${create_version}:slim") { transitive = false }
-    modImplementation "com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}"
+    modImplementation "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
+    modImplementation "dev.engine-room.flywheel:flywheel-neoforge-api-${flywheel_minecraft_version}:${flywheel_version}"
+    modImplementation "dev.engine-room.flywheel:flywheel-neoforge-${flywheel_minecraft_version}:${flywheel_version}"
     modImplementation "com.tterrag.registrate:Registrate:${registrate_version}"
 
-    modApi("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+    modApi("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
 
     compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.3.6"))
-    implementation(include("io.github.llamalad7:mixinextras-forge:0.3.6"))
+    implementation(include("io.github.llamalad7:mixinextras-neoforge:0.3.6"))
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionNeoForge")) { transitive = false }
 }
 
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("META-INF/mods.toml") {
+    from(project(":common").tasks.named("processResources"))
+
+    filesMatching("META-INF/neoforge.mods.toml") {
         expand(
                 "mod_version": project.version,
                 "mod_id": rootProject.mod_id
@@ -83,11 +93,15 @@ components.java {
 
 publishing {
     publications {
-        mavenForge(MavenPublication) {
+        mavenNeoForge(MavenPublication) {
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }
     }
+}
+
+sourceSets.named("main").configure {
+    it.runtimeClasspath
 }
 
 modrinth {

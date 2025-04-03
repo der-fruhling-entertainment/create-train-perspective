@@ -13,8 +13,9 @@ dependencies {
     modApi "dev.architectury:architectury:${architectury_version}"
 
     modImplementation("com.simibubi.create:create-${create_minecraft_version}:${create_version}:slim") { transitive = false }
+    modImplementation "net.createmod.ponder:Ponder-NeoForge-${minecraft_version}:${ponder_version}"
 
-    modApi("me.shedaniel.cloth:cloth-config-forge:${cloth_config_version}")
+    modApi("me.shedaniel.cloth:cloth-config-neoforge:${cloth_config_version}")
 }
 
 publishing {

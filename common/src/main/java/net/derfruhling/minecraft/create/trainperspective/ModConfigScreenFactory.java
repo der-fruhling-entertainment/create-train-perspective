@@ -108,7 +108,7 @@ public class ModConfigScreenFactory {
                         Component.translatable("option.create_train_perspective.advanced.blocked_entities"),
                         ModConfig.INSTANCE.blockedEntities.stream().map(ResourceLocation::toString).toList())
                 .setTooltip(Component.translatable("option.create_train_perspective.advanced.blocked_entities.tooltip"))
-                .setSaveConsumer(value -> ModConfig.INSTANCE.blockedEntities = value.stream().map(ResourceLocation::new).toList())
+                .setSaveConsumer(value -> ModConfig.INSTANCE.blockedEntities = value.stream().map(ResourceLocation::parse).toList())
                 .setDefaultValue(new ArrayList<>())
                 .build());
 
