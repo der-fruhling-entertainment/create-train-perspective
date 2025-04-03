@@ -38,4 +38,4 @@ jobs:
           git reset --pathspec-from-file=.github/auto-port-ignore.txt
           git commit -m "[auto-port] Merge updates from $SOURCE_BRANCH"
           
-          git push $TARGET_BRANCH
+          git push origin $TARGET_BRANCH
