@@ -1,0 +1,4 @@
+gradle.properties
+fabric/gradle.properties
+forge/gradle.properties
+neoforge/gradle.properties
