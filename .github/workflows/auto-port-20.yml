@@ -1,0 +1,41 @@
+name: Automatically merge into 1.20.1 port branch
+
+env:
+  SOURCE_BRANCH: master
+  TARGET_BRANCH: port-1.20.1
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - "**/gradle.properties"
+
+permissions:
+  contents: write
+
+jobs:
+  port:
+    if: ${{ !contains(github.event.head_commit.message, '!auto-port') }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        name: Checkout 1.20.1 port
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+          ref: port-1.20.1
+      - name: Perform the merge
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # need to fix the commit to exclude files that may be defining a new version
+          # of the game to be used
+          #
+          # these must be updated manually
+          git merge --no-commit --no-ff origin/$SOURCE_BRANCH
+          git reset --pathspec-from-file=.github/auto-port-ignore.txt
+          git commit -m "[auto-port] Merge updates from $SOURCE_BRANCH"
+          
+          git push origin $TARGET_BRANCH
