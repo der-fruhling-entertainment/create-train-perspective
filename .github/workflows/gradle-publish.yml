@@ -15,15 +15,11 @@ on:
         required: true
       master-ref:
         default: "master"
+        description: The 1.21.1 version of the mod
+        required: true
+      port-20-ref:
+        default: "port-1.20.1"
         description: The 1.20.1 version of the mod
-        required: true
-      port-19-ref:
-        default: "port-1.19.2"
-        description: The 1.19.2 version of the mod
-        required: true
-      port-18-ref:
-        default: "port-1.18.2"
-        description: The 1.18.2 version of the mod
         required: true
       publish-ghp:
         default: true
@@ -42,15 +38,13 @@ jobs:
     permissions:
       contents: read
 
-    strategy:
+    strategy: &build-strats
       matrix:
         include:
           - branch: ${{ inputs.master-ref }}
+            version: 1.21.1
+          - branch: ${{ inputs.port-20-ref }}
             version: 1.20.1
-          - branch: ${{ inputs.port-19-ref }}
-            version: 1.19.2
-          - branch: ${{ inputs.port-18-ref }}
-            version: 1.18.2
 
     steps:
       - uses: actions/checkout@v4
@@ -75,15 +69,7 @@ jobs:
       packages: write
     needs: build
     if: inputs.publish-ghp
-    strategy:
-      matrix:
-        include:
-          - branch: ${{ inputs.master-ref }}
-            version: 1.20.1
-          - branch: ${{ inputs.port-19-ref }}
-            version: 1.19.2
-          - branch: ${{ inputs.port-18-ref }}
-            version: 1.18.2
+    strategy: *build-strats
     steps:
       - uses: actions/checkout@v4
         with:
@@ -115,12 +101,7 @@ jobs:
       contents: read
     needs: build
     if: inputs.publish-modrinth
-    strategy:
-      matrix:
-        branch:
-          - ${{ inputs.master-ref }}
-          - ${{ inputs.port-19-ref }}
-          - ${{ inputs.port-18-ref }}
+    strategy: *build-strats
     steps:
       - uses: actions/checkout@v4
         with:
