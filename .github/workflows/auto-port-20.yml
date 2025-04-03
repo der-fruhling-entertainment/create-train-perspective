@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   port:
-    if: !contains(github.event.head_commit.message, '!auto-port')
+    if: ${{ !contains(github.event.head_commit.message, '!auto-port') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
